@@ -1,0 +1,50 @@
+name: 提取 recovery.img
+
+on:
+  workflow_dispatch:
+    inputs:
+      rom_url:
+        description: 'ROM url'
+        required: true
+        default: ''
+
+
+jobs:
+  YIJIANTIQU:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v2
+
+      - name: 安装依赖
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install python3-pip
+          sudo apt install aria2 liblzma-dev brotli lz4
+          pip3 install backports.lzma pycrypto
+          pip install protobuf==3.20
+          BUILD_TIME=$(TZ=Asia/Shanghai date +"%m%d%H%M")
+          echo "BUILD_TIME=$BUILD_TIME" >> $GITHUB_ENV
+
+      - name: 提取镜像并上传至 TMP
+        run: |
+          cd ~
+          git clone --recurse-submodules https://github.com/sake1227/draw.git
+          cd draw
+          aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
+          ./extractor.sh firmware.zip
+          cd ${{ github.workspace }}
+          touch info.md
+          echo "提交日期：$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" >> info.md
+          echo "ROM 下载直链：${{ github.event.inputs.rom_url }}" >> info.md
+          cd ~/draw/out
+          if [ -f "recovery.img" ]; then rm boot.img; fi
+          du -h --total *.img | sed 's/^/提取镜像大小： /' | head -n 1 >> ${{ github.workspace }}/info.md
+
+      - name: 上传镜像及相关信息
+        uses: ncipollo/release-action@v1.13.0
+        with:
+            artifacts: "~/draw/out/*"
+            bodyfile: "${{ github.workspace }}/info.md"
+            tag: "OUTPUT_${{ env.BUILD_TIME }}_${{ github.run_id }}"
+            token: ${{ secrets.GITHUB_TOKEN }}
