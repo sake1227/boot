@@ -29,22 +29,22 @@ jobs:
       - name: 提取镜像并上传至 TMP
         run: |
           cd ~
-          git clone --recurse-submodules https://github.com/tosasitill/Firmware_extractor.git
-          cd Firmware_extractor
+          git clone --recurse-submodules https://github.com/sake1227/draw.git
+          cd draw
           aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           ./extractor.sh firmware.zip
           cd ${{ github.workspace }}
           touch info.md
           echo "提交日期：$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" >> info.md
           echo "ROM 下载直链：${{ github.event.inputs.rom_url }}" >> info.md
-          cd ~/Firmware_extractor/out
+          cd ~/draw/out
           if [ -f "init_boot.img" ]; then rm boot.img; fi
           du -h --total *.img | sed 's/^/提取镜像大小： /' | head -n 1 >> ${{ github.workspace }}/info.md
 
       - name: 上传镜像及相关信息
         uses: ncipollo/release-action@v1.13.0
         with:
-            artifacts: "~/Firmware_extractor/out/*"
+            artifacts: "~/draw/out/*"
             bodyfile: "${{ github.workspace }}/info.md"
             tag: "OUTPUT_${{ env.BUILD_TIME }}_${{ github.run_id }}"
             token: ${{ secrets.GITHUB_TOKEN }}
