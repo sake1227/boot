@@ -1,4 +1,4 @@
-name: 提取 boot / init_boot.img
+name: 提取全部镜像
 
 on:
   workflow_dispatch:
