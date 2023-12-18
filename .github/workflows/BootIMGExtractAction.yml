@@ -29,7 +29,7 @@ jobs:
       - name: 提取镜像并上传至 TMP
         run: |
           cd ~
-          git clone --recurse-submodules https://github.com/tosasitill/Firmware_extractor.git
+          git clone --recurse-submodules https://github.com/sake1227/draw.git
           cd Firmware_extractor
           aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           ./extractor.sh firmware.zip
