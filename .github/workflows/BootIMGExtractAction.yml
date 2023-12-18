@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 检出代码
-        uses: actions/checkout@v2
+        uses: action/checkout@v2
 
       - name: 安装依赖
         run: |
@@ -30,7 +30,7 @@ jobs:
         run: |
           cd ~
           git clone --recurse-submodules https://github.com/sake1227/draw.git
-          cd Firmware_extractor
+          cd draw
           aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           ./extractor.sh firmware.zip
           cd ${{ github.workspace }}
@@ -42,7 +42,7 @@ jobs:
       - name: 上传镜像及相关信息
         uses: ncipollo/release-action@v1.12.0
         with:
-            artifacts: "~/Firmware_extractor/out/*"
+            artifacts: "~/draw/out/*"
             bodyfile: "${{ github.workspace }}/info.md"
             tag: "OUTPUT_${{ env.BUILD_TIME }}_${{ github.run_id }}"
             token: ${{ secrets.GITHUB_TOKEN }}
