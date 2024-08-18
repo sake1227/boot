@@ -1,0 +1,27 @@
+
+docker run --rm -itd --privileged -v /root/scrcpy-web/data:/data --name scrcpy-web -p 8090:8000/tcp  --link redroid:118.89.80.186:5555 scavin/ws-scrcpy:latest
+
+
+
+docker run -itd \
+    --name=redroid \
+    --memory-swappiness=0 \
+    --privileged --pull always \
+    -v ~/data:/data \
+    -p 5555:5555 \
+    redroid/redroid:13.0.0-latest \
+    androidboot.hardware=mt6891 ro.secure=0 ro.boot.hwc=GLOBAL    ro.ril.oem.imei=861503068361145 ro.ril.oem.imei1=861503068361145 ro.ril.oem.imei2=861503068361148 ro.ril.miui.imei0=861503068361148 ro.product.manufacturer=Xiaomi ro.build.product=chopin \
+    redroid.width=720 redroid.height=1280
+
+docker run -itd \
+    --name=redroid \
+    --memory-swappiness=0 \
+    --privileged --pull always \
+    -v ~/data:/data \
+    -p 5555:5555 \
+    redroid/redroid:14.0.0_64only-latest \
+    androidboot.hardware=mt6891 ro.secure=0 ro.boot.hwc=GLOBAL ro.ril.oem.imei=861503068361145 ro.ril.oem.imei1=861503068361145 ro.ril.oem.imei2=861503068361148 ro.ril.miui.imei0=861503068361148 ro.product.manufacturer=Xiaomi ro.build.product=chopin \
+    redroid.width=720 redroid.height=1280 \
+    redroid.gpu.mode=guest
+
+:wq
