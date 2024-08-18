@@ -38,9 +38,7 @@ jobs:
          aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
          payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
          cd ${GITHUB_WORKSPACE}/workspace/output
-         mv boot.img ${{ github.event.inputs.rom_name }}
+         zip -r ${{ github.event.inputs.rom_name }} ${GITHUB_WORKSPACE}/workspace/output
          rclone sync ${{ github.event.inputs.rom_name }} 123:/ceshi
-         rclone sync vbmeta.img 123:/ceshi
-         rclone sync init_boot.img 123:/ceshi
 
      
