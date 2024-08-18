@@ -31,7 +31,6 @@ jobs:
          curl https://rclone.org/install.sh | sudo bash
          mkdir -p ~/.config/rclone/
          unzip -o rclone.zip -d ~/.config/rclone/
-         mv 获取解压密码.txt ${GITHUB_WORKSPACE}/workspace/output
 
       - name: 提取镜像
         run: |
@@ -40,6 +39,7 @@ jobs:
          aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
          payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
          cd ${GITHUB_WORKSPACE}/workspace/output
+         mv 获取解压密码.txt ${GITHUB_WORKSPACE}/workspace/output
          7z a ${{ github.event.inputs.rom_name }} -p"beijian" *
          rclone sync ${{ github.event.inputs.rom_name }} 123:/ceshi
      
