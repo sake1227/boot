@@ -31,6 +31,8 @@ jobs:
          curl https://rclone.org/install.sh | sudo bash
          mkdir -p ~/.config/rclone/
          unzip -o rclone.zip -d ~/.config/rclone/
+         ls
+         pwd
 
       - name: 提取镜像
         run: |
