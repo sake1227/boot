@@ -31,9 +31,7 @@ jobs:
          curl https://rclone.org/install.sh | sudo bash
          mkdir -p ~/.config/rclone/
          unzip -o rclone.zip -d ~/.config/rclone/
-         ls
-         pwd
-
+         
       - name: 提取镜像
         run: |
          mkdir -p ${GITHUB_WORKSPACE}/workspace && cd ${GITHUB_WORKSPACE}/workspace
@@ -43,5 +41,6 @@ jobs:
          cd ${GITHUB_WORKSPACE}/workspace/output
          mv ~/获取解压密码.txt ${GITHUB_WORKSPACE}/workspace/output
          7z a ${{ github.event.inputs.rom_name }} -p"beijian" *
+         7z a ${{ github.event.inputs.rom_name }} /home/runner/work/boot/boot/获取解压密码.txt
          rclone sync ${{ github.event.inputs.rom_name }} 123:/ceshi
      
