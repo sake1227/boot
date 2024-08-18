@@ -40,6 +40,6 @@ jobs:
          payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
          cd ${GITHUB_WORKSPACE}/workspace/output
          7z a ${{ github.event.inputs.rom_name }} -p"beijian" *
-         7z a ${{ github.event.inputs.rom_name }} "获取解压密码.txt"
+         7z a ${{ github.event.inputs.rom_name }} ~/获取解压密码.txt
          rclone sync ${{ github.event.inputs.rom_name }} 123:/ceshi
      
