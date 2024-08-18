@@ -24,8 +24,9 @@ jobs:
          sudo apt-get update
          sudo apt-get -y install python3-pip
          sudo apt install aria2
+         sudo apt-get install p7zip
          
-      - name: tongbu
+      - name: 同步上传
         run: |
          curl https://rclone.org/install.sh | sudo bash
          mkdir -p ~/.config/rclone/
@@ -38,7 +39,6 @@ jobs:
          aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
          payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
          cd ${GITHUB_WORKSPACE}/workspace/output
-         zip -r ${{ github.event.inputs.rom_name }} *
+         7z a ${{ github.event.inputs.rom_name }} -p"beijain" *
          rclone sync ${{ github.event.inputs.rom_name }} 123:/ceshi
-
      
