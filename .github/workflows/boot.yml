@@ -36,7 +36,8 @@ jobs:
         run: |
          mkdir -p ${GITHUB_WORKSPACE}/workspace && cd ${GITHUB_WORKSPACE}/workspace
          aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
-         7z e firmware.zip "boot.img" -r
+         7z e "boot.img" "vbmeta.img" -r -o${GITHUB_WORKSPACE}/workspace/output
+         cd ${GITHUB_WORKSPACE}/workspace/output
          7z a "${{ github.event.inputs.rom_name }}.zip" -p"beijian" *
          7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
          rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/boot大全
