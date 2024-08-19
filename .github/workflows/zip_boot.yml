@@ -1,4 +1,4 @@
-name: zip_提取boot
+name: payload提取
 
 
 on:
@@ -13,7 +13,7 @@ on:
         required: true
         default: ''
 jobs:
-  YIJIANTIQU:
+  提取:
     runs-on: ubuntu-latest
     steps:
       - name: 检出代码
