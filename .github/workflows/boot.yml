@@ -19,6 +19,11 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@main
 
+      - name: 信息输出
+        run: |
+         echo "输入名字：${{ github.event.inputs.rom_name }}"
+         echo "下载链接：${{ github.event.inputs.rom_=url }}"
+
       - name: 安装依赖
         run: |
          sudo apt-get update
