@@ -36,10 +36,10 @@ jobs:
         run: |
          mkdir -p ${GITHUB_WORKSPACE}/workspace && cd ${GITHUB_WORKSPACE}/workspace
          pip install git+https://github.com/5ec1cff/payload-dumper
-         aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
-         payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
+         aria2c -s 10 -x 10 -d . -o firmware.7z "${{ github.event.inputs.rom_url }}"
+         payload_dumper --partitions boot,vbmeta,init_boot firmware.7z
          cd ${GITHUB_WORKSPACE}/workspace/output
-         7z a "${{ github.event.inputs.rom_name }}.zip" -p"beijian" *
-         7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
-         rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/boot大全
+         7z a "${{ github.event.inputs.rom_name }}.7z" -p"beijian" *
+         7z a "${{ github.event.inputs.rom_name }}.7z" /home/runner/work/boot/boot/获取解压密码.txt
+         rclone sync "${{ github.event.inputs.rom_name }}.7z" 123:/boot大全
      
