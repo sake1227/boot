@@ -14,7 +14,7 @@ on:
         default: ''
 jobs:
   TIQU:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: 检出代码
         uses: actions/checkout@main
@@ -23,7 +23,6 @@ jobs:
         run: |
          sudo apt-get update
          sudo apt-get -y install python3-pip
-         python -m pip install --upgrade pip
          sudo apt install aria2
          sudo apt-get install p7zip
          
