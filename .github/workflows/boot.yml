@@ -40,6 +40,7 @@ jobs:
       - name: 提取镜像
         run: |
          mkdir -p ${GITHUB_WORKSPACE}/workspace && cd ${GITHUB_WORKSPACE}/workspace
+         pip install git+https://github.com/5ec1cff/payload-dumper
          aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
          7z e firmware.zip "boot.img" "init_boot.img" "vbmeta.img" -r -o${GITHUB_WORKSPACE}/workspace/output
          cd ${GITHUB_WORKSPACE}/workspace/output
