@@ -27,7 +27,7 @@ jobs:
       - name: 安装依赖
         run: |
          sudo add-apt-repository ppa:deadsnakes/ppa
-         sudo apt-get update
+         sudo aptitude update
          sudo apt-get install python3.12
          sudo apt-get install aria2
          sudo apt-get install p7zip
