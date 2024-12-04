@@ -14,7 +14,7 @@ on:
         default: ''
 jobs:
   zip:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: 检出代码
         uses: actions/checkout@main
