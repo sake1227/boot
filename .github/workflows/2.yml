@@ -14,7 +14,7 @@ on:
         default: ''
 jobs:
   zip:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: 检出代码
         uses: actions/checkout@main
@@ -26,9 +26,4 @@ jobs:
 
       - name: 安装依赖
         run: |
-         sudo add-apt-repository ppa:deadsnakes/ppa
-         sudo aptitude update
-         sudo apt-get install python3.12
-         sudo apt-get install aria2
-         sudo apt-get install p7zip
          pip -V
