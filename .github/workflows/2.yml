@@ -1,0 +1,33 @@
+name: zip提取
+
+
+on:
+  workflow_dispatch:
+    inputs:
+      rom_url:
+        description: 'ROM 下载直链'
+        required: true
+        default: ''
+      rom_name:
+        description: '保存名称'
+        required: true
+        default: ''
+jobs:
+  zip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@main
+
+      - name: 信息输出
+        run: |
+         echo "输入名字：${{ github.event.inputs.rom_name }}"
+         echo "下载链接：${{ github.event.inputs.rom_url }}"
+
+      - name: 安装依赖
+        run: |
+         sudo apt-get update
+         sudo apt-get -y install python3-pip
+         sudo apt install aria2
+         sudo apt-get install p7zip
+         pip -V
