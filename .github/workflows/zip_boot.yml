@@ -23,6 +23,7 @@ jobs:
         run: |
          sudo apt-get update
          sudo apt-get -y install python3-pip
+         python -m pip install --upgrade pip
          sudo apt install aria2
          sudo apt-get install p7zip
          
