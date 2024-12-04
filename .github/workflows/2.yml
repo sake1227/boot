@@ -28,6 +28,7 @@ jobs:
         run: |
          sudo apt-get update
          curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+         sudo python3 get-pip.py
          sudo apt install aria2
          sudo apt-get install p7zip
          pip -V
