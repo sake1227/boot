@@ -4,12 +4,16 @@ name: 上传
 on:
   workflow_dispatch:
     inputs:
-      rom_url:
-        description: 'ROM 下载直链'
+      url:
+        description: '下载链接'
         required: true
         default: ''
-      rom_name:
+      name:
         description: '保存名称'
+        required: true
+        default: ''
+      dizhi:
+        description: '保存地址'
         required: true
         default: ''
 jobs:
@@ -40,9 +44,5 @@ jobs:
       - name: 提取镜像
         run: |
          mkdir -p ${GITHUB_WORKSPACE}/workspace && cd ${GITHUB_WORKSPACE}/workspace
-         aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
-         7z e firmware.zip "boot.img" "init_boot.img" "vbmeta.img" -r -o${GITHUB_WORKSPACE}/workspace/output
-         cd ${GITHUB_WORKSPACE}/workspace/output
-         7z a "${{ github.event.inputs.rom_name }}.zip" -p"beijian" *
-         7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
-         rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/boot大全
+         aria2c -s 10 -x 10 -d . -o "${{ github.event.inputs.name }}.zip" "${{ github.event.inputs.url }}"
+         rclone sync "${{ github.event.inputs.name }}.zip" 123:/"${{ github.event.inputs.dizhi }}"
