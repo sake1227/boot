@@ -44,5 +44,5 @@ jobs:
       - name: 提取镜像
         run: |
          mkdir -p ${GITHUB_WORKSPACE}/workspace && cd ${GITHUB_WORKSPACE}/workspace
-         aria2c -s 10 -x 10 -d . -o "${{ github.event.inputs.name }}.zip" "${{ github.event.inputs.url }}"
-         rclone sync "${{ github.event.inputs.name }}.zip" 123:/"${{ github.event.inputs.dizhi }}"
+         aria2c -s 10 -x 10 -d . -o ${{ github.event.inputs.name }}.zip ${{ github.event.inputs.url }}
+         rclone sync ${{ github.event.inputs.name }}.zip 123:/${{ github.event.inputs.dizhi }}
