@@ -1,6 +1,5 @@
 name: zip提取
 
-
 on:
   workflow_dispatch:
     inputs:
@@ -12,37 +11,49 @@ on:
         description: '保存名称'
         required: true
         default: ''
+
 jobs:
   zip:
     runs-on: ubuntu-24.04
     steps:
       - name: 检出代码
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: 信息输出
         run: |
-         echo "输入名字：${{ github.event.inputs.rom_name }}"
-         echo "下载链接：${{ github.event.inputs.rom_url }}"
+          echo "输入名字：${{ github.event.inputs.rom_name }}"
+          echo "下载链接：${{ github.event.inputs.rom_url }}"
 
       - name: 安装依赖
         run: |
-         sudo apt-get update
-         sudo apt-get -y install python3-pip
-         sudo apt install aria2
-         sudo apt-get install p7zip
-         
-      - name: 同步上传
+          sudo apt-get update
+          sudo apt-get install -y python3-pip aria2 p7zip-full curl
+
+      - name: 配置 rclone
         run: |
-         curl https://rclone.org/install.sh | sudo bash
-         mkdir -p ~/.config/rclone/
-         unzip -o rclone.zip -d ~/.config/rclone/
-         
+          curl https://rclone.org/install.sh | sudo bash
+          mkdir -p ~/.config/rclone/
+          echo "${{ secrets.RCLONE_CONFIG }}" > ~/.config/rclone/rclone.conf
+
       - name: 提取镜像
         run: |
-         mkdir -p ${GITHUB_WORKSPACE}/workspace && cd ${GITHUB_WORKSPACE}/workspace
-         aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
-         7z e firmware.zip "boot.img" "init_boot.img" "vbmeta.img" -r -o${GITHUB_WORKSPACE}/workspace/output
-         cd ${GITHUB_WORKSPACE}/workspace/output
-         7z a "${{ github.event.inputs.rom_name }}.zip" -p"beijian" *
-         7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
-         rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/boot大全
+          set -e
+          mkdir -p ${GITHUB_WORKSPACE}/workspace
+          cd ${GITHUB_WORKSPACE}/workspace
+          
+          # 下载固件
+          aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
+          
+          # 解压文件
+          7z e firmware.zip "boot.img" "init_boot.img" "vbmeta.img" -r -ooutput || exit 1
+          
+          # 压缩并加密
+          cd output
+          7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.ZIP_PASSWORD }}" *
+          echo "解压密码存放中..."
+          echo "获取解压密码请联系管理员" > 解压密码.txt
+          7z a "${{ github.event.inputs.rom_name }}.zip" 解压密码.txt
+
+      - name: 同步上传
+        run: |
+          rclone sync "${{ github.event.inputs.rom_name }}.zip" "${{ secrets.RCLONE_REMOTE }}:/boot大全"
