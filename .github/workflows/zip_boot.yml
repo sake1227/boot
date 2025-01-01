@@ -1,45 +1,44 @@
 name: payload提取
 
-
 on:
   workflow_dispatch:
     inputs:
       rom_url:
         description: 'ROM 下载直链'
         required: true
-        default: ''
       rom_name:
         description: '保存名称'
         required: true
-        default: ''
+
 jobs:
   TIQU:
     runs-on: ubuntu-24.04
     steps:
       - name: 检出代码
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: 安装依赖
         run: |
-         sudo apt-get update
-         sudo apt-get -y install python3-pip
-         sudo apt install aria2
-         sudo apt-get install p7zip
-         
-      - name: 同步上传
+          sudo apt-get update
+          sudo apt-get -y install python3-pip aria2 p7zip-full
+          curl https://rclone.org/install.sh | sudo bash
+
+      - name: 配置 rclone
         run: |
-         curl https://rclone.org/install.sh | sudo bash
-         mkdir -p ~/.config/rclone/
-         unzip -o rclone.zip -d ~/.config/rclone/
-         
+          mkdir -p ~/.config/rclone/
+          echo "${{ secrets.RCLONE_CONFIG }}" > ~/.config/rclone/rclone.conf
+
       - name: 提取镜像
         run: |
-         mkdir -p ${GITHUB_WORKSPACE}/workspace && cd ${GITHUB_WORKSPACE}/workspace
-         pip install git+https://github.com/5ec1cff/payload-dumper
-         aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
-         payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
-         cd ${GITHUB_WORKSPACE}/workspace/output
-         7z a "${{ github.event.inputs.rom_name }}.zip" -p"beijian" *
-         7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
-         rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/boot大全
-     
+          mkdir -p ${GITHUB_WORKSPACE}/workspace && cd ${GITHUB_WORKSPACE}/workspace
+          pip install git+https://github.com/5ec1cff/payload-dumper
+          aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
+          payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
+          cd output
+          7z a "../${{ github.event.inputs.rom_name }}.zip" -p"beijian" *
+          echo "解压密码：beijian" > 解压密码.txt
+          7z a "../${{ github.event.inputs.rom_name }}.zip" 解压密码.txt
+
+      - name: 上传文件到远程
+        run: |
+          rclone sync "${GITHUB_WORKSPACE}/workspace/${{ github.event.inputs.rom_name }}.zip" 123:/boot大全
