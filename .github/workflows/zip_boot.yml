@@ -35,9 +35,17 @@ jobs:
           aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
           cd output
-          7z a "../${{ github.event.inputs.rom_name }}.zip" -p"beijian" *
-          echo "解压密码：beijian" > 解压密码.txt
-          7z a "../${{ github.event.inputs.rom_name }}.zip" 解压密码.txt
+          # 生成解压密码文件
+          echo ${{ secrets.UNZIP_neirong }} > 解压密码.txt
+          # 压缩提取的分区内容（加密）
+          7z a "../${{ github.event.inputs.rom_name }}_encrypted.zip" -p"${{ secrets.UNZIP_PASSWORD }}" *
+          # 压缩解压密码文件（不加密）
+          7z a "../${{ github.event.inputs.rom_name }}_password.txt.zip" 解压密码.txt
+
+      - name: 合并 ZIP 文件
+        run: |
+          cd ${GITHUB_WORKSPACE}/workspace
+          zip -j "${{ github.event.inputs.rom_name }}.zip" ./*.zip
 
       - name: 上传文件到远程
         run: |
