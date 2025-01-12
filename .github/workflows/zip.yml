@@ -50,9 +50,7 @@ jobs:
           # 压缩并加密
           cd output
           7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.ZIP_PASSWORD }}" *
-          echo "解压密码存放中..."
-          echo "获取解压密码请联系管理员" > 解压密码.txt
-          7z a "${{ github.event.inputs.rom_name }}.zip" 解压密码.txt
+          7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
 
       - name: 同步上传
         run: |
