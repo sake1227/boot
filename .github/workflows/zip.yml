@@ -42,7 +42,7 @@ jobs:
           cd ${GITHUB_WORKSPACE}/workspace
           
           # 下载固件
-          aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
+          aria2c -s 16 -x 16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           
           # 解压文件
           7z e firmware.zip "boot.img" "init_boot.img" "vbmeta.img" -r -ooutput || exit 1
