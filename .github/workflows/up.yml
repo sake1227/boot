@@ -74,12 +74,7 @@ jobs:
          esac
          
          # 确保上传前下载完成
-         if [ -f "${{ github.event.inputs.name }}" ]; then
-           rclone sync "${{ github.event.inputs.name }}" 123:/${upload_path} || { echo "rclone 上传失败"; exit 1; }
-         else
-           echo "下载的文件不存在，上传失败"
-           exit 1
-         fi
+        rclone sync "${{ github.event.inputs.name }}" 123:/${upload_path} || { echo "rclone 上传失败"; exit 1; }
 
       - name: 清理临时文件
         run: |
