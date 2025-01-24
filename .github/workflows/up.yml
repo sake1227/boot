@@ -9,7 +9,7 @@ on:
         required: true
         default: ''
       name:
-        description: '保存名称'
+        description: '保存名称(带后缀)'
         required: true
         default: ''
       dizhi:
