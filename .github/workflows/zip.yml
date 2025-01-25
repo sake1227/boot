@@ -38,11 +38,11 @@ jobs:
       - name: 解压并加密固件
         run: |
           set -e
-          mkdir -p ${GITHUB_WORKSPACE}/workspace
+          mkdir -p ${GITHUB_WORKSPACE}/workspace/out
           cd ${GITHUB_WORKSPACE}/workspace
           aria2c -s 16 -x 16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
-          7z x firmware.zip -o${GITHUB_WORKSPACE}/workspace/output -p"${{ secrets.UNZIP_PASSWORD }}" "*.img" || exit 1
-          7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.UNZIP_PASSWORD }}" -r ${GITHUB_WORKSPACE}/workspace/output/*
+          7z x firmware.zip -o${GITHUB_WORKSPACE}/workspace/out -p"${{ secrets.UNZIP_PASSWORD }}" 
+          7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.UNZIP_PASSWORD }}" -r ${GITHUB_WORKSPACE}/workspace/out*
           7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
 
       - name: 同步上传
