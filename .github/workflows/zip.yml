@@ -44,9 +44,6 @@ jobs:
           7z x firmware.zip -o${GITHUB_WORKSPACE}/workspace/out boot.img init_boot.img vbmeta.img
           7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.UNZIP_PASSWORD }}" -r ${GITHUB_WORKSPACE}/workspace/out*
           7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
-
-      - name: 同步上传
-        run: |
           rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/boot大全
 
       - name: 清理临时文件
