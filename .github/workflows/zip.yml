@@ -38,7 +38,7 @@ jobs:
       - name: 解压并加密固件
         run: |
           set -e
-          mkdir -p ${GITHUB_WORKSPACE}/workspace/output
+          mkdir -p ${GITHUB_WORKSPACE}/workspace
           cd ${GITHUB_WORKSPACE}/workspace
           aria2c -s 16 -x 16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           7z x firmware.zip -o${GITHUB_WORKSPACE}/workspace/output -p"${{ secrets.UNZIP_PASSWORD }}" "*.img" || exit 1
