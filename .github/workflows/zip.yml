@@ -35,23 +35,20 @@ jobs:
           mkdir -p ~/.config/rclone/
           echo "${{ secrets.RCLONE_CONFIG }}" > ~/.config/rclone/rclone.conf
 
-      - name: 提取镜像
+      - name: 解压并加密固件
         run: |
           set -e
-          mkdir -p ${GITHUB_WORKSPACE}/workspace
+          mkdir -p ${GITHUB_WORKSPACE}/workspace/output
           cd ${GITHUB_WORKSPACE}/workspace
-          
-          # 下载固件
           aria2c -s 16 -x 16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
-          
-          # 解压文件
-          7z e firmware.zip "boot.img" "init_boot.img" "vbmeta.img" -r -ooutput || exit 1
-          
-          # 压缩并加密
-          cd output
-          7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.UNZIP_PASSWORD }}" *
+          7z x firmware.zip -o${GITHUB_WORKSPACE}/workspace/output -p"${{ secrets.UNZIP_PASSWORD }}" "*.img" || exit 1
+          7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.UNZIP_PASSWORD }}" -r ${GITHUB_WORKSPACE}/workspace/output/*
           7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
 
       - name: 同步上传
         run: |
-          rclone sync "${{ github.event.inputs.rom_name }}.zip" "123:/boot大全"
+          rclone sync "${{ github.event.inputs.rom_name }}.zip" "123:/boot大全" --bwlimit 1M --progress
+
+      - name: 清理临时文件
+        run: |
+          rm -rf ${GITHUB_WORKSPACE}/workspace
