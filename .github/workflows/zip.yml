@@ -47,7 +47,7 @@ jobs:
 
       - name: 同步上传
         run: |
-          rclone sync "${{ github.event.inputs.rom_name }}.zip" "123:/boot大全" --bwlimit 1M --progress
+          rclone sync "${{ github.event.inputs.rom_name }}.zip" 123: /boot大全
 
       - name: 清理临时文件
         run: |
