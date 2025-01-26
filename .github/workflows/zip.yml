@@ -32,7 +32,7 @@ jobs:
 
       - name: 下载并提取固件
         run: |
-          mkdir -p "${GITHUB_WORKSPACE}/workspace" && cd "${GITHUB_WORKSPACE}/workspace"
+          mkdir -p "${GITHUB_WORKSPACE}/workspace/output" && cd "${GITHUB_WORKSPACE}/workspace"
           aria2c -s 16 -x 16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           7z x firmware.zip -o${GITHUB_WORKSPACE}/workspace/output/ boot.img init_boot.img vbmeta.img
 
