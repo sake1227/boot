@@ -40,10 +40,28 @@ jobs:
           set -e
           mkdir -p ${GITHUB_WORKSPACE}/workspace/out
           cd ${GITHUB_WORKSPACE}/workspace
+          
+          # 下载固件
           aria2c -s 16 -x 16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
+          
+          # 解压固件
+          echo "开始解压固件..."
           7z x firmware.zip -o${GITHUB_WORKSPACE}/workspace/out/ boot.img init_boot.img vbmeta.img
+          
+          # 检查解压后的文件
+          echo "解压后的文件列表："
+          ls -l ${GITHUB_WORKSPACE}/workspace/out/
+
+          # 加密并重新压缩
+          echo "开始加密固件并重新压缩..."
           7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.UNZIP_PASSWORD }}" -r ${GITHUB_WORKSPACE}/workspace/out/*
           7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
+
+          # 检查生成的 zip 文件
+          echo "生成的加密文件："
+          ls -l "${GITHUB_WORKSPACE}/${{ github.event.inputs.rom_name }}.zip"
+
+          # 同步到网盘
           rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/boot大全
 
       - name: 清理临时文件
