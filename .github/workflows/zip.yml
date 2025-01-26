@@ -17,53 +17,29 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: 检出代码
-        uses: actions/checkout@v3
-
-      - name: 信息输出
-        run: |
-          echo "输入名字：${{ github.event.inputs.rom_name }}"
-          echo "下载链接：${{ github.event.inputs.rom_url }}"
+        uses: actions/checkout@main
 
       - name: 安装依赖
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip aria2 p7zip-full curl
+          sudo apt-get -y install python3-pip aria2 p7zip curl
+          curl https://rclone.org/install.sh | sudo bash
 
       - name: 配置 rclone
         run: |
-          curl https://rclone.org/install.sh | sudo bash
-          mkdir -p ~/.config/rclone/
-          echo "${{ secrets.RCLONE_CONFIG }}" > ~/.config/rclone/rclone.conf
+          mkdir -p ~/.config/rclone
+          unzip -o rclone.zip -d ~/.config/rclone/
 
-      - name: 解压并加密固件
+      - name: 下载并提取固件
         run: |
-          set -e
-          mkdir -p ${GITHUB_WORKSPACE}/workspace/out
-          cd ${GITHUB_WORKSPACE}/workspace
-          
-          # 下载固件
+          mkdir -p "${GITHUB_WORKSPACE}/workspace" && cd "${GITHUB_WORKSPACE}/workspace"
           aria2c -s 16 -x 16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
-          
-          # 解压固件
-          echo "开始解压固件..."
-          7z x firmware.zip -o${GITHUB_WORKSPACE}/workspace/out/ boot.img init_boot.img vbmeta.img
-          
-          # 检查解压后的文件
-          echo "解压后的文件列表："
-          ls -l ${GITHUB_WORKSPACE}/workspace/out/
+          7z x firmware.zip -o${GITHUB_WORKSPACE}/workspace/output/ boot.img init_boot.img vbmeta.img
 
-          # 加密并重新压缩
-          echo "开始加密固件并重新压缩..."
-          7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.UNZIP_PASSWORD }}" -r ${GITHUB_WORKSPACE}/workspace/out/*
-          7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
 
-          # 检查生成的 zip 文件
-          echo "生成的加密文件："
-          ls -l "${GITHUB_WORKSPACE}/${{ github.event.inputs.rom_name }}.zip"
-
-          # 同步到网盘
-          rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/boot大全
-
-      - name: 清理临时文件
+      - name: 压缩并上传文件
         run: |
-          rm -rf ${GITHUB_WORKSPACE}/workspace
+          cd "${GITHUB_WORKSPACE}/workspace/output"
+          7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.UNZIP_PASSWORD }}" *
+          7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
+          rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/boot大全
