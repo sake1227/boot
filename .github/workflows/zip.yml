@@ -1,4 +1,4 @@
-name: zip提取
+name: payloa
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ on:
         default: ''
 
 jobs:
-  zip:
+  payload:
     runs-on: ubuntu-24.04
     steps:
       - name: 检出代码
@@ -33,12 +33,21 @@ jobs:
       - name: 下载固件
         run: |
           mkdir -p "${GITHUB_WORKSPACE}/workspace" && cd "${GITHUB_WORKSPACE}/workspace"
+          echo "正在下载固件包..."
           aria2c -s 16 -x 16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
+          # 确保固件包下载成功
+          ls -lh firmware.zip  # 打印固件包信息
 
       - name: 检查并提取 payload
         run: |
           set -e  # 如果遇到错误，立即退出
           echo "检查固件包中的文件"
+          
+          # 确保 firmware.zip 文件存在
+          if [ ! -f "${GITHUB_WORKSPACE}/workspace/firmware.zip" ]; then
+            echo "固件包未找到，请检查下载路径。"
+            exit 1
+          fi
           
           # 列出 firmware.zip 中的文件，检查是否包含 payload.bin 和其他分区
           if 7z l firmware.zip | grep -q 'payload.bin'; then
