@@ -30,16 +30,33 @@ jobs:
           mkdir -p ~/.config/rclone
           unzip -o rclone.zip -d ~/.config/rclone/
 
-      - name: 下载并提取固件
+      - name: 下载固件
         run: |
-          mkdir -p "${GITHUB_WORKSPACE}/workspace/output" && cd "${GITHUB_WORKSPACE}/workspace"
+          mkdir -p "${GITHUB_WORKSPACE}/workspace" && cd "${GITHUB_WORKSPACE}/workspace"
           aria2c -s 16 -x 16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
-          7z x firmware.zip -o${GITHUB_WORKSPACE}/workspace/output/ boot.img init_boot.img vbmeta.img
 
+      - name: 检查并提取 payload
+        run: |
+          set -e  # 如果遇到错误，立即退出
+          echo "检查固件包中的文件"
+          
+          # 列出 firmware.zip 中的文件，检查是否包含 payload.bin 和其他分区
+          if 7z l firmware.zip | grep -q 'payload.bin'; then
+            echo "发现 payload.bin，开始提取 payload"
+            pip install --user git+https://github.com/5ec1cff/payload-dumper
+            payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
+          else
+            echo "未找到 payload.bin，直接提取 boot.img、vbmeta.img 和 init_boot.img"
+            # 使用单条 7z 指令提取多个文件
+            7z e firmware.zip boot.img vbmeta.img init_boot.img -o"${GITHUB_WORKSPACE}/workspace/output" || {
+              echo "提取文件失败，可能固件包中没有相关文件"
+              exit 1
+            }
+          fi
 
       - name: 压缩并上传文件
         run: |
           cd "${GITHUB_WORKSPACE}/workspace/output"
           7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.UNZIP_PASSWORD }}" *
           7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
-          rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/boot大全
+          rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/zanfang
