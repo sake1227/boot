@@ -44,8 +44,8 @@ jobs:
           echo "列出 firmware.zip 中的文件："
           cd "${GITHUB_WORKSPACE}/workspace"
           7z l firmware.zip
-
-            - name: 自动提取分区文件
+          
+      - name: 自动提取分区文件
         run: |
           set -e  # 如果遇到错误，立即退出
           
