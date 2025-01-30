@@ -52,7 +52,7 @@ jobs:
             
             # 提取 boot.img
             cd "${GITHUB_WORKSPACE}/workspace"
-            boot_path=$(7z l firmware.zip | grep -oP '.*boot.img' || echo "boot.img not found")
+            boot_path=$(7z l firmware.zip | grep -oP '.*(?=boot.img)' || echo "boot.img not found")
             if [ "$boot_path" != "boot.img not found" ]; then
               echo "找到 boot.img，开始提取 "$boot_path" "
               7z e firmware.zip "$boot_path" -o"${GITHUB_WORKSPACE}/workspace/output"
@@ -62,7 +62,7 @@ jobs:
             fi
 
             # 提取 vbmeta.img
-            vbmeta_path=$(7z l firmware.zip | grep -oP '.*vbmeta.img' || echo "vbmeta.img not found")
+            vbmeta_path=$(7z l firmware.zip | grep -oP '.*(?=vbmeta.img)' || echo "vbmeta.img not found")
             if [ "$vbmeta_path" != "vbmeta.img not found" ]; then
               echo "找到 vbmeta.img，开始提取"
               7z e firmware.zip "$vbmeta_path" -o"${GITHUB_WORKSPACE}/workspace/output"
@@ -72,7 +72,7 @@ jobs:
             fi
 
             # 提取 init_boot.img
-            init_boot_path=$(7z l firmware.zip | grep -oP '.*init_boot.img' || echo "init_boot.img not found")
+            init_boot_path=$(7z l firmware.zip | grep -oP '.*(?=init_boot.img)' || echo "init_boot.img not found")
             if [ "$init_boot_path" != "init_boot.img not found" ]; then
               echo "找到 init_boot.img，开始提取"
               7z e firmware.zip "$init_boot_path" -o"${GITHUB_WORKSPACE}/workspace/output"
