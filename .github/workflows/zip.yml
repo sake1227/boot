@@ -38,12 +38,6 @@ jobs:
           # 确保固件包下载成功
           ls -lh firmware.zip  # 打印固件包信息
 
-      - name: 列出固件包中的文件
-        run: |
-          # 列出所有文件并查看路径
-          echo "列出 firmware.zip 中的文件："
-          7z l firmware.zip
-
       - name: 自动提取分区文件
         run: |
           set -e  # 如果遇到错误，立即退出
