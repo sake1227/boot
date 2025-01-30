@@ -42,6 +42,7 @@ jobs:
         run: |
           # 列出所有文件并查看路径
           echo "列出 firmware.zip 中的文件："
+          cd "${GITHUB_WORKSPACE}/workspace"
           7z l firmware.zip
 
       - name: 自动提取分区文件
@@ -49,6 +50,7 @@ jobs:
           set -e  # 如果遇到错误，立即退出
           
           # 查找 boot.img 文件路径并提取
+          cd "${GITHUB_WORKSPACE}/workspace"
           boot_path=$(7z l firmware.zip | grep -oP '.*boot.img' || true)
           if [ -n "$boot_path" ]; then
             echo "找到 boot.img，开始提取"
@@ -58,6 +60,7 @@ jobs:
           fi
 
           # 查找 vbmeta.img 文件路径并提取
+          cd "${GITHUB_WORKSPACE}/workspace"
           vbmeta_path=$(7z l firmware.zip | grep -oP '.*vbmeta.img' || true)
           if [ -n "$vbmeta_path" ]; then
             echo "找到 vbmeta.img，开始提取"
@@ -67,6 +70,7 @@ jobs:
           fi
 
           # 查找 init_boot.img 文件路径并提取
+          cd "${GITHUB_WORKSPACE}/workspace"
           init_boot_path=$(7z l firmware.zip | grep -oP '.*init_boot.img' || true)
           if [ -n "$init_boot_path" ]; then
             echo "找到 init_boot.img，开始提取"
