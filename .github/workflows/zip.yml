@@ -53,7 +53,7 @@ jobs:
             # 提取 boot.img
             boot_path=$(7z l firmware.zip | grep -oP '.*boot.img' || echo "boot.img not found")
             if [ "$boot_path" != "boot.img not found" ]; then
-              echo "找到 boot.img，开始提取 $boot_path""
+              echo "找到 boot.img，开始提取 "$boot_path" "
               7z e firmware.zip "$boot_path" -o"${GITHUB_WORKSPACE}/workspace/output"
             else
               echo "未找到 boot.img"
