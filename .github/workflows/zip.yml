@@ -32,7 +32,7 @@ jobs:
 
       - name: 下载固件
         run: |
-          mkdir -p "${GITHUB_WORKSPACE}/workspace" && cd "${GITHUB_WORKSPACE}/workspace"
+          mkdir -p "${GITHUB_WORKSPACE}/workspace/output" && cd "${GITHUB_WORKSPACE}/workspace"
           echo "正在下载固件包..."
           aria2c -s 16 -x 16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           # 确保固件包下载成功
