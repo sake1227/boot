@@ -78,7 +78,6 @@ jobs:
               7z e firmware.zip "$init_boot_path" -o"${GITHUB_WORKSPACE}/workspace/output"
             else
               echo "未找到 init_boot.img"
-              exit 1
             fi
           fi
 
