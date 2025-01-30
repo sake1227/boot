@@ -57,6 +57,7 @@ jobs:
           else
             echo "未找到 payload.bin，直接提取 boot.img、vbmeta.img 和 init_boot.img"
             # 使用单条 7z 指令提取多个文件
+            cd "${GITHUB_WORKSPACE}/workspace
             7z e firmware.zip boot.img vbmeta.img init_boot.img -o"${GITHUB_WORKSPACE}/workspace/output" || {
               echo "提取文件失败，可能固件包中没有相关文件"
               exit 1
