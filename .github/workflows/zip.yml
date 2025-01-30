@@ -64,7 +64,7 @@ jobs:
           cd "${GITHUB_WORKSPACE}/workspace"
           vbmeta_path=$(7z l firmware.zip | grep -oP '.*vbmeta.img' || true)
           if [ -n "$vbmeta_path" ]; then
-            echo "找到 vbmeta.img，开始提取"
+            echo "找到 vbmeta.img，开始提取 "$vbmeta_path""
             cd "${GITHUB_WORKSPACE}/workspace"
             7z e firmware.zip "$vbmeta_path" -o"${GITHUB_WORKSPACE}/workspace/output"
           else
