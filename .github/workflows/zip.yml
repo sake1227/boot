@@ -51,6 +51,7 @@ jobs:
             echo "未找到 payload.bin，直接提取 boot.img、vbmeta.img 和 init_boot.img"
             
             # 提取 boot.img
+            cd "${GITHUB_WORKSPACE}/workspace"
             boot_path=$(7z l firmware.zip | grep -oP '.*boot.img' || echo "boot.img not found")
             if [ "$boot_path" != "boot.img not found" ]; then
               echo "找到 boot.img，开始提取 "$boot_path" "
