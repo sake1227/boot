@@ -68,7 +68,6 @@ jobs:
               7z e firmware.zip "$vbmeta_path" -o"${GITHUB_WORKSPACE}/workspace/output"
             else
               echo "未找到 vbmeta.img"
-              exit 1
             fi
 
             # 提取 init_boot.img
