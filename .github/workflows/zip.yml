@@ -49,6 +49,7 @@ jobs:
             payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
           else
             echo "未找到 payload.bin，直接提取 boot.img、vbmeta.img 和 init_boot.img"
+            7z l
             
             # 提取 boot.img
             cd "${GITHUB_WORKSPACE}/workspace"
@@ -58,6 +59,7 @@ jobs:
               7z e firmware.zip "$boot_path" -o"${GITHUB_WORKSPACE}/workspace/output"
             else
               echo "未找到 boot.img"
+              7z l
               exit 1
             fi
 
@@ -68,6 +70,7 @@ jobs:
               7z e firmware.zip "$vbmeta_path" -o"${GITHUB_WORKSPACE}/workspace/output"
             else
               echo "未找到 vbmeta.img"
+              7z l
             fi
 
             # 提取 init_boot.img
