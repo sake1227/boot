@@ -45,7 +45,7 @@ jobs:
           # 检查是否包含 payload.bin
           if 7z l firmware.zip | grep -q 'payload.bin'; then
             echo "发现 payload.bin，开始提取 payload"
-            pip install --user git+https://github.com/5ec1cff/payload-dumper
+            pip install --user git+https://github.com/sake1227/payload-dumper
             payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
           else
             echo "未找到 payload.bin，直接提取 boot.img、vbmeta.img 和 init_boot.img"
