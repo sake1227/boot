@@ -33,8 +33,8 @@ jobs:
       - name: 下载并提取固件
         run: |
           mkdir -p "${GITHUB_WORKSPACE}/workspace" && cd "${GITHUB_WORKSPACE}/workspace"
+          aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           pip install --user git+https://github.com/sake1227/payload-dumper
-          aria2c -s 16 -x 16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
 
       - name: 压缩并上传文件
