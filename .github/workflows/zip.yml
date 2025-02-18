@@ -41,31 +41,31 @@ jobs:
           fi
           ls -lh firmware.zip  # 打印固件包信息
           
-          - name: 自动提取分区文件
-          run: |
+      - name: 自动提取分区文件
+        run: |
           set -e  # 遇到错误立即退出
           # 确保当前工作目录正确
           cd "${GITHUB_WORKSPACE}/workspace"
           # 检查固件包是否存在
           if [ ! -f firmware.zip ]; then
-          echo "错误：固件包 firmware.zip 未找到"
+            echo "错误：固件包 firmware.zip 未找到"
           exit 1
           fi
           # 检查是否包含 payload.bin
           if 7z l -slt firmware.zip | grep -q 'Path = payload.bin'; then
-          echo "发现 payload.bin，开始提取..."
-          pip install --user git+https://github.com/sake1227/payload-dumper
-          export PATH="$HOME/.local/bin:$PATH"
-          payload_dumper --partitions boot,vbmeta,init_boot firmware.zip -o output
+            echo "发现 payload.bin，开始提取..."
+            pip install --user git+https://github.com/sake1227/payload-dumper
+            export PATH="$HOME/.local/bin:$PATH"
+            payload_dumper --partitions boot,vbmeta,init_boot firmware.zip -o output
           else
-          echo "未找到 payload.bin，直接提取 boot.img、vbmeta.img 和 init_boot.img"
-          # 使用通配符递归提取文件（忽略路径）
-          7z e firmware.zip -r "*boot.img" "*vbmeta.img" "*init_boot.img" -ooutput
+            echo "未找到 payload.bin，直接提取 boot.img、vbmeta.img 和 init_boot.img"
+            # 使用通配符递归提取文件（忽略路径）
+            7z e firmware.zip -r "*boot.img" "*vbmeta.img" "*init_boot.img" -ooutput
 
-          # 检查是否成功提取 boot.img
-          if [ ! -f output/boot.img ]; then
-          echo "错误：未找到 boot.img"
-          exit 1
+            # 检查是否成功提取 boot.img
+            if [ ! -f output/boot.img ]; then
+             echo "错误：未找到 boot.img"
+             exit 1
            fi
           fi
 
