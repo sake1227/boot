@@ -40,48 +40,33 @@ jobs:
             exit 1
           fi
           ls -lh firmware.zip  # 打印固件包信息
-
-      - name: 自动提取分区文件
-        run: |
-          set -e  # 如果遇到错误，立即退出
-
+          
+          - name: 自动提取分区文件
+          run: |
+          set -e  # 遇到错误立即退出
+          # 确保当前工作目录正确
+          cd "${GITHUB_WORKSPACE}/workspace"
+          # 检查固件包是否存在
+          if [ ! -f firmware.zip ]; then
+          echo "错误：固件包 firmware.zip 未找到"
+          exit 1
+          fi
           # 检查是否包含 payload.bin
-          if 7z l firmware.zip | grep -q 'payload.bin'; then
-            echo "发现 payload.bin，开始提取 payload"
-            pip install --user git+https://github.com/sake1227/payload-dumper
-            payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
+          if 7z l -slt firmware.zip | grep -q 'Path = payload.bin'; then
+          echo "发现 payload.bin，开始提取..."
+          pip install --user git+https://github.com/sake1227/payload-dumper
+          export PATH="$HOME/.local/bin:$PATH"
+          payload_dumper --partitions boot,vbmeta,init_boot firmware.zip -o output
           else
-            echo "未找到 payload.bin，直接提取 boot.img、vbmeta.img 和 init_boot.img"
-            7z l
-            
-            # 提取 boot.img
-            cd "${GITHUB_WORKSPACE}/workspace"
-            boot_path=$(7z l firmware.zip | awk '{print $6}' | grep 'boot.img' || echo "boot.img not found")
-            if [ "$boot_path" != "boot.img not found" ]; then
-              echo "找到 boot.img，开始提取 $boot_path"
-              7z e firmware.zip "$boot_path" -o"${GITHUB_WORKSPACE}/workspace/output"
-            else
-              echo "未找到 boot.img"
-              exit 1
-            fi
+          echo "未找到 payload.bin，直接提取 boot.img、vbmeta.img 和 init_boot.img"
+          # 使用通配符递归提取文件（忽略路径）
+          7z e firmware.zip -r "*boot.img" "*vbmeta.img" "*init_boot.img" -ooutput
 
-            # 提取 vbmeta.img
-            vbmeta_path=$(7z l firmware.zip | awk '{print $6}' | grep 'vbmeta.img' || echo "vbmeta.img not found")
-            if [ "$vbmeta_path" != "vbmeta.img not found" ]; then
-              echo "找到 vbmeta.img，开始提取"
-              7z e firmware.zip "$vbmeta_path" -o"${GITHUB_WORKSPACE}/workspace/output"
-            else
-              echo "未找到 vbmeta.img"
-            fi
-
-            # 提取 init_boot.img
-            init_boot_path=$(7z l firmware.zip | awk '{print $6}' | grep 'init_boot.img' || echo "init_boot.img not found")
-            if [ "$init_boot_path" != "init_boot.img not found" ]; then
-              echo "找到 init_boot.img，开始提取"
-              7z e firmware.zip "$init_boot_path" -o"${GITHUB_WORKSPACE}/workspace/output"
-            else
-              echo "未找到 init_boot.img"
-            fi
+          # 检查是否成功提取 boot.img
+          if [ ! -f output/boot.img ]; then
+          echo "错误：未找到 boot.img"
+          exit 1
+           fi
           fi
 
       - name: 压缩并上传文件
