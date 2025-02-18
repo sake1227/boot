@@ -13,21 +13,6 @@ on:
         default: ''
 
 jobs:
-  zip:name: zip提取
-
-on:
-  workflow_dispatch:
-    inputs:
-      rom_url:
-        description: 'ROM 下载直链'
-        required: true
-        default: ''
-      rom_name:
-        description: '保存名称'
-        required: true
-        default: ''
-
-jobs:
   zip:
     runs-on: ubuntu-24.04
     steps:
@@ -103,79 +88,4 @@ jobs:
         run: |
           cd "${GITHUB_WORKSPACE}/workspace/output"
           7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.UNZIP_PASSWORD }}" *
-          rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/zanfang
-    runs-on: ubuntu-24.04
-    steps:
-      - name: 检出代码
-        uses: actions/checkout@main
-
-      - name: 安装依赖
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install python3-pip aria2 p7zip curl
-          curl https://rclone.org/install.sh | sudo bash
-
-      - name: 配置 rclone
-        run: |
-          mkdir -p ~/.config/rclone
-          unzip -o rclone.zip -d ~/.config/rclone/
-
-      - name: 下载固件
-        run: |
-          mkdir -p "${GITHUB_WORKSPACE}/workspace/output" && cd "${GITHUB_WORKSPACE}/workspace"
-          echo "正在下载固件包..."
-          aria2c -s 16 -x 16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
-          # 确保固件包下载成功
-          ls -lh firmware.zip  # 打印固件包信息
-
-      - name: 自动提取分区文件
-        run: |
-          set -e  # 如果遇到错误，立即退出
-
-          # 检查是否包含 payload.bin
-          if 7z l firmware.zip | grep -q 'payload.bin'; then
-            echo "发现 payload.bin，开始提取 payload"
-            pip install --user git+https://github.com/sake1227/payload-dumper
-            payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
-          else
-            echo "未找到 payload.bin，直接提取 boot.img、vbmeta.img 和 init_boot.img"
-            7z l
-            
-            # 提取 boot.img
-            cd "${GITHUB_WORKSPACE}/workspace"
-            boot_path=$(7z l firmware.zip | awk '{print $6}' | grep 'boot.img' || echo "boot.img not found")
-            if [ "$boot_path" != "boot.img not found" ]; then
-              echo "找到 boot.img，开始提取 "$boot_path" "
-              7z e firmware.zip "$boot_path" -o"${GITHUB_WORKSPACE}/workspace/output"
-            else
-              echo "未找到 boot.img"
-              7z l
-              exit 1
-            fi
-
-            # 提取 vbmeta.img
-            vbmeta_path=$(7z l firmware.zip | awk '{print $6}' | grep 'vbmeta.img' || echo "vbmeta.img not found")
-            if [ "$vbmeta_path" != "vbmeta.img not found" ]; then
-              echo "找到 vbmeta.img，开始提取"
-              7z e firmware.zip "$vbmeta_path" -o"${GITHUB_WORKSPACE}/workspace/output"
-            else
-              echo "未找到 vbmeta.img"
-              7z l
-            fi
-
-            # 提取 init_boot.img
-            init_boot_path=$(7z l firmware.zip | awk '{print $6}' | grep 'init_boot.img' || echo "init_boot.img not found")
-            if [ "$init_boot_path" != "init_boot.img not found" ]; then
-              echo "找到 init_boot.img，开始提取"
-              7z e firmware.zip "$init_boot_path" -o"${GITHUB_WORKSPACE}/workspace/output"
-            else
-              echo "未找到 init_boot.img"
-            fi
-          fi
-
-      - name: 压缩并上传文件
-        run: |
-          cd "${GITHUB_WORKSPACE}/workspace/output"
-          7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.UNZIP_PASSWORD }}" *
-          7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
           rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/zanfang
