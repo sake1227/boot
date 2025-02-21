@@ -1,0 +1,40 @@
+name: 信息提取
+
+on:
+  workflow_dispatch:
+    inputs:
+      rom_url:
+        description: 'ROM 下载直链'
+        required: true
+        default: ''
+      rom_name:
+        description: '保存名称'
+        required: true
+        default: ''
+
+jobs:
+  info:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@main
+
+      - name: 安装依赖
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install aria2 p7zip tree
+
+      - name: 下载并提取固件信息
+        run: |
+          mkdir -p "${GITHUB_WORKSPACE}/workspace" && cd "${GITHUB_WORKSPACE}/workspace"
+          # 下载 ROM 文件，线程设置为最大
+          aria2c --max-concurrent-downloads=16 --split=16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
+
+          # 输出压缩包信息
+          echo "=== 压缩包详细信息 ==="
+          7z l firmware.zip
+
+          # 解压压缩包并输出目录结构
+          echo "=== 解压后的目录结构 ==="
+          7z x firmware.zip -o"${GITHUB_WORKSPACE}/workspace"
+          tree extracted_files
