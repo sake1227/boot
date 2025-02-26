@@ -22,7 +22,7 @@ jobs:
       - name: 安装依赖
         run: |
           sudo apt-get update
-          sudo apt-get -y install aria2 p7zip tree
+          sudo apt-get -y install aria2 p7zip-full tree
 
       - name: 下载并提取固件信息
         run: |
@@ -36,5 +36,5 @@ jobs:
 
           # 解压压缩包并输出目录结构
           echo "=== 解压后的目录结构 ==="
-          7z x firmware.zip -o"${GITHUB_WORKSPACE}/workspace"
+          7z x firmware.zip -o"${GITHUB_WORKSPACE}/workspace/extracted_files" || { echo '解压失败'; exit 1; }
           tree extracted_files
