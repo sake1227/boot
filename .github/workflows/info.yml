@@ -33,8 +33,9 @@ jobs:
           # 输出压缩包信息
           echo "=== 压缩包详细信息 ==="
           7z l firmware.zip
-
-          # 解压压缩包并输出目录结构
+          
+      - name: 解压压缩包并输出目录结构
+        run: |
           echo "=== 解压后的目录结构 ==="
           7z x firmware.zip -o"${GITHUB_WORKSPACE}/workspace/extracted_files" || { echo '解压失败'; exit 1; }
           tree extracted_files
