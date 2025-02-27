@@ -34,7 +34,7 @@ jobs:
         run: |
           mkdir -p "${GITHUB_WORKSPACE}/workspace/output" && cd "${GITHUB_WORKSPACE}/workspace"
           aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
-          7z x firmware.zip -o"${GITHUB_WORKSPACE}/output" boot.img vbmeta.img
+          7z x firmware.zip -o"${GITHUB_WORKSPACE}/workspace/output" boot.img vbmeta.img
 
       - name: 压缩并上传文件
         run: |
