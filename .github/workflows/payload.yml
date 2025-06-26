@@ -32,6 +32,7 @@ jobs:
 
       - name: 下载并提取固件
         run: |
+          echo "输入名称：${{ github.event.inputs.rom_name }}"
           mkdir -p "${GITHUB_WORKSPACE}/workspace" && cd "${GITHUB_WORKSPACE}/workspace"
           aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           pip install --user git+https://github.com/sake1227/payload-dumper
