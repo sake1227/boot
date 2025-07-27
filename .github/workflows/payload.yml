@@ -34,7 +34,7 @@ jobs:
         run: |
           echo "输入名称：${{ github.event.inputs.rom_name }}"
           mkdir -p "${GITHUB_WORKSPACE}/workspace" && cd "${GITHUB_WORKSPACE}/workspace"
-          aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
+          aria2c -s 16 -x 16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           pip install --user git+https://github.com/sake1227/payload-dumper
           payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
 
