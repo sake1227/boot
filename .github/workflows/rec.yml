@@ -7,6 +7,10 @@ on:
         description: 'ROM 下载直链'
         required: true
         default: ''
+      img_name:
+        description: '镜像名称'
+        required: true
+        default: ''
       rom_name:
         description: '保存名称'
         required: true
@@ -35,7 +39,7 @@ jobs:
           mkdir -p "${GITHUB_WORKSPACE}/workspace" && cd "${GITHUB_WORKSPACE}/workspace"
           aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           pip install --user git+https://github.com/sake1227/payload-dumper
-          payload_dumper --partitions recovery,init_boot,boot firmware.zip
+          payload_dumper --partitions ${{ github.event.inputs.img_name }} firmware.zip
 
       - name: 压缩并上传文件
         run: |
