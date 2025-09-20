@@ -1,4 +1,4 @@
-name: rec
+name: tiquimg
 
 on:
   workflow_dispatch:
