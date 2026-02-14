@@ -15,59 +15,47 @@ on:
 jobs:
   payload:
     runs-on: ubuntu-24.04
-
     steps:
       - name: 检出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@main
 
       - name: 安装依赖
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip aria2 p7zip-full unzip curl
+          sudo apt-get -y install python3-pip aria2 p7zip curl
+          curl https://rclone.org/install.sh | sudo bash
 
-          # 安装 AWS CLI v2
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install
+      - name: 测试 Alist S3 接口
+        run: |
+          curl -v "http://154.89.148.233:5244/s3" \
+            -H "Authorization: AWS ${{ secrets.ALIST_S3_ACCESS_KEY }}:${{ secrets.ALIST_S3_SECRET_KEY }}"
+
+      - name: 配置 rclone (Alist S3)
+        run: |
+          # 创建 S3 类型的 remote，使用 GitHub Secrets 存储凭证
+          rclone config create alist-s3 s3 \
+            provider Other \
+            access_key_id ${{ secrets.ALIST_S3_ACCESS_KEY }} \
+            secret_access_key ${{ secrets.ALIST_S3_SECRET_KEY }} \
+            endpoint http://154.89.148.233:5244/s3 \
+            acl private
 
       - name: 下载并提取固件
         run: |
           echo "输入名称：${{ github.event.inputs.rom_name }}"
-          mkdir -p "${GITHUB_WORKSPACE}/workspace"
-          cd "${GITHUB_WORKSPACE}/workspace"
-
-          aria2c -s 16 -x 16 -k 1M -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
-
+          mkdir -p "${GITHUB_WORKSPACE}/workspace" && cd "${GITHUB_WORKSPACE}/workspace"
+          aria2c -s 12 -x 12 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           pip install --user git+https://github.com/sake1227/payload-dumper
-          ~/.local/bin/payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
+          payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
 
-      - name: 压缩文件
+      - name: 压缩并上传文件
         run: |
           cd "${GITHUB_WORKSPACE}/workspace/output"
-
-          7z a "${{ github.event.inputs.rom_name }}.zip" \
-             -m0=lzma2 -mx=9 -mmt=on \
-             -p"${{ secrets.UNZIP_PASSWORD }}" *
-
-          7z a "${{ github.event.inputs.rom_name }}.zip" \
-             /home/runner/work/boot/boot/获取解压密码.txt
-
-      - name: 配置 AWS CLI 多线程优化
-        run: |
-          aws configure set aws_access_key_id ${{ secrets.ALIST_S3_ACCESS_KEY }}
-          aws configure set aws_secret_access_key ${{ secrets.ALIST_S3_SECRET_KEY }}
-          aws configure set default.region us-east-1
-
-          aws configure set default.s3.max_concurrent_requests 20
-          aws configure set default.s3.multipart_threshold 64MB
-          aws configure set default.s3.multipart_chunksize 64MB
-          aws configure set default.s3.max_queue_size 10000
-
-      - name: 多线程上传到 AList S3
-        run: |
-          cd "${GITHUB_WORKSPACE}/workspace/output"
-
-          aws --endpoint-url https://xxrom.cn/s3 \
-              s3 cp "${{ github.event.inputs.rom_name }}.zip" \
-              s3://zanfang/ \
-              --only-show-errors
+          7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.UNZIP_PASSWORD }}" *
+          7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
+          # 使用 S3 remote 上传到 Alist 的 zanfang 路径（bucket 名称为 zanfang）
+          rclone copy "${{ github.event.inputs.rom_name }}.zip" alist-s3:zanfang/ \
+            --transfers 8 \
+            --multi-thread-streams 4 \
+            --checksum \
+            -P
