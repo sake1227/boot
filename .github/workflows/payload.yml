@@ -20,10 +20,17 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@v4
 
-      - name: 安装依赖
+      - name: 安装基础依赖
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip aria2 p7zip-full unzip awscli
+          sudo apt-get install -y python3-pip aria2 p7zip-full unzip curl
+
+      - name: 安装 AWS CLI v2
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+          aws --version
 
       - name: 下载并提取固件
         run: |
@@ -47,13 +54,13 @@ jobs:
           7z a "${{ github.event.inputs.rom_name }}.zip" \
              /home/runner/work/boot/boot/获取解压密码.txt
 
-      - name: 配置 AWS CLI (多线程优化)
+      - name: 配置 AWS CLI（多线程优化）
         run: |
           aws configure set aws_access_key_id ${{ secrets.ALIST_S3_ACCESS_KEY }}
           aws configure set aws_secret_access_key ${{ secrets.ALIST_S3_SECRET_KEY }}
           aws configure set default.region us-east-1
 
-          # ===== 上传性能优化参数 =====
+          # 多线程优化
           aws configure set default.s3.max_concurrent_requests 20
           aws configure set default.s3.multipart_threshold 64MB
           aws configure set default.s3.multipart_chunksize 64MB
@@ -65,5 +72,4 @@ jobs:
 
           aws --endpoint-url https://xxrom.cn/s3 \
               s3 cp "${{ github.event.inputs.rom_name }}.zip" \
-              s3://zanfang/ \
-              --no-progress
+              s3://zanfang/
