@@ -15,14 +15,15 @@ on:
 jobs:
   payload:
     runs-on: ubuntu-24.04
+
     steps:
       - name: 检出代码
-        uses: actions/checkout@main
+        uses: actions/checkout@v4
 
       - name: 安装依赖
         run: |
           sudo apt-get update
-          sudo apt-get -y install python3-pip aria2 p7zip curl
+          sudo apt-get install -y python3-pip aria2 p7zip-full curl unzip
           curl https://rclone.org/install.sh | sudo bash
 
       - name: 配置 rclone
@@ -33,14 +34,22 @@ jobs:
       - name: 下载并提取固件
         run: |
           echo "输入名称：${{ github.event.inputs.rom_name }}"
-          mkdir -p "${GITHUB_WORKSPACE}/workspace" && cd "${GITHUB_WORKSPACE}/workspace"
+          mkdir -p "${GITHUB_WORKSPACE}/workspace"
+          cd "${GITHUB_WORKSPACE}/workspace"
+
           aria2c -s 12 -x 12 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
+
           pip install --user git+https://github.com/sake1227/payload-dumper
-          payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
+          ~/.local/bin/payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
 
       - name: 压缩并上传文件
         run: |
           cd "${GITHUB_WORKSPACE}/workspace/output"
-          7z a "${{ github.event.inputs.rom_name }}.zip" -p"${{ secrets.UNZIP_PASSWORD }}" *
-          7z a "${{ github.event.inputs.rom_name }}.zip" /home/runner/work/boot/boot/获取解压密码.txt
+
+          7z a "${{ github.event.inputs.rom_name }}.zip" \
+             -p"${{ secrets.UNZIP_PASSWORD }}" *
+
+          7z a "${{ github.event.inputs.rom_name }}.zip" \
+             /home/runner/work/boot/boot/获取解压密码.txt
+
           rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/zanfang
