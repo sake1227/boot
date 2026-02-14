@@ -23,13 +23,7 @@ jobs:
       - name: 安装依赖
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip aria2 p7zip-full curl unzip
-          curl https://rclone.org/install.sh | sudo bash
-
-      - name: 配置 rclone
-        run: |
-          mkdir -p ~/.config/rclone
-          unzip -o rclone.zip -d ~/.config/rclone/
+          sudo apt-get install -y python3-pip aria2 p7zip-full unzip awscli
 
       - name: 下载并提取固件
         run: |
@@ -37,19 +31,39 @@ jobs:
           mkdir -p "${GITHUB_WORKSPACE}/workspace"
           cd "${GITHUB_WORKSPACE}/workspace"
 
-          aria2c -s 12 -x 12 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
+          aria2c -s 16 -x 16 -k 1M -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
 
           pip install --user git+https://github.com/sake1227/payload-dumper
           ~/.local/bin/payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
 
-      - name: 压缩并上传文件
+      - name: 压缩文件
         run: |
           cd "${GITHUB_WORKSPACE}/workspace/output"
 
           7z a "${{ github.event.inputs.rom_name }}.zip" \
+             -m0=lzma2 -mx=9 -mmt=on \
              -p"${{ secrets.UNZIP_PASSWORD }}" *
 
           7z a "${{ github.event.inputs.rom_name }}.zip" \
              /home/runner/work/boot/boot/获取解压密码.txt
 
-          rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/zanfang
+      - name: 配置 AWS CLI (多线程优化)
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.ALIST_S3_ACCESS_KEY }}
+          aws configure set aws_secret_access_key ${{ secrets.ALIST_S3_SECRET_KEY }}
+          aws configure set default.region us-east-1
+
+          # ===== 上传性能优化参数 =====
+          aws configure set default.s3.max_concurrent_requests 20
+          aws configure set default.s3.multipart_threshold 64MB
+          aws configure set default.s3.multipart_chunksize 64MB
+          aws configure set default.s3.max_queue_size 10000
+
+      - name: 多线程上传到 AList S3
+        run: |
+          cd "${GITHUB_WORKSPACE}/workspace/output"
+
+          aws --endpoint-url https://xxrom.cn/s3 \
+              s3 cp "${{ github.event.inputs.rom_name }}.zip" \
+              s3://zanfang/ \
+              --no-progress
