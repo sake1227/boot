@@ -24,7 +24,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-pip aria2 p7zip-full curl unzip
-          pip install boto3
+          # 安装 awscli 用于上传
+          pip install awscli
 
       - name: 下载并提取固件
         run: |
@@ -54,63 +55,20 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ vars.S3_REGION }}
         run: |
-          python - <<EOF
-          import boto3
-          from botocore.exceptions import ClientError
-          from botocore.config import Config
-          from boto3.s3.transfer import TransferConfig
-          import os
-          import sys
-
-          endpoint = os.environ['S3_ENDPOINT']
-          bucket = os.environ['S3_BUCKET']
-          access_key = os.environ['AWS_ACCESS_KEY_ID']
-          secret_key = os.environ['AWS_SECRET_ACCESS_KEY']
-          region = os.environ.get('AWS_DEFAULT_REGION', 'us-east-1')
-
-          # 客户端配置：增加超时和重试
-          client_config = Config(
-              connect_timeout=60,
-              read_timeout=120,
-              retries={'max_attempts': 3, 'mode': 'standard'}
-          )
-
-          s3 = boto3.client(
-              's3',
-              endpoint_url=endpoint,
-              aws_access_key_id=access_key,
-              aws_secret_access_key=secret_key,
-              region_name=region,
-              config=client_config
-          )
-
-          zip_file = f"${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip"
-          file_size = os.path.getsize(zip_file)
-
-          # 使用英文对象键，避免中文
-          object_key = f"rom_${{ github.run_id }}.zip"
-
-          # 强制使用简单上传（multipart_threshold 大于文件大小）
-          transfer_config = TransferConfig(multipart_threshold=file_size + 1)
-
-          if not os.path.exists(zip_file):
-              print(f"❌ 文件不存在: {zip_file}")
-              sys.exit(1)
-
-          print(f"正在上传 {zip_file} 到 {bucket}/{object_key} ...")
-          print(f"文件大小: {file_size} bytes")
-          try:
-              def progress_callback(bytes_transferred):
-                  print(f"\r已上传: {bytes_transferred}/{file_size} bytes", end='')
-              s3.upload_file(
-                  zip_file, bucket, object_key,
-                  ExtraArgs={'ACL': 'private', 'ContentType': 'application/zip'},
-                  Config=transfer_config,
-                  Callback=progress_callback
-              )
-              print()
-              print(f"✅ 上传成功: {bucket}/{object_key}")
-          except ClientError as e:
-              print(f"\n❌ 上传失败: {e}")
-              sys.exit(1)
-          EOF
+          zip_file="${GITHUB_WORKSPACE}/workspace/output/${{ github.event.inputs.rom_name }}.zip"
+          object_key="rom_${{ github.run_id }}.zip"
+          echo "正在上传 $zip_file 到 ${S3_BUCKET}/${object_key} ..."
+          aws s3 cp "$zip_file" "s3://${S3_BUCKET}/${object_key}" \
+            --endpoint-url "${S3_ENDPOINT}" \
+            --no-multipart-upload \
+            --acl private \
+            --region "${AWS_DEFAULT_REGION}" \
+            --cli-read-timeout 120 \
+            --cli-connect-timeout 60 \
+            --output text
+          if [ $? -eq 0 ]; then
+            echo "✅ 上传成功: ${S3_BUCKET}/${object_key}"
+          else
+            echo "❌ 上传失败"
+            exit 1
+          fi
