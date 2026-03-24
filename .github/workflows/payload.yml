@@ -71,7 +71,7 @@ jobs:
           # 客户端配置：增加超时和重试
           client_config = Config(
               connect_timeout=60,
-              read_timeout=60,
+              read_timeout=120,
               retries={'max_attempts': 3, 'mode': 'standard'}
           )
 
@@ -84,25 +84,33 @@ jobs:
               config=client_config
           )
 
-          # 传输配置：1GB 以下文件使用简单上传，避免分片
-          transfer_config = TransferConfig(multipart_threshold=1024 * 1024 * 1024)  # 1 GB
-
           zip_file = f"${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip"
-          object_key = f"${{ github.event.inputs.rom_name }}.zip"
+          file_size = os.path.getsize(zip_file)
+
+          # 使用英文对象键，避免中文
+          object_key = f"rom_${{ github.run_id }}.zip"
+
+          # 强制使用简单上传（multipart_threshold 大于文件大小）
+          transfer_config = TransferConfig(multipart_threshold=file_size + 1)
 
           if not os.path.exists(zip_file):
               print(f"❌ 文件不存在: {zip_file}")
               sys.exit(1)
 
           print(f"正在上传 {zip_file} 到 {bucket}/{object_key} ...")
+          print(f"文件大小: {file_size} bytes")
           try:
+              def progress_callback(bytes_transferred):
+                  print(f"\r已上传: {bytes_transferred}/{file_size} bytes", end='')
               s3.upload_file(
                   zip_file, bucket, object_key,
-                  ExtraArgs={'ACL': 'private'},
-                  Config=transfer_config
+                  ExtraArgs={'ACL': 'private', 'ContentType': 'application/zip'},
+                  Config=transfer_config,
+                  Callback=progress_callback
               )
+              print()
               print(f"✅ 上传成功: {bucket}/{object_key}")
           except ClientError as e:
-              print(f"❌ 上传失败: {e}")
+              print(f"\n❌ 上传失败: {e}")
               sys.exit(1)
           EOF
