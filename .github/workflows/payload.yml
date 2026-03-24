@@ -39,11 +39,6 @@ jobs:
             force_path_style true
           # 可选：检查配置
           rclone config dump
-          
-      - name: 测试列出存储桶
-        run: |
-         rclone ls s3:${{ vars.S3_BUCKET_NAME }}/ \
-           --s3-disable-create-bucket
 
       - name: 下载并提取固件
         run: |
