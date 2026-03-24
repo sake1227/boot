@@ -24,7 +24,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-pip aria2 p7zip-full curl unzip
-          # 不需要安装 rclone，改用 boto3
           pip install boto3
 
       - name: 下载并提取固件
@@ -67,7 +66,6 @@ jobs:
           secret_key = os.environ['AWS_SECRET_ACCESS_KEY']
           region = os.environ.get('AWS_DEFAULT_REGION', 'us-east-1')
 
-          # 创建 S3 客户端
           s3 = boto3.client(
               's3',
               endpoint_url=endpoint,
@@ -76,20 +74,18 @@ jobs:
               region_name=region
           )
 
-          # 本地 zip 文件路径
           zip_file = f"${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip"
-          # 远程对象键（保持原有目录结构 zanfang/）
+          # 如需上传到子目录，修改 object_key 为 "zanfang/${{ github.event.inputs.rom_name }}.zip"
           object_key = f"${{ github.event.inputs.rom_name }}.zip"
 
-          # 检查本地文件是否存在
           if not os.path.exists(zip_file):
               print(f"❌ 文件不存在: {zip_file}")
               sys.exit(1)
 
           print(f"正在上传 {zip_file} 到 {bucket}/{object_key} ...")
           try:
-              # 使用 upload_file 自动处理分片上传（适用于大文件）
-              s3.upload_file(zip_file, bucket, object_key, ExtraArgs={'ACL': 'private'})
+              with open(zip_file, 'rb') as f:
+                  s3.put_object(Bucket=bucket, Key=object_key, Body=f, ACL='private')
               print(f"✅ 上传成功: {bucket}/{object_key}")
           except ClientError as e:
               print(f"❌ 上传失败: {e}")
