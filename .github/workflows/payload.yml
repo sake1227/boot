@@ -57,6 +57,8 @@ jobs:
           python - <<EOF
           import boto3
           from botocore.exceptions import ClientError
+          from botocore.config import Config
+          from boto3.s3.transfer import TransferConfig
           import os
           import sys
 
@@ -66,16 +68,26 @@ jobs:
           secret_key = os.environ['AWS_SECRET_ACCESS_KEY']
           region = os.environ.get('AWS_DEFAULT_REGION', 'us-east-1')
 
+          # 客户端配置：增加超时和重试
+          client_config = Config(
+              connect_timeout=60,
+              read_timeout=60,
+              retries={'max_attempts': 3, 'mode': 'standard'}
+          )
+
           s3 = boto3.client(
               's3',
               endpoint_url=endpoint,
               aws_access_key_id=access_key,
               aws_secret_access_key=secret_key,
-              region_name=region
+              region_name=region,
+              config=client_config
           )
 
+          # 传输配置：1GB 以下文件使用简单上传，避免分片
+          transfer_config = TransferConfig(multipart_threshold=1024 * 1024 * 1024)  # 1 GB
+
           zip_file = f"${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip"
-          # 如需上传到子目录，修改 object_key 为 "zanfang/${{ github.event.inputs.rom_name }}.zip"
           object_key = f"${{ github.event.inputs.rom_name }}.zip"
 
           if not os.path.exists(zip_file):
@@ -84,8 +96,11 @@ jobs:
 
           print(f"正在上传 {zip_file} 到 {bucket}/{object_key} ...")
           try:
-              with open(zip_file, 'rb') as f:
-                  s3.put_object(Bucket=bucket, Key=object_key, Body=f, ACL='private')
+              s3.upload_file(
+                  zip_file, bucket, object_key,
+                  ExtraArgs={'ACL': 'private'},
+                  Config=transfer_config
+              )
               print(f"✅ 上传成功: {bucket}/{object_key}")
           except ClientError as e:
               print(f"❌ 上传失败: {e}")
