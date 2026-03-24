@@ -79,7 +79,7 @@ jobs:
           # 本地 zip 文件路径
           zip_file = f"${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip"
           # 远程对象键（保持原有目录结构 zanfang/）
-          object_key = f"zanfang/${{ github.event.inputs.rom_name }}.zip"
+          object_key = f"${{ github.event.inputs.rom_name }}.zip"
 
           # 检查本地文件是否存在
           if not os.path.exists(zip_file):
