@@ -1,41 +1,98 @@
-name: 信息提取
+name: Test S3 Connection
 
 on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
-    inputs:
-      rom_url:
-        description: 'ROM 下载直链'
-        required: true
-        default: ''
-      rom_name:
-        description: '保存名称'
-        required: true
-        default: ''
 
 jobs:
-  info:
-    runs-on: ubuntu-24.04
+  test-s3:
+    runs-on: ubuntu-latest
+
     steps:
-      - name: 检出代码
-        uses: actions/checkout@main
+      - name: Checkout code
+        uses: actions/checkout@v6.0.2
 
-      - name: 安装依赖
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install aria2 p7zip-full tree
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-      - name: 下载并提取固件信息
-        run: |
-          mkdir -p "${GITHUB_WORKSPACE}/workspace" && cd "${GITHUB_WORKSPACE}/workspace"
-          # 下载 ROM 文件，线程设置为最大
-          aria2c --max-concurrent-downloads=16 --split=16 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
+      - name: Install boto3
+        run: pip install boto3
 
-          # 输出压缩包信息
-          echo "=== 压缩包详细信息 ==="
-          7z l firmware.zip
-          
-      - name: 解压压缩包并输出目录结构
+      - name: Test S3 connection with boto3
+        env:
+          S3_ENDPOINT: http://s3.xxrom.cn:5246
+          S3_BUCKET: "boot"   # 请确认存储桶名称是否正确，如需修改请在此处或使用变量
+          AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
         run: |
-          echo "=== 解压后的目录结构 ==="
-          7z x firmware.zip -o"${GITHUB_WORKSPACE}/workspace/extracted_files" || { echo '解压失败'; exit 1; }
-          tree extracted_files
+          python - <<EOF
+          import boto3
+          from botocore.exceptions import ClientError
+          import os
+          import sys
+
+          endpoint = os.environ['S3_ENDPOINT']
+          bucket = os.environ['S3_BUCKET']
+          access_key = os.environ['AWS_ACCESS_KEY_ID']
+          secret_key = os.environ['AWS_SECRET_ACCESS_KEY']
+          region = os.environ.get('AWS_DEFAULT_REGION', 'us-east-1')
+
+          # 创建 S3 客户端
+          s3 = boto3.client(
+              's3',
+              endpoint_url=endpoint,
+              aws_access_key_id=access_key,
+              aws_secret_access_key=secret_key,
+              region_name=region
+          )
+
+          print(f"Testing connection to S3 endpoint: {endpoint}")
+          print(f"Using bucket: {bucket}")
+
+          # 测试 1: HEAD Bucket
+          try:
+              s3.head_bucket(Bucket=bucket)
+              print("✅ HEAD Bucket succeeded – bucket exists and credentials are valid.")
+          except ClientError as e:
+              error_code = int(e.response['Error']['Code'])
+              if error_code == 404:
+                  print(f"❌ Bucket '{bucket}' does not exist.")
+              elif error_code == 403:
+                  print(f"❌ Access denied for bucket '{bucket}'. Check permissions.")
+              else:
+                  print(f"❌ HEAD Bucket failed: {e}")
+              sys.exit(1)
+
+          # 测试 2: 列出前 3 个对象（验证读权限）
+          try:
+              response = s3.list_objects_v2(Bucket=bucket, MaxKeys=3)
+              if 'Contents' in response:
+                  print(f"✅ Successfully listed objects in bucket. First {len(response['Contents'])} objects:")
+                  for obj in response['Contents']:
+                      print(f"   - {obj['Key']} ({obj['Size']} bytes)")
+              else:
+                  print("✅ Bucket is accessible but empty.")
+          except ClientError as e:
+              print(f"⚠️ List objects failed (maybe no read permission): {e}")
+
+          # 测试 3: 上传文件（新增）
+          file_path = '/home/runner/work/boot/boot/获取解压密码.txt'
+          if os.path.exists(file_path):
+              try:
+                  # 使用文件名作为对象键
+                  object_key = os.path.basename(file_path)
+                  with open(file_path, 'rb') as f:
+                      s3.upload_fileobj(f, bucket, object_key)
+                  print(f"✅ Successfully uploaded {file_path} to bucket {bucket} as '{object_key}'")
+              except ClientError as e:
+                  print(f"❌ Upload failed: {e}")
+                  sys.exit(1)
+          else:
+              print(f"⚠️ File {file_path} not found, skipping upload test. (This file may be created in later steps.)")
+
+          print("All tests completed.")
+          EOF
