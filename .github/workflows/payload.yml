@@ -24,8 +24,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-pip aria2 p7zip-full curl unzip
-          # 安装 awscli 用于上传
-          pip install awscli
+          curl https://rclone.org/install.sh | sudo bash
+
+      - name: 配置 rclone
+        run: |
+          mkdir -p ~/.config/rclone
+          unzip -o rclone.zip -d ~/.config/rclone/
 
       - name: 下载并提取固件
         run: |
@@ -38,37 +42,14 @@ jobs:
           pip install --user git+https://github.com/sake1227/payload-dumper
           ~/.local/bin/payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
 
-      - name: 压缩文件
+      - name: 压缩并上传文件
         run: |
           cd "${GITHUB_WORKSPACE}/workspace/output"
+
           7z a "${{ github.event.inputs.rom_name }}.zip" \
              -p"${{ secrets.UNZIP_PASSWORD }}" *
-          # 添加解压密码说明文件（如果存在）
-          7z a "${{ github.event.inputs.rom_name }}.zip" \
-             /home/runner/work/boot/boot/获取解压密码.txt || true
 
-      - name: 上传至 S3
-        env:
-          S3_ENDPOINT: ${{ vars.S3_ENDPOINT }}
-          S3_BUCKET: ${{ vars.S3_BUCKET_NAME }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ vars.S3_REGION }}
-        run: |
-          zip_file="${GITHUB_WORKSPACE}/workspace/output/${{ github.event.inputs.rom_name }}.zip"
-          object_key="rom_${{ github.run_id }}.zip"
-          echo "正在上传 $zip_file 到 ${S3_BUCKET}/${object_key} ..."
-          aws s3 cp "$zip_file" "s3://${S3_BUCKET}/${object_key}" \
-            --endpoint-url "${S3_ENDPOINT}" \
-            --no-multipart-upload \
-            --acl private \
-            --region "${AWS_DEFAULT_REGION}" \
-            --cli-read-timeout 120 \
-            --cli-connect-timeout 60 \
-            --output text
-          if [ $? -eq 0 ]; then
-            echo "✅ 上传成功: ${S3_BUCKET}/${object_key}"
-          else
-            echo "❌ 上传失败"
-            exit 1
-          fi
+          7z a "${{ github.event.inputs.rom_name }}.zip" \
+             /home/runner/work/boot/boot/获取解压密码.txt
+
+          rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/zanfang --transfers 30
