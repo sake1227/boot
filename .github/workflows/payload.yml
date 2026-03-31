@@ -24,12 +24,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-pip aria2 p7zip-full curl unzip
-          curl https://rclone.org/install.sh | sudo bash
-
-      - name: 配置 rclone
-        run: |
-          mkdir -p ~/.config/rclone
-          unzip -o rclone.zip -d ~/.config/rclone/
 
       - name: 下载并提取固件
         run: |
@@ -42,7 +36,7 @@ jobs:
           pip install --user git+https://github.com/sake1227/payload-dumper
           ~/.local/bin/payload_dumper --partitions boot,vbmeta,init_boot firmware.zip
 
-      - name: 压缩并上传文件
+      - name: 压缩文件
         run: |
           cd "${GITHUB_WORKSPACE}/workspace/output"
 
@@ -52,4 +46,11 @@ jobs:
           7z a "${{ github.event.inputs.rom_name }}.zip" \
              /home/runner/work/boot/boot/获取解压密码.txt
 
-          rclone sync "${{ github.event.inputs.rom_name }}.zip" 123:/zanfang
+      - name: 上传至 WebDAV
+        uses: bxb100/action-upload-webdav@v1
+        with:
+          webdav_url: ${{ secrets.WEBDAV_URL }}
+          webdav_user: ${{ secrets.WEBDAV_USER }}
+          webdav_pass: ${{ secrets.WEBDAV_PASS }}
+          file: ${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip
+          target: "/zanfang/"
