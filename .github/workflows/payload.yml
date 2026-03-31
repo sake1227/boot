@@ -49,8 +49,8 @@ jobs:
       - name: 上传至 WebDAV
         uses: bxb100/action-upload-webdav@v1
         with:
-          webdav_url: ${{ secrets.WEBDAV_URL }}
-          webdav_user: ${{ secrets.WEBDAV_USER }}
-          webdav_pass: ${{ secrets.WEBDAV_PASS }}
-          file: ${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip
-          target: "/zanfang/"
+          webdav_address: ${{ secrets.WEBDAV_ADDRESS }}
+          webdav_username: ${{ secrets.WEBDAV_USERNAME }}
+          webdav_password: ${{ secrets.WEBDAV_PASSWORD }}
+          webdav_upload_path: "/zanfang/"
+          files: ${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip
