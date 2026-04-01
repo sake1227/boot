@@ -46,14 +46,14 @@ jobs:
           7z a "${{ github.event.inputs.rom_name }}.zip" \
              /home/runner/work/boot/boot/获取解压密码.txt
 
-      - name: 上传至 WebDAV
-        uses: bxb100/action-upload@v0
-        with:
-          provider: webdav
-          provider_options: |
-            endpoint=${{ secrets.WEBDAV_ADDRESS }}
-            username=${{ secrets.WEBDAV_USERNAME }}
-            password=${{ secrets.WEBDAV_PASSWORD }}
-            root=/zanfang/
-          include: |
-            ${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip
+      - name: 使用 curl 上传至 WebDAV
+        env:
+          WEBDAV_URL: ${{ secrets.WEBDAV_ADDRESS }}
+          WEBDAV_USER: ${{ secrets.WEBDAV_USERNAME }}
+          WEBDAV_PASS: ${{ secrets.WEBDAV_PASSWORD }}
+          FILE_PATH: ${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip
+          REMOTE_PATH: /zanfang/${{ github.event.inputs.rom_name }}.zip
+        run: |
+          curl -T "$FILE_PATH" \
+               -u "$WEBDAV_USER:$WEBDAV_PASS" \
+               "$WEBDAV_URL$REMOTE_PATH"
