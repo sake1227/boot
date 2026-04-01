@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: 检出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
 
       - name: 安装依赖
         run: |
@@ -47,7 +47,7 @@ jobs:
              /home/runner/work/boot/boot/获取解压密码.txt
 
       - name: 上传至 WebDAV
-        uses: bxb100/action-upload-webdav@v1
+        uses: bxb100/action-upload@v0
         with:
           webdav_address: ${{ secrets.WEBDAV_ADDRESS }}
           webdav_username: ${{ secrets.WEBDAV_USERNAME }}
