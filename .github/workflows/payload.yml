@@ -39,18 +39,21 @@ jobs:
       - name: 压缩文件
         run: |
           cd "${GITHUB_WORKSPACE}/workspace/output"
-
+          # 先将提取出的所有文件打包（带密码）
           7z a "${{ github.event.inputs.rom_name }}.zip" \
              -p"${{ secrets.UNZIP_PASSWORD }}" *
-
+          # 再将密码说明文件添加到同一个 zip 中
           7z a "${{ github.event.inputs.rom_name }}.zip" \
              /home/runner/work/boot/boot/获取解压密码.txt
 
       - name: 上传至 WebDAV
         uses: bxb100/action-upload@v0
         with:
-          webdav_address: ${{ secrets.WEBDAV_ADDRESS }}
-          webdav_username: ${{ secrets.WEBDAV_USERNAME }}
-          webdav_password: ${{ secrets.WEBDAV_PASSWORD }}
-          webdav_upload_path: "/zanfang/"
-          files: ${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip
+          provider: webdav
+          provider_options: |
+            endpoint=${{ secrets.WEBDAV_ADDRESS }}
+            username=${{ secrets.WEBDAV_USERNAME }}
+            password=${{ secrets.WEBDAV_PASSWORD }}
+            root=/zanfang/
+          include: |
+            ${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip
