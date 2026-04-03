@@ -63,6 +63,6 @@ jobs:
           REMOTE_PATH="/zanfang/${{ github.event.inputs.rom_name }}.zip"
 
           # 执行上传（假设 rclone 配置中远程名称为 webdav-remote）
-          rclone copy "$LOCAL_FILE" "webdav-remote:$REMOTE_PATH" --verbose
+          rclone copy "$LOCAL_FILE" "123:$REMOTE_PATH" --verbose
 
           echo "✅ 文件已通过 rclone 成功上传到 WebDAV"
