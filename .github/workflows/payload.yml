@@ -52,7 +52,7 @@ jobs:
           WEBDAV_USER: ${{ secrets.WEBDAV_USERNAME }}
           WEBDAV_PASS: ${{ secrets.WEBDAV_PASSWORD }}
           FILE_PATH: ${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip
-          REMOTE_PATH: /zanfang/${{ github.event.inputs.rom_name }}.zip
+          REMOTE_PATH: /${{ github.event.inputs.rom_name }}.zip
         run: |
           # 尝试使用 POST 方法上传二进制数据
           # 注意：某些 WebDAV 服务器可能需要将文件放在表单字段 "file" 中，这里直接使用 --data-binary 发送原始内容
