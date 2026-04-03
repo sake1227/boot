@@ -46,31 +46,23 @@ jobs:
           7z a "${{ github.event.inputs.rom_name }}.zip" \
              /home/runner/work/boot/boot/获取解压密码.txt
 
-      - name: 使用 curl 通过 POST 方法上传至 WebDAV
+      - name: 使用 rclone 上传至 WebDAV
         env:
-          WEBDAV_URL: ${{ secrets.WEBDAV_ADDRESS }}
-          WEBDAV_USER: ${{ secrets.WEBDAV_USERNAME }}
-          WEBDAV_PASS: ${{ secrets.WEBDAV_PASSWORD }}
-          FILE_PATH: ${{ github.workspace }}/workspace/output/${{ github.event.inputs.rom_name }}.zip
-          REMOTE_PATH: /${{ github.event.inputs.rom_name }}.zip
+          RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
         run: |
-          # 尝试使用 POST 方法上传二进制数据
-          # 注意：某些 WebDAV 服务器可能需要将文件放在表单字段 "file" 中，这里直接使用 --data-binary 发送原始内容
-          curl -v -X POST \
-               -u "$WEBDAV_USER:$WEBDAV_PASS" \
-               -H "Content-Type: application/octet-stream" \
-               --data-binary "@$FILE_PATH" \
-               "$WEBDAV_URL$REMOTE_PATH" \
-               -o /dev/null -w "\nHTTP 状态码: %{http_code}\n"
+          # 安装 rclone
+          curl https://rclone.org/install.sh | sudo bash
 
-          # 检查上一个命令的退出码
-          if [ $? -ne 0 ]; then
-            echo "POST 上传失败，尝试使用 PUT 方法并添加 Expect 头..."
-            curl -v -X PUT \
-                 -u "$WEBDAV_USER:$WEBDAV_PASS" \
-                 -H "Content-Type: application/octet-stream" \
-                 -H "Expect:" \
-                 -T "$FILE_PATH" \
-                 "$WEBDAV_URL$REMOTE_PATH" \
-                 -o /dev/null -w "\nHTTP 状态码: %{http_code}\n"
-          fi
+          # 创建配置目录并写入配置文件
+          mkdir -p ~/.config/rclone
+          echo "$RCLONE_CONF" > ~/.config/rclone/rclone.conf
+
+          # 本地文件路径
+          LOCAL_FILE="${GITHUB_WORKSPACE}/workspace/output/${{ github.event.inputs.rom_name }}.zip"
+          # 远程路径（根据你的 WebDAV 服务器调整）
+          REMOTE_PATH="/zanfang/${{ github.event.inputs.rom_name }}.zip"
+
+          # 执行上传（假设 rclone 配置中远程名称为 webdav-remote）
+          rclone copy "$LOCAL_FILE" "webdav-remote:$REMOTE_PATH" --verbose
+
+          echo "✅ 文件已通过 rclone 成功上传到 WebDAV"
