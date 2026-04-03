@@ -59,10 +59,8 @@ jobs:
 
           # 本地文件路径
           LOCAL_FILE="${GITHUB_WORKSPACE}/workspace/output/${{ github.event.inputs.rom_name }}.zip"
-          # 远程路径（根据你的 WebDAV 服务器调整）
-          REMOTE_PATH="/zanfang/${{ github.event.inputs.rom_name }}.zip"
 
           # 执行上传（假设 rclone 配置中远程名称为 webdav-remote）
-          rclone copy "$LOCAL_FILE" "123:$REMOTE_PATH" --verbose
+          rclone copy "$LOCAL_FILE" "123:zanfang" --verbose
 
           echo "✅ 文件已通过 rclone 成功上传到 WebDAV"
