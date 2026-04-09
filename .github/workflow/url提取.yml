@@ -1,0 +1,63 @@
+name: payload提取（直链提取）
+
+on:
+  workflow_dispatch:
+    inputs:
+      rom_url:
+        description: 'ROM 下载直链（支持 .zip 或 .bin）'
+        required: true
+        default: ''
+      rom_name:
+        description: '保存名称'
+        required: true
+        default: ''
+
+jobs:
+  payload:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v6.0.2
+
+      - name: 安装依赖
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip p7zip-full curl unzip
+
+      - name: 从 URL 直接提取固件（无需下载到本地）
+        run: |
+          echo "输入名称：${{ github.event.inputs.rom_name }}"
+          mkdir -p "${GITHUB_WORKSPACE}/workspace/output"
+          cd "${GITHUB_WORKSPACE}/workspace"
+
+          # 安装支持 URL 提取的 payload-dumper（mio 分支）
+          pip install --user git+https://github.com/5ec1cff/payload-dumper@mio
+
+          # 直接传入 ROM 直链，工具内部完成下载和解析
+          ~/.local/bin/payload_dumper \
+            --url "${{ github.event.inputs.rom_url }}" \
+            --partitions boot,vbmeta,init_boot \
+            --out output
+
+      - name: 压缩文件并加密
+        run: |
+          cd "${GITHUB_WORKSPACE}/workspace/output"
+          # 打包提取出的所有镜像（带密码）
+          7z a "${{ github.event.inputs.rom_name }}.zip" \
+             -p"${{ secrets.UNZIP_PASSWORD }}" *
+          # 添加密码说明文件
+          7z a "${{ github.event.inputs.rom_name }}.zip" \
+             /home/runner/work/boot/boot/获取解压密码.txt
+
+      - name: 使用 rclone 上传至 WebDAV
+        env:
+          RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
+        run: |
+          curl https://rclone.org/install.sh | sudo bash
+          mkdir -p ~/.config/rclone
+          echo "$RCLONE_CONF" > ~/.config/rclone/rclone.conf
+
+          LOCAL_FILE="${GITHUB_WORKSPACE}/workspace/output/${{ github.event.inputs.rom_name }}.zip"
+          rclone copy "$LOCAL_FILE" "123:zanfang" --verbose
+          echo "✅ 文件已通过 rclone 成功上传到 WebDAV"
