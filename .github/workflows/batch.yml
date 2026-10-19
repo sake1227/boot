@@ -171,10 +171,17 @@ jobs:
         if: matrix.resolve != ''
         run: |
           set -euo pipefail
-          pip install --upgrade requests cryptography
+          # 必须用同一个解释器安装，否则 tomboy_pro.py 里 import 会失败
+          python3 -m pip install --quiet --upgrade requests cryptography
+          python3 -c "import requests, cryptography; print('deps ok')"
+
           rm -rf tools/oplus
           git clone --depth 1 https://github.com/SunsetMkt/OPlus-Tracker tools/oplus
-          python3 tools/oplus/tomboy_pro.py --help 2>&1 | head -20 || true
+
+          # 显式校验：文件在、且能 import 自己的 config（别让 --help 静默失败）
+          test -f tools/oplus/tomboy_pro.py || { echo "tomboy_pro.py 没 clone 下来"; exit 1; }
+          ( cd tools/oplus && python3 -c "import config; print('config ok')" )
+          ls -l tools/oplus/tomboy_pro.py
 
       - name: 提取并上传
         env:
