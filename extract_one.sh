@@ -29,6 +29,7 @@ DEST="${RCLONE_DEST:-123:zhanfang}"
 PASS="${UNZIP_PASSWORD:-}"
 PASSFILE="${PASSFILE:-}"
 WORK="$(pwd)/work"
+REPO_ROOT="$(pwd)"   # 解析命令里的相对路径（tools/oplus/...）以仓库根为基准
 
 log() { printf '\n==> %s\n' "$*"; }
 
@@ -45,7 +46,8 @@ if [ -n "$RESOLVE_CMD" ]; then
   log "解析直链（动态链接）"
   OUT=""
   for attempt in 1 2 3; do
-    OUT=$(bash -c "$RESOLVE_CMD" 2>&1) || true
+    # 注意：此时 cwd 已经是 work/，解析命令必须在仓库根目录执行
+    OUT=$( cd "$REPO_ROOT" && bash -c "$RESOLVE_CMD" 2>&1 ) || true
     URLS=$(printf '%s' "$OUT" |
       grep -oE 'https?://[^ "'"'"'<>]+\.(zip|ozip)(\?[^ "'"'"'<>]*)?' || true)
     # tomboy_pro 一次会打印 A/C/F/H/J 多个分支的结果，靠后的更新；
@@ -54,13 +56,21 @@ if [ -n "$RESOLVE_CMD" ]; then
     if [ -z "${ROM_URL:-}" ]; then
       ROM_URL=$(printf '%s\n' "$URLS" | tail -1 || true)
     fi
-    [ -n "${ROM_URL:-}" ] && break
+    if [ -n "${ROM_URL:-}" ]; then break; fi
+    # 解析器本身不存在时重试没有意义，直接跳出并说明原因
+    if printf '%s' "$OUT" | grep -q "can.t open file"; then
+      log "解析器不存在（tools/oplus 没准备好），不再重试"
+      break
+    fi
     log "第 $attempt 次没解析出链接，5 秒后重试"
     sleep 5
   done
   if [ -z "${ROM_URL:-}" ]; then
     echo "解析失败。命令输出末尾 40 行：" >&2
     printf '%s\n' "$OUT" | tail -40 >&2
+    echo "" >&2
+    echo "排查：解析命令是 —— $RESOLVE_CMD" >&2
+    echo "      它依赖 tools/oplus/tomboy_pro.py（由 batch.yml 里「准备欧加解析工具」步骤 clone）" >&2
     exit 9
   fi
   # 产物名用解析出来的真实文件名（里面有版本号），比占位名有用
