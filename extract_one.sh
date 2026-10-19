@@ -8,7 +8,7 @@
 #   PARTITIONS     可选，默认 boot,init_boot,vbmeta
 #   UNZIP_PASSWORD 可选，设置后加密打包
 #   PASSFILE       可选，要一起打进压缩包的说明文件（如 获取解压密码.txt）
-#   RCLONE_DEST    可选，默认 123:zhanfang
+#   RCLONE_DEST    可选，默认 123:zanfang
 #
 # 支持：小米卡刷包(zip+payload.bin)、线刷包(tgz/tar)、三星 tar.md5、
 #       Google factory/OTA zip、lolinet zip、img.lz4
@@ -25,7 +25,7 @@ BRAND="${BRAND:-unknown}"
 MODEL="${MODEL:-unknown}"
 VERSION="${VERSION:-}"
 PARTITIONS="${PARTITIONS:-boot,init_boot,vbmeta}"
-DEST="${RCLONE_DEST:-123:zhanfang}"
+DEST="${RCLONE_DEST:-123:zanfang}"   # 与你仓库里原有的 123:zanfang 保持一致
 PASS="${UNZIP_PASSWORD:-}"
 PASSFILE="${PASSFILE:-}"
 WORK="$(pwd)/work"
@@ -155,24 +155,57 @@ KIND=$(detect_kind)
 log "包类型: $KIND"
 
 # --------------------------------------------------------------------------- #
-# 3. 提取 —— 各策略把 img 丢到 work 下任意位置，第 4 步统一收
+# 3. 提取 —— 两种形态都要兼容：
+#    (a) 内含 payload.bin 的 A/B 包（小米卡刷包、OPPO/一加/realme、Pixel OTA）
+#    (b) 压缩包里直接放一堆分区 img（老机型、部分三星/联想/摩托包）
+#    统一把结果丢在 work 下任意位置，第 4 步按文件名收。
 # --------------------------------------------------------------------------- #
 case "$KIND" in
   zip)
-    if unzip -l "$ROM" | grep -qiE '(^|/)payload\.bin$'; then
-      log "A/B 包：先取 payload.bin 再按分区解"
-      unzip -q -o "$ROM" 'payload.bin' -d "$WORK/ext" 2>/dev/null \
-        || unzip -q -o "$ROM" '*/payload.bin' -d "$WORK/ext"
+    # 用 -Z1 只列文件名；不要用 unzip -l —— 它是对齐表格，文件名前面全是空格，
+    # 用 (^|/)payload\.bin$ 永远匹配不到（这就是上一版认不出 payload.bin 的原因）
+    ENTRIES=$(unzip -Z1 "$ROM" 2>/dev/null || true)
+    PB_ENTRY=$(printf '%s\n' "$ENTRIES" | grep -iE '(^|/)payload\.bin$' | head -1 || true)
+
+    if [ -n "${PB_ENTRY:-}" ]; then
+      log "A/B 包：只解出 payload.bin，不展开整个包（省 8G 磁盘）"
+      command -v payload_dumper >/dev/null 2>&1 || {
+        echo "payload_dumper 没装（检查 workflow 里 pip install 那步）" >&2; exit 6; }
+      unzip -o -q -j "$ROM" "$PB_ENTRY" -d "$WORK/ext"
       PB=$(find "$WORK/ext" -name payload.bin -print -quit)
-      [ -n "$PB" ] || { echo "zip 里没解出 payload.bin" >&2; exit 6; }
-      # 只解需要的分区：否则 8G 的 super 直接撑爆磁盘
+      [ -n "$PB" ] || { echo "没解出 payload.bin" >&2; exit 6; }
+      rm -f "$ROM" || true
+      log "已删除原始包，释放 $(numfmt --to=iec "$SIZE")"
+
+      # 有就提、没有就跳过：先整体解一次，失败再逐个分区试
+      log "解分区：$PARTITIONS"
       if ! payload_dumper --partitions "$PARTITIONS" "$PB"; then
-        log "含 init_boot 的解不了（老机型没有该分区），退回 boot,vbmeta"
-        payload_dumper --partitions boot,vbmeta "$PB"
+        log "整体解包失败，改为逐个分区尝试（包里没有的分区会自动跳过）"
+        IFS=',' read -ra _plist <<< "$PARTITIONS"
+        for _p in "${_plist[@]}"; do
+          _p=$(printf '%s' "$_p" | tr -d ' ')
+          [ -n "$_p" ] || continue
+          if payload_dumper --partitions "$_p" "$PB"; then
+            log "  ✓ $_p"
+          else
+            log "  - $_p 不存在或解包失败，跳过"
+          fi
+        done
       fi
     else
-      log "普通 zip：直接展开找 img"
-      unzip -q -o "$ROM" -d "$WORK/ext" || true
+      log "分区 img 直接放在 zip 里：只挑需要的解，不展开整个包"
+      WANT=$(printf '%s\n' "$ENTRIES" \
+        | grep -iE '(^|/)(boot|init_boot|vbmeta|vendor_boot)\.img(\.lz4)?$' || true)
+      if [ -z "${WANT:-}" ]; then
+        echo "zip 里既没有 payload.bin，也没有 boot/init_boot/vbmeta。" >&2
+        echo "前 50 个条目如下（看看是不是 ozip/加密包或目录结构不同）：" >&2
+        printf '%s\n' "$ENTRIES" | head -50 >&2
+        exit 6
+      fi
+      while IFS= read -r _e; do
+        [ -n "$_e" ] || continue
+        unzip -o -q "$ROM" "$_e" -d "$WORK/ext" && log "  + $_e"
+      done <<< "$WANT"
     fi
     ;;
   gzip|tar)
@@ -211,7 +244,13 @@ while IFS= read -r -d '' lz; do
 done < <(find "$WORK/ext" -name '*.img.lz4' -print0 2>/dev/null || true)
 
 if [ "$FOUND" -eq 0 ]; then
-  echo "没提取到任何 boot 分区。work 下前 30 个文件：" >&2
+  echo "没提取到任何 boot 分区。" >&2
+  if [ -n "${PB:-}" ]; then
+    echo "payload.bin 解完之后没有目标分区，实际解出来的 img 是：" >&2
+    find "$WORK" -name '*.img' -not -path "$WORK/out/*" | head -30 >&2
+    echo "（如果你要的分区名不在上面，把 PARTITIONS 改成实际存在的分区）" >&2
+  fi
+  echo "work 下前 30 个文件：" >&2
   find "$WORK" -type f | head -30 >&2
   exit 8
 fi

@@ -3,7 +3,7 @@
 """
 make_index.py —— 扫 123 网盘目录，生成站点可以直接吃的数据文件。
 
-    rclone lsf 123:zhanfang -R --files-only --format pst > listing.txt
+    rclone lsf 123:zanfang -R --files-only --format pst > listing.txt
     python make_index.py listing.txt -o data/index.json
 
 `rclone lsf --format pst` 每行： 路径;大小;修改时间
@@ -57,7 +57,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("listing", help="rclone lsf --format pst 的输出文件")
     ap.add_argument("-o", "--out", default="index.json")
-    ap.add_argument("--strip-prefix", default="", help="去掉路径前缀，如 zhanfang/")
+    ap.add_argument("--strip-prefix", default="", help="去掉路径前缀，如 zanfang/")
     ap.add_argument("--ext", default=".zip", help="只收录该扩展名（默认 .zip）")
     ap.add_argument("--meta-dir", default="",
                     help="extract_one.sh 写的 *.json 元数据目录（可选）")
