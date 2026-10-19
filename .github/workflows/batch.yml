@@ -193,6 +193,7 @@ jobs:
           VERSION: ${{ matrix.version }}
           UNZIP_PASSWORD: ${{ secrets.UNZIP_PASSWORD }}
           PASSFILE: ${{ github.workspace }}/获取解压密码.txt
+          RCLONE_DEST: ${{ vars.RCLONE_DEST || '123:zanfang' }}
         run: |
           chmod +x extract_one.sh
           ./extract_one.sh
@@ -241,13 +242,15 @@ jobs:
           fi
 
       - name: 生成 index.json
+        env:
+          RCLONE_DEST: ${{ vars.RCLONE_DEST || '123:zanfang' }}
         run: |
           set -euo pipefail
-          mkdir -p data
-          rclone lsf 123:zhanfang -R --files-only --format pst > listing.txt
-          wc -l listing.txt
-          # 把元数据 json 一起拉下来（一次 rclone 调用，不是逐个 cat）
-          rclone copy 123:zhanfang data/meta -R --include "*.json" --transfers 16 || true
+          mkdir -p data/meta
+          # 目录不存在/为空时不要让整个 job 红掉
+          rclone lsf "$RCLONE_DEST" -R --files-only --format pst > listing.txt || true
+          echo "清单行数: $(wc -l < listing.txt)"
+          rclone copy "$RCLONE_DEST" data/meta -R --include "*.json" --transfers 16 || true
           python make_index.py listing.txt -o data/index.json --meta-dir data/meta
 
       - uses: actions/upload-artifact@v7
