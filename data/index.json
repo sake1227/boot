@@ -1,0 +1,44 @@
+{
+ "generated": "2026-10-19T13:24:23Z",
+ "total_files": 3,
+ "devices": {
+  "_": {
+   "_": [
+    {
+     "name": "OS3.0.5.0.VMNCNXM",
+     "zip": "OS3.0.5.0.VMNCNXM.zip",
+     "bytes": 20538976,
+     "size": "19.6 MB",
+     "mtime": "2026-04-30 11:32:05",
+     "images": [],
+     "version": "",
+     "source_url": ""
+    },
+    {
+     "name": "PLK110_16.0.5.701(CN01)",
+     "zip": "PLK110_16.0.5.701(CN01).zip",
+     "bytes": 18219509,
+     "size": "17.4 MB",
+     "mtime": "2026-04-24 10:17:55",
+     "images": [],
+     "version": "",
+     "source_url": ""
+    }
+   ]
+  },
+  "oplus": {
+   "oneplus-13": [
+    {
+     "name": "81d9e0f170de4d83be9f69ae5bf6d061",
+     "zip": "oplus/oneplus-13/81d9e0f170de4d83be9f69ae5bf6d061.zip",
+     "bytes": 16870587,
+     "size": "16.1 MB",
+     "mtime": "2026-10-19 13:23:57",
+     "images": [],
+     "version": "",
+     "source_url": ""
+    }
+   ]
+  }
+ }
+}
