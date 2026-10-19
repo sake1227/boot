@@ -1,0 +1,262 @@
+name: batch-boot
+
+# 机型表 → 发现各版本直链 → matrix 并发 → 提取 boot → 上传 123 → 生成 index.json
+#
+# 部署：把本文件放 .github/workflows/batch.yml，
+#       devices.json / discover.py / extract_one.sh / make_index.py 放仓库根。
+# 需要的 secret：RCLONE_CONF、UNZIP_PASSWORD
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: 'device id 白名单（逗号分隔，留空=全部）'
+        default: ''
+      brand:
+        description: '品牌白名单：xiaomi,google,samsung,lolinet,manual,cmd'
+        default: ''
+      max_new_per_device:
+        description: '每个机型本次最多入队几个新版本'
+        default: '1'
+      dry_run:
+        description: '只发现链接、不下载提取'
+        type: boolean
+        default: false
+  schedule:
+    # 每天 UTC 18:00 = 北京 02:00
+    - cron: '0 18 * * *'
+
+concurrency:
+  group: batch-boot
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # 1. 发现：扫机型表，产出待提取清单
+  # ---------------------------------------------------------------------------
+  discover:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    outputs:
+      matrix: ${{ steps.find.outputs.matrix }}
+      count: ${{ steps.find.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 恢复去重表与详情页缓存
+        uses: actions/cache@v4
+        with:
+          path: |
+            state/seen.json
+            state/cache
+          key: state-${{ github.run_id }}
+          restore-keys: state-
+
+      - name: 发现直链
+        id: find
+        env:
+          ONLY: ${{ inputs.only }}
+          BRAND: ${{ inputs.brand }}
+          MAXNEW: ${{ inputs.max_new_per_device }}
+        run: |
+          set -euo pipefail
+          mkdir -p out state
+          ARGS=(--devices devices.json --state state/seen.json
+                --out out/candidates.json --matrix-out out/matrix.json
+                --new-only --print)
+          if [ -n "${ONLY:-}" ];  then ARGS+=(--only "$ONLY");  fi
+          if [ -n "${BRAND:-}" ]; then ARGS+=(--brand "$BRAND"); fi
+          ARGS+=(--max-new-per-device "${MAXNEW:-1}")
+
+          python discover.py "${ARGS[@]}"
+
+          M=$(cat out/matrix.json 2>/dev/null || echo '{"include":[]}')
+          echo "matrix=$M" >> "$GITHUB_OUTPUT"
+          echo "count=$(printf '%s' "$M" | python -c 'import json,sys;print(len(json.load(sys.stdin)["include"]))')" >> "$GITHUB_OUTPUT"
+
+      - name: 摘要
+        if: always()
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, pathlib
+          p = pathlib.Path("out/matrix.json")
+          if not p.exists():
+              print("### 发现阶段失败，没有产出 matrix"); raise SystemExit
+          m = json.loads(p.read_text("utf-8"))
+          inc = m.get("include", [])
+          print(f"### 本次待提取 {len(inc)} 个包\n")
+          if inc:
+              print("| 品牌 | 机型 | 版本 | 文件名 |")
+              print("|---|---|---|---|")
+              for i in inc[:60]:
+                  print(f"| {i['brand']} | {i['model']} | {i['version']} | {i['name'][:70]} |")
+          c = pathlib.Path("out/candidates.json")
+          if c.exists():
+              items = json.loads(c.read_text("utf-8")).get("items", [])
+              hold = [x for x in items if x["status"] != "ready"]
+              if hold:
+                  print(f"\n**{len(hold)} 条需二次解析**（未派发）：")
+                  for x in hold[:20]:
+                      print(f"- `{x['device_id']}` {x['version']} → {x['requires']}")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: candidates
+          path: |
+            out/candidates.json
+            out/matrix.json
+            state/seen.json
+          retention-days: 7
+
+  # ---------------------------------------------------------------------------
+  # 2. 提取：一个包一个 job
+  # ---------------------------------------------------------------------------
+  farm:
+    needs: discover
+    if: ${{ !inputs.dry_run && needs.discover.outputs.count != '0' && needs.discover.outputs.count != '' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      # 并发数：免费额度下 3 已经很快；123 上传并发太高会被限速
+      max-parallel: 3
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 腾磁盘（14G → ~30G，8G 的包全靠这一步）
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+                      /usr/local/share/boost /usr/share/swift || true
+          sudo apt-get clean
+          df -h /
+
+      - name: 装工具
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq aria2 p7zip-full unzip curl lz4 python3-pip
+          curl -fsSL https://rclone.org/install.sh | sudo bash
+          pip install --upgrade "git+https://github.com/sake1227/payload-dumper"
+
+      - name: 配置 rclone
+        env:
+          RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.config/rclone
+          if [ -n "${RCLONE_CONF:-}" ]; then
+            printf '%s\n' "$RCLONE_CONF" > ~/.config/rclone/rclone.conf
+          elif [ -f rclone.zip ]; then
+            unzip -o -q rclone.zip -d ~/.config/rclone/
+          else
+            echo "缺少 rclone 配置（secret RCLONE_CONF 或仓库根的 rclone.zip）"
+            exit 1
+          fi
+          rclone lsd 123: >/dev/null && echo "rclone 就绪"
+
+      - name: 准备欧加（OPPO/一加/realme）解析工具
+        if: matrix.resolve != ''
+        run: |
+          set -euo pipefail
+          pip install --upgrade requests cryptography
+          rm -rf tools/oplus
+          git clone --depth 1 https://github.com/SunsetMkt/OPlus-Tracker tools/oplus
+          python3 tools/oplus/tomboy_pro.py --help 2>&1 | head -20 || true
+
+      - name: 提取并上传
+        env:
+          ROM_URL: ${{ matrix.url }}
+          ROM_NAME: ${{ matrix.name }}
+          RESOLVE_CMD: ${{ matrix.resolve }}
+          BRAND: ${{ matrix.brand }}
+          MODEL: ${{ matrix.model }}
+          VERSION: ${{ matrix.version }}
+          UNZIP_PASSWORD: ${{ secrets.UNZIP_PASSWORD }}
+          PASSFILE: ${{ github.workspace }}/获取解压密码.txt
+        run: |
+          chmod +x extract_one.sh
+          ./extract_one.sh
+
+      - name: 失败留痕
+        if: failure()
+        run: |
+          {
+            echo "### 失败: ${{ matrix.brand }}/${{ matrix.model }} ${{ matrix.version }}"
+            echo ""
+            echo "- 文件: \`${{ matrix.name }}\`"
+            echo "- 链接: ${{ matrix.url }}"
+            echo "- 重跑: Actions → batch-boot → Run workflow，only=\`${{ matrix.id }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ---------------------------------------------------------------------------
+  # 3. 索引：重建 index.json 给 xxrom.cn 用
+  # ---------------------------------------------------------------------------
+  index:
+    needs: [discover, farm]
+    if: ${{ always() && !inputs.dry_run && needs.discover.outputs.count != '0' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 装 rclone
+        run: curl -fsSL https://rclone.org/install.sh | sudo bash
+
+      - name: 配置 rclone
+        env:
+          RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.config/rclone
+          if [ -n "${RCLONE_CONF:-}" ]; then
+            printf '%s\n' "$RCLONE_CONF" > ~/.config/rclone/rclone.conf
+          elif [ -f rclone.zip ]; then
+            unzip -o -q rclone.zip -d ~/.config/rclone/
+          else
+            echo "缺少 rclone 配置"; exit 1
+          fi
+
+      - name: 生成 index.json
+        run: |
+          set -euo pipefail
+          mkdir -p data
+          rclone lsf 123:zhanfang -R --files-only --format pst > listing.txt
+          wc -l listing.txt
+          # 把元数据 json 一起拉下来（一次 rclone 调用，不是逐个 cat）
+          rclone copy 123:zhanfang data/meta -R --include "*.json" --transfers 16 || true
+          python make_index.py listing.txt -o data/index.json --meta-dir data/meta
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: index
+          path: data/index.json
+          retention-days: 30
+
+      - name: 提交 index.json
+        run: |
+          set -euo pipefail
+          git add data/index.json
+          if git diff --cached --quiet; then
+            echo "index.json 无变化"; exit 0
+          fi
+          git config user.name  "boot-farm-bot"
+          git config user.email "boot-farm-bot@users.noreply.github.com"
+          git commit -m "chore: update index.json [skip ci]"
+          git push

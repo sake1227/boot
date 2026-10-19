@@ -1,0 +1,87 @@
+name: selftest
+
+# 跑一遍 = 点这里。
+#   offline: 每次 push 自动跑，不需要网络、不碰 123、不用任何 secret
+#   live   : 手动触发，真去源站抓一次（只发现链接，不下载），用来确认源站能通
+#
+# 用法：Actions → selftest → Run workflow
+#   device 填 `xiaomi-15`   → 实测小米索引页能不能抓
+#   brand  填 `oplus`       → 实测欧加解析工具能不能真解析出链接
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.py'
+      - '**.sh'
+      - '.github/workflows/**'
+      - 'devices.json'
+  workflow_dispatch:
+    inputs:
+      device:
+        description: '实时探测某个 device id（留空 = 只跑离线自检）'
+        default: ''
+      brand:
+        description: '实时探测某个品牌：xiaomi / google / lolinet / oplus'
+        default: ''
+
+jobs:
+  offline:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 离线自检（不联网）
+        run: python selftest.py
+
+  live:
+    needs: offline
+    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.device != '' || inputs.brand != '') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 实时探测源站（只发现链接，不下载）
+        env:
+          ONLY: ${{ inputs.device }}
+          BRAND: ${{ inputs.brand }}
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          ARGS=(--devices devices.json --out out/candidates.json --print --new-only)
+          if [ -n "${ONLY:-}" ];  then ARGS+=(--only "$ONLY");  fi
+          if [ -n "${BRAND:-}" ]; then ARGS+=(--brand "$BRAND"); fi
+          python discover.py "${ARGS[@]}" | tee out/probe.log
+
+      - name: 欧加解析实测
+        if: ${{ inputs.brand == 'oplus' }}
+        run: |
+          set -euo pipefail
+          pip install --upgrade requests cryptography
+          git clone --depth 1 https://github.com/SunsetMkt/OPlus-Tracker tools/oplus
+          CMD=$(python -c 'import json;items=json.load(open("out/candidates.json",encoding="utf-8"))["items"];c=[x["resolve"] for x in items if x.get("resolve")];print(c[0] if c else "")')
+          if [ -z "$CMD" ]; then echo "没有产出 resolve 命令"; exit 1; fi
+          echo "::group::执行的命令"
+          echo "$CMD"
+          echo "::endgroup::"
+          bash -c "$CMD" 2>&1 | tail -40
+          echo "（解析出来的链接 10~30 分钟过期，这里只为验证工具能跑通）"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: probe
+          path: |
+            out/candidates.json
+            out/probe.log
+          retention-days: 7
