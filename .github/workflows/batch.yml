@@ -44,14 +44,14 @@ jobs:
       matrix: ${{ steps.find.outputs.matrix }}
       count: ${{ steps.find.outputs.count }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
       - name: 恢复去重表与详情页缓存
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             state/seen.json
@@ -107,7 +107,7 @@ jobs:
                       print(f"- `{x['device_id']}` {x['version']} → {x['requires']}")
           PY
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: candidates
@@ -131,9 +131,9 @@ jobs:
       max-parallel: 3
       matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
@@ -210,9 +210,9 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
@@ -243,7 +243,7 @@ jobs:
           rclone copy 123:zhanfang data/meta -R --include "*.json" --transfers 16 || true
           python make_index.py listing.txt -o data/index.json --meta-dir data/meta
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: index
           path: data/index.json
