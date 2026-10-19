@@ -1,0 +1,9 @@
+# 运行期产物，不要进仓库
+work/
+out/
+listings/
+state/
+listing.txt
+data/meta/
+__pycache__/
+*.pyc

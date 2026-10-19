@@ -1,0 +1,2687 @@
+{
+ "_comment": "由 gen_devices.py --source romcloud 生成；display 是机型中文名（仅供参考），model 是 OTA 代号。下载链接仍需 tomboy_pro 现场解析。",
+ "devices": [
+  {
+   "id": "oplus-gm1900",
+   "brand": "oplus",
+   "model": "GM1900",
+   "region": "cn",
+   "display": "一加7",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/GM1900"
+  },
+  {
+   "id": "oplus-gm1910",
+   "brand": "oplus",
+   "model": "GM1910",
+   "region": "cn",
+   "display": "一加7 Pro",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/GM1910"
+  },
+  {
+   "id": "oplus-hd1900",
+   "brand": "oplus",
+   "model": "HD1900",
+   "region": "cn",
+   "display": "一加7T",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/HD1900"
+  },
+  {
+   "id": "oplus-hd1910",
+   "brand": "oplus",
+   "model": "HD1910",
+   "region": "cn",
+   "display": "一加7T Pro",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/HD1910"
+  },
+  {
+   "id": "oplus-in2010",
+   "brand": "oplus",
+   "model": "IN2010",
+   "region": "cn",
+   "display": "一加 8",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/IN2010"
+  },
+  {
+   "id": "oplus-in2020",
+   "brand": "oplus",
+   "model": "IN2020",
+   "region": "cn",
+   "display": "一加 8 Pro",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/IN2020"
+  },
+  {
+   "id": "oplus-kb2000",
+   "brand": "oplus",
+   "model": "KB2000",
+   "region": "cn",
+   "display": "一加 8T",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/KB2000"
+  },
+  {
+   "id": "oplus-le2100",
+   "brand": "oplus",
+   "model": "LE2100",
+   "region": "cn",
+   "display": "一加 9R",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/LE2100"
+  },
+  {
+   "id": "oplus-le2110",
+   "brand": "oplus",
+   "model": "LE2110",
+   "region": "cn",
+   "display": "一加 9",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/LE2110"
+  },
+  {
+   "id": "oplus-le2120",
+   "brand": "oplus",
+   "model": "LE2120",
+   "region": "cn",
+   "display": "一加 9 Pro",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/LE2120"
+  },
+  {
+   "id": "oplus-mt2110",
+   "brand": "oplus",
+   "model": "MT2110",
+   "region": "cn",
+   "display": "一加 9RT",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/MT2110"
+  },
+  {
+   "id": "oplus-ne2210",
+   "brand": "oplus",
+   "model": "NE2210",
+   "region": "cn",
+   "display": "一加 10 Pro",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/NE2210"
+  },
+  {
+   "id": "oplus-opd2101",
+   "brand": "oplus",
+   "model": "OPD2101",
+   "region": "cn",
+   "display": "OPPO Pad",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/OPD2101"
+  },
+  {
+   "id": "oplus-opd2102",
+   "brand": "oplus",
+   "model": "OPD2102",
+   "region": "cn",
+   "display": "OPPO Pad Air",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/OPD2102"
+  },
+  {
+   "id": "oplus-opd2201",
+   "brand": "oplus",
+   "model": "OPD2201",
+   "region": "cn",
+   "display": "OPPO Pad 2",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/OPD2201"
+  },
+  {
+   "id": "oplus-opd2301",
+   "brand": "oplus",
+   "model": "OPD2301",
+   "region": "cn",
+   "display": "OPPO Pad Air2",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/OPD2301"
+  },
+  {
+   "id": "oplus-opd2401",
+   "brand": "oplus",
+   "model": "OPD2401",
+   "region": "cn",
+   "display": "OPPO Pad 3 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/OPD2401"
+  },
+  {
+   "id": "oplus-opd2404",
+   "brand": "oplus",
+   "model": "OPD2404",
+   "region": "cn",
+   "display": "一加 Pad Pro",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/OPD2404"
+  },
+  {
+   "id": "oplus-opd2405",
+   "brand": "oplus",
+   "model": "OPD2405",
+   "region": "cn",
+   "display": "OPPO Pad 3",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/OPD2405"
+  },
+  {
+   "id": "oplus-opd2407",
+   "brand": "oplus",
+   "model": "OPD2407",
+   "region": "cn",
+   "display": "一加 Pad",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/OPD2407"
+  },
+  {
+   "id": "oplus-opd2409",
+   "brand": "oplus",
+   "model": "OPD2409",
+   "region": "cn",
+   "display": "OPPO Pad 4 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/OPD2409"
+  },
+  {
+   "id": "oplus-opd2413",
+   "brand": "oplus",
+   "model": "OPD2413",
+   "region": "cn",
+   "display": "一加 Pad 2 Pro",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/OPD2413"
+  },
+  {
+   "id": "oplus-opd2417",
+   "brand": "oplus",
+   "model": "OPD2417",
+   "region": "cn",
+   "display": "OPPO Pad SE",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/OPD2417"
+  },
+  {
+   "id": "oplus-opd2501",
+   "brand": "oplus",
+   "model": "OPD2501",
+   "region": "cn",
+   "display": "OPPO Pad Air5",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/OPD2501"
+  },
+  {
+   "id": "oplus-opd2506",
+   "brand": "oplus",
+   "model": "OPD2506",
+   "region": "cn",
+   "display": "OPPO Pad 5",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/OPD2506"
+  },
+  {
+   "id": "oplus-opd2508",
+   "brand": "oplus",
+   "model": "OPD2508",
+   "region": "cn",
+   "display": "一加 Pad 2",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/OPD2508"
+  },
+  {
+   "id": "oplus-opd2511",
+   "brand": "oplus",
+   "model": "OPD2511",
+   "region": "cn",
+   "display": "OPPO Pad 5 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/OPD2511"
+  },
+  {
+   "id": "oplus-opd2513",
+   "brand": "oplus",
+   "model": "OPD2513",
+   "region": "cn",
+   "display": "一加 Pad 3 Pro",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/OPD2513"
+  },
+  {
+   "id": "oplus-opd2515",
+   "brand": "oplus",
+   "model": "OPD2515",
+   "region": "cn",
+   "display": "OPPO Pad Mini",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/OPD2515"
+  },
+  {
+   "id": "oplus-opd2601",
+   "brand": "oplus",
+   "model": "OPD2601",
+   "region": "cn",
+   "display": "OPPO Pad 6",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/OPD2601"
+  },
+  {
+   "id": "oplus-pafm00",
+   "brand": "oplus",
+   "model": "PAFM00",
+   "region": "cn",
+   "display": "OPPO Find X",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PAFM00"
+  },
+  {
+   "id": "oplus-pahm00",
+   "brand": "oplus",
+   "model": "PAHM00",
+   "region": "cn",
+   "display": "OPPO Find X 超级闪充版/兰博基尼版 全网通版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PAHM00"
+  },
+  {
+   "id": "oplus-pcam00",
+   "brand": "oplus",
+   "model": "PCAM00",
+   "region": "cn",
+   "display": "OPPO Reno",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCAM00"
+  },
+  {
+   "id": "oplus-pcam10",
+   "brand": "oplus",
+   "model": "PCAM10",
+   "region": "cn",
+   "display": "OPPO A9",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCAM10"
+  },
+  {
+   "id": "oplus-pccm00",
+   "brand": "oplus",
+   "model": "PCCM00",
+   "region": "cn",
+   "display": "OPPO Reno 10倍变焦版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCCM00"
+  },
+  {
+   "id": "oplus-pcdm10",
+   "brand": "oplus",
+   "model": "PCDM10",
+   "region": "cn",
+   "display": "OPPO Reno Z",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCDM10"
+  },
+  {
+   "id": "oplus-pcem00",
+   "brand": "oplus",
+   "model": "PCEM00",
+   "region": "cn",
+   "display": "OPPO A9 X",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCEM00"
+  },
+  {
+   "id": "oplus-pcgm00",
+   "brand": "oplus",
+   "model": "PCGM00",
+   "region": "cn",
+   "display": "OPPO K3",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCGM00"
+  },
+  {
+   "id": "oplus-pchm10",
+   "brand": "oplus",
+   "model": "PCHM10",
+   "region": "cn",
+   "display": "OPPO A11",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCHM10"
+  },
+  {
+   "id": "oplus-pchm30",
+   "brand": "oplus",
+   "model": "PCHM30",
+   "region": "cn",
+   "display": "OPPO A11x",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCHM30"
+  },
+  {
+   "id": "oplus-pckm00",
+   "brand": "oplus",
+   "model": "PCKM00",
+   "region": "cn",
+   "display": "OPPO Reno2",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCKM00"
+  },
+  {
+   "id": "oplus-pckm80",
+   "brand": "oplus",
+   "model": "PCKM80",
+   "region": "cn",
+   "display": "OPPO Reno2 Z",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCKM80"
+  },
+  {
+   "id": "oplus-pclm10",
+   "brand": "oplus",
+   "model": "PCLM10",
+   "region": "cn",
+   "display": "OPPO Reno Ace",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCLM10"
+  },
+  {
+   "id": "oplus-pcnm00",
+   "brand": "oplus",
+   "model": "PCNM00",
+   "region": "cn",
+   "display": "OPPO K5",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCNM00"
+  },
+  {
+   "id": "oplus-pcpm00",
+   "brand": "oplus",
+   "model": "PCPM00",
+   "region": "cn",
+   "display": "OPPO A91",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCPM00"
+  },
+  {
+   "id": "oplus-pcrm00",
+   "brand": "oplus",
+   "model": "PCRM00",
+   "region": "cn",
+   "display": "OPPO Reno3 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PCRM00"
+  },
+  {
+   "id": "oplus-pdam10",
+   "brand": "oplus",
+   "model": "PDAM10",
+   "region": "cn",
+   "display": "OPPO A52",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDAM10"
+  },
+  {
+   "id": "oplus-pdcm00",
+   "brand": "oplus",
+   "model": "PDCM00",
+   "region": "cn",
+   "display": "OPPO Reno3",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDCM00"
+  },
+  {
+   "id": "oplus-pdem10",
+   "brand": "oplus",
+   "model": "PDEM10",
+   "region": "cn",
+   "display": "OPPO Find X2 全网通",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDEM10"
+  },
+  {
+   "id": "oplus-pdem30",
+   "brand": "oplus",
+   "model": "PDEM30",
+   "region": "cn",
+   "display": "OPPO Find X2 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDEM30"
+  },
+  {
+   "id": "oplus-pdet10",
+   "brand": "oplus",
+   "model": "PDET10",
+   "region": "cn",
+   "display": "OPPO Find X2 移动版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDET10"
+  },
+  {
+   "id": "oplus-pdhm00",
+   "brand": "oplus",
+   "model": "PDHM00",
+   "region": "cn",
+   "display": "OPPO Reno Ace2",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDHM00"
+  },
+  {
+   "id": "oplus-pdkm00",
+   "brand": "oplus",
+   "model": "PDKM00",
+   "region": "cn",
+   "display": "OPPO A92 S 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDKM00"
+  },
+  {
+   "id": "oplus-pdnm00",
+   "brand": "oplus",
+   "model": "PDNM00",
+   "region": "cn",
+   "display": "OPPO Reno4 Pro 5G 全网通",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDNM00"
+  },
+  {
+   "id": "oplus-pdnt00",
+   "brand": "oplus",
+   "model": "PDNT00",
+   "region": "cn",
+   "display": "OPPO Reno4 Pro 5G 移动版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDNT00"
+  },
+  {
+   "id": "oplus-pdpm00",
+   "brand": "oplus",
+   "model": "PDPM00",
+   "region": "cn",
+   "display": "OPPO Reno4 5G 全网通",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDPM00"
+  },
+  {
+   "id": "oplus-pdpt00",
+   "brand": "oplus",
+   "model": "PDPT00",
+   "region": "cn",
+   "display": "OPPO Reno4 5G 移动版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDPT00"
+  },
+  {
+   "id": "oplus-pdrm00",
+   "brand": "oplus",
+   "model": "PDRM00",
+   "region": "cn",
+   "display": "OPPO Reno5 Pro+ 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDRM00"
+  },
+  {
+   "id": "oplus-pdsm00",
+   "brand": "oplus",
+   "model": "PDSM00",
+   "region": "cn",
+   "display": "OPPO Reno5 Pro 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDSM00"
+  },
+  {
+   "id": "oplus-pdvm00",
+   "brand": "oplus",
+   "model": "PDVM00",
+   "region": "cn",
+   "display": "OPPO A32/OPPO A11s",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDVM00"
+  },
+  {
+   "id": "oplus-pdym20",
+   "brand": "oplus",
+   "model": "PDYM20",
+   "region": "cn",
+   "display": "OPPO A72 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PDYM20"
+  },
+  {
+   "id": "oplus-peam00",
+   "brand": "oplus",
+   "model": "PEAM00",
+   "region": "cn",
+   "display": "OPPO Reno4 SE 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PEAM00"
+  },
+  {
+   "id": "oplus-pecm20",
+   "brand": "oplus",
+   "model": "PECM20",
+   "region": "cn",
+   "display": "PECM20",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PECM20"
+  },
+  {
+   "id": "oplus-pecm30",
+   "brand": "oplus",
+   "model": "PECM30",
+   "region": "cn",
+   "display": "OPPO A53 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PECM30"
+  },
+  {
+   "id": "oplus-pedm00",
+   "brand": "oplus",
+   "model": "PEDM00",
+   "region": "cn",
+   "display": "OPPO Find X3",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PEDM00"
+  },
+  {
+   "id": "oplus-peem00",
+   "brand": "oplus",
+   "model": "PEEM00",
+   "region": "cn",
+   "display": "OPPO Find X3 Pro/OPPO Find X3 Pro 摄影师版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PEEM00"
+  },
+  {
+   "id": "oplus-pegm00",
+   "brand": "oplus",
+   "model": "PEGM00",
+   "region": "cn",
+   "display": "OPPO Reno5 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PEGM00"
+  },
+  {
+   "id": "oplus-pegm10",
+   "brand": "oplus",
+   "model": "PEGM10",
+   "region": "cn",
+   "display": "OPPO Reno5 K 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PEGM10"
+  },
+  {
+   "id": "oplus-pehm00",
+   "brand": "oplus",
+   "model": "PEHM00",
+   "region": "cn",
+   "display": "OPPO A93 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PEHM00"
+  },
+  {
+   "id": "oplus-pelm00",
+   "brand": "oplus",
+   "model": "PELM00",
+   "region": "cn",
+   "display": "OPPO A95 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PELM00"
+  },
+  {
+   "id": "oplus-pemm00",
+   "brand": "oplus",
+   "model": "PEMM00",
+   "region": "cn",
+   "display": "OPPO A55 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PEMM00"
+  },
+  {
+   "id": "oplus-pemm20",
+   "brand": "oplus",
+   "model": "PEMM20",
+   "region": "cn",
+   "display": "PEMM20",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PEMM20"
+  },
+  {
+   "id": "oplus-penm00",
+   "brand": "oplus",
+   "model": "PENM00",
+   "region": "cn",
+   "display": "OPPO Reno6 Pro+ 5G/OPPO Reno6 Pro+ 5G 名侦探柯南限定版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PENM00"
+  },
+  {
+   "id": "oplus-pepm00",
+   "brand": "oplus",
+   "model": "PEPM00",
+   "region": "cn",
+   "display": "OPPO Reno6 Pro 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PEPM00"
+  },
+  {
+   "id": "oplus-peqm00",
+   "brand": "oplus",
+   "model": "PEQM00",
+   "region": "cn",
+   "display": "OPPO Reno6 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PEQM00"
+  },
+  {
+   "id": "oplus-perm00",
+   "brand": "oplus",
+   "model": "PERM00",
+   "region": "cn",
+   "display": "OPPO K7X",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PERM00"
+  },
+  {
+   "id": "oplus-perm10",
+   "brand": "oplus",
+   "model": "PERM10",
+   "region": "cn",
+   "display": "OPPO K9 S / OPPO K10 活力版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PERM10"
+  },
+  {
+   "id": "oplus-pesm10",
+   "brand": "oplus",
+   "model": "PESM10",
+   "region": "cn",
+   "display": "OPPO A36",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PESM10"
+  },
+  {
+   "id": "oplus-peum00",
+   "brand": "oplus",
+   "model": "PEUM00",
+   "region": "cn",
+   "display": "OPPO Find N",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PEUM00"
+  },
+  {
+   "id": "oplus-pexm00",
+   "brand": "oplus",
+   "model": "PEXM00",
+   "region": "cn",
+   "display": "OPPO K9",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PEXM00"
+  },
+  {
+   "id": "oplus-peym00",
+   "brand": "oplus",
+   "model": "PEYM00",
+   "region": "cn",
+   "display": "OPPO K9 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PEYM00"
+  },
+  {
+   "id": "oplus-pfcm00",
+   "brand": "oplus",
+   "model": "PFCM00",
+   "region": "cn",
+   "display": "OPPO Reno7 SE 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PFCM00"
+  },
+  {
+   "id": "oplus-pfdm00",
+   "brand": "oplus",
+   "model": "PFDM00",
+   "region": "cn",
+   "display": "OPPO Reno7 Pro 5G/OPPO Reno7 Pro 英雄联盟手游限定版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PFDM00"
+  },
+  {
+   "id": "oplus-pfem10",
+   "brand": "oplus",
+   "model": "PFEM10",
+   "region": "cn",
+   "display": "OPPO Find X5 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PFEM10"
+  },
+  {
+   "id": "oplus-pffm10",
+   "brand": "oplus",
+   "model": "PFFM10",
+   "region": "cn",
+   "display": "OPPO Find X5",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PFFM10"
+  },
+  {
+   "id": "oplus-pffm20",
+   "brand": "oplus",
+   "model": "PFFM20",
+   "region": "cn",
+   "display": "OPPO Find X5 Pro 天玑版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PFFM20"
+  },
+  {
+   "id": "oplus-pfgm00",
+   "brand": "oplus",
+   "model": "PFGM00",
+   "region": "cn",
+   "display": "OPPO A93 S 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PFGM00"
+  },
+  {
+   "id": "oplus-pfjm10",
+   "brand": "oplus",
+   "model": "PFJM10",
+   "region": "cn",
+   "display": "OPPO Reno7 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PFJM10"
+  },
+  {
+   "id": "oplus-pftm10",
+   "brand": "oplus",
+   "model": "PFTM10",
+   "region": "cn",
+   "display": "OPPO A97",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PFTM10"
+  },
+  {
+   "id": "oplus-pftm20",
+   "brand": "oplus",
+   "model": "PFTM20",
+   "region": "cn",
+   "display": "OPPO A56 S 5G/OPPO A57 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PFTM20"
+  },
+  {
+   "id": "oplus-pfum10",
+   "brand": "oplus",
+   "model": "PFUM10",
+   "region": "cn",
+   "display": "OPPO A96 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PFUM10"
+  },
+  {
+   "id": "oplus-pfvm10",
+   "brand": "oplus",
+   "model": "PFVM10",
+   "region": "cn",
+   "display": "OPPO A56 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PFVM10"
+  },
+  {
+   "id": "oplus-pfzm10",
+   "brand": "oplus",
+   "model": "PFZM10",
+   "region": "cn",
+   "display": "OPPO Reno8 Pro+ 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PFZM10"
+  },
+  {
+   "id": "oplus-pgam10",
+   "brand": "oplus",
+   "model": "PGAM10",
+   "region": "cn",
+   "display": "OPPO Reno8 Pro 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PGAM10"
+  },
+  {
+   "id": "oplus-pgbm10",
+   "brand": "oplus",
+   "model": "PGBM10",
+   "region": "cn",
+   "display": "OPPO Reno8 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PGBM10"
+  },
+  {
+   "id": "oplus-pgcm10",
+   "brand": "oplus",
+   "model": "PGCM10",
+   "region": "cn",
+   "display": "OPPO K9 X",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PGCM10"
+  },
+  {
+   "id": "oplus-pgem10",
+   "brand": "oplus",
+   "model": "PGEM10",
+   "region": "cn",
+   "display": "OPPO Find X6 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PGEM10"
+  },
+  {
+   "id": "oplus-pgfm10",
+   "brand": "oplus",
+   "model": "PGFM10",
+   "region": "cn",
+   "display": "OPPO Find X6",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PGFM10"
+  },
+  {
+   "id": "oplus-pggm10",
+   "brand": "oplus",
+   "model": "PGGM10",
+   "region": "cn",
+   "display": "OPPO K10 X",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PGGM10"
+  },
+  {
+   "id": "oplus-pgim10",
+   "brand": "oplus",
+   "model": "PGIM10",
+   "region": "cn",
+   "display": "OPPO K10 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PGIM10"
+  },
+  {
+   "id": "oplus-pgjm10",
+   "brand": "oplus",
+   "model": "PGJM10",
+   "region": "cn",
+   "display": "OPPO K10",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PGJM10"
+  },
+  {
+   "id": "oplus-pgkm10",
+   "brand": "oplus",
+   "model": "PGKM10",
+   "region": "cn",
+   "display": "一加 Ace",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PGKM10"
+  },
+  {
+   "id": "oplus-pgp110",
+   "brand": "oplus",
+   "model": "PGP110",
+   "region": "cn",
+   "display": "一加 Ace Pro",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PGP110"
+  },
+  {
+   "id": "oplus-pgt110",
+   "brand": "oplus",
+   "model": "PGT110",
+   "region": "cn",
+   "display": "OPPO Find N2 Flip",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PGT110"
+  },
+  {
+   "id": "oplus-pgu110",
+   "brand": "oplus",
+   "model": "PGU110",
+   "region": "cn",
+   "display": "OPPO Find N2",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PGU110"
+  },
+  {
+   "id": "oplus-pgw110",
+   "brand": "oplus",
+   "model": "PGW110",
+   "region": "cn",
+   "display": "OPPO Reno9 Pro+ 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PGW110"
+  },
+  {
+   "id": "oplus-pgx110",
+   "brand": "oplus",
+   "model": "PGX110",
+   "region": "cn",
+   "display": "OPPO Reno9 Pro 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PGX110"
+  },
+  {
+   "id": "oplus-pgz110",
+   "brand": "oplus",
+   "model": "PGZ110",
+   "region": "cn",
+   "display": "一加 Ace 竞速版",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PGZ110"
+  },
+  {
+   "id": "oplus-pha120",
+   "brand": "oplus",
+   "model": "PHA120",
+   "region": "cn",
+   "display": "OPPO A96",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHA120"
+  },
+  {
+   "id": "oplus-phb110",
+   "brand": "oplus",
+   "model": "PHB110",
+   "region": "cn",
+   "display": "一加 11",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PHB110"
+  },
+  {
+   "id": "oplus-phf110",
+   "brand": "oplus",
+   "model": "PHF110",
+   "region": "cn",
+   "display": "OPPO K11 X",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHF110"
+  },
+  {
+   "id": "oplus-phj110",
+   "brand": "oplus",
+   "model": "PHJ110",
+   "region": "cn",
+   "display": "OPPO A58 / OPPO A58x / OPPO A1x / OPPO A1 活力版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHJ110"
+  },
+  {
+   "id": "oplus-phk110",
+   "brand": "oplus",
+   "model": "PHK110",
+   "region": "cn",
+   "display": "一加 Ace 2",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PHK110"
+  },
+  {
+   "id": "oplus-phm110",
+   "brand": "oplus",
+   "model": "PHM110",
+   "region": "cn",
+   "display": "OPPO Reno9 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHM110"
+  },
+  {
+   "id": "oplus-phn110",
+   "brand": "oplus",
+   "model": "PHN110",
+   "region": "cn",
+   "display": "OPPO Find N3/OPPO Find N3 典藏版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHN110"
+  },
+  {
+   "id": "oplus-php110",
+   "brand": "oplus",
+   "model": "PHP110",
+   "region": "cn",
+   "display": "一加 Ace 2V",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PHP110"
+  },
+  {
+   "id": "oplus-phq110",
+   "brand": "oplus",
+   "model": "PHQ110",
+   "region": "cn",
+   "display": "OPPO A1 Pro 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHQ110"
+  },
+  {
+   "id": "oplus-phs110",
+   "brand": "oplus",
+   "model": "PHS110",
+   "region": "cn",
+   "display": "OPPO A1 5G (2023)",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHS110"
+  },
+  {
+   "id": "oplus-pht110",
+   "brand": "oplus",
+   "model": "PHT110",
+   "region": "cn",
+   "display": "OPPO Find N3 Flip",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHT110"
+  },
+  {
+   "id": "oplus-phu110",
+   "brand": "oplus",
+   "model": "PHU110",
+   "region": "cn",
+   "display": "OPPO Reno10 Pro+ 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHU110"
+  },
+  {
+   "id": "oplus-phv110",
+   "brand": "oplus",
+   "model": "PHV110",
+   "region": "cn",
+   "display": "OPPO Reno10 Pro 5G/OPPO Reno10 Pro 星籁版 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHV110"
+  },
+  {
+   "id": "oplus-phw110",
+   "brand": "oplus",
+   "model": "PHW110",
+   "region": "cn",
+   "display": "OPPO Reno10 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHW110"
+  },
+  {
+   "id": "oplus-phy110",
+   "brand": "oplus",
+   "model": "PHY110",
+   "region": "cn",
+   "display": "OPPO Find X7 Ultra",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHY110"
+  },
+  {
+   "id": "oplus-phy120",
+   "brand": "oplus",
+   "model": "PHY120",
+   "region": "cn",
+   "display": "OPPO Find X7 Ultra 卫星通信版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHY120"
+  },
+  {
+   "id": "oplus-phz110",
+   "brand": "oplus",
+   "model": "PHZ110",
+   "region": "cn",
+   "display": "OPPO Find X7",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PHZ110"
+  },
+  {
+   "id": "oplus-pja110",
+   "brand": "oplus",
+   "model": "PJA110",
+   "region": "cn",
+   "display": "一加 Ace 2 Pro",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PJA110"
+  },
+  {
+   "id": "oplus-pjb110",
+   "brand": "oplus",
+   "model": "PJB110",
+   "region": "cn",
+   "display": "OPPO A1s / OPPO A2",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PJB110"
+  },
+  {
+   "id": "oplus-pjc110",
+   "brand": "oplus",
+   "model": "PJC110",
+   "region": "cn",
+   "display": "OPPO K11",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PJC110"
+  },
+  {
+   "id": "oplus-pjd110",
+   "brand": "oplus",
+   "model": "PJD110",
+   "region": "cn",
+   "display": "一加 12",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PJD110"
+  },
+  {
+   "id": "oplus-pje110",
+   "brand": "oplus",
+   "model": "PJE110",
+   "region": "cn",
+   "display": "一加 Ace 3",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PJE110"
+  },
+  {
+   "id": "oplus-pjf110",
+   "brand": "oplus",
+   "model": "PJF110",
+   "region": "cn",
+   "display": "一加 Ace 3V",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PJF110"
+  },
+  {
+   "id": "oplus-pjg110",
+   "brand": "oplus",
+   "model": "PJG110",
+   "region": "cn",
+   "display": "OPPO A2 Pro 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PJG110"
+  },
+  {
+   "id": "oplus-pjh110",
+   "brand": "oplus",
+   "model": "PJH110",
+   "region": "cn",
+   "display": "OPPO Reno11 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PJH110"
+  },
+  {
+   "id": "oplus-pjj110",
+   "brand": "oplus",
+   "model": "PJJ110",
+   "region": "cn",
+   "display": "OPPO Reno11 Pro 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PJJ110"
+  },
+  {
+   "id": "oplus-pjr110",
+   "brand": "oplus",
+   "model": "PJR110",
+   "region": "cn",
+   "display": "OPPO K12",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PJR110"
+  },
+  {
+   "id": "oplus-pjs110",
+   "brand": "oplus",
+   "model": "PJS110",
+   "region": "cn",
+   "display": "OPPO A2 X 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PJS110"
+  },
+  {
+   "id": "oplus-pjt110",
+   "brand": "oplus",
+   "model": "PJT110",
+   "region": "cn",
+   "display": "OPPO K12 X",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PJT110"
+  },
+  {
+   "id": "oplus-pju110",
+   "brand": "oplus",
+   "model": "PJU110",
+   "region": "cn",
+   "display": "OPPO A2 M 5G/OPPO A1 i 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PJU110"
+  },
+  {
+   "id": "oplus-pjv110",
+   "brand": "oplus",
+   "model": "PJV110",
+   "region": "cn",
+   "display": "OPPO Reno12",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PJV110"
+  },
+  {
+   "id": "oplus-pjw110",
+   "brand": "oplus",
+   "model": "PJW110",
+   "region": "cn",
+   "display": "OPPO Reno12 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PJW110"
+  },
+  {
+   "id": "oplus-pjx110",
+   "brand": "oplus",
+   "model": "PJX110",
+   "region": "cn",
+   "display": "一加 Ace 3 Pro",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PJX110"
+  },
+  {
+   "id": "oplus-pjy110",
+   "brand": "oplus",
+   "model": "PJY110",
+   "region": "cn",
+   "display": "OPPO A3 Pro 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PJY110"
+  },
+  {
+   "id": "oplus-pjz110",
+   "brand": "oplus",
+   "model": "PJZ110",
+   "region": "cn",
+   "display": "一加 13",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PJZ110"
+  },
+  {
+   "id": "oplus-pka110",
+   "brand": "oplus",
+   "model": "PKA110",
+   "region": "cn",
+   "display": "OPPO A3 5G/OPPO A3 i Plus 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKA110"
+  },
+  {
+   "id": "oplus-pkb110",
+   "brand": "oplus",
+   "model": "PKB110",
+   "region": "cn",
+   "display": "OPPO Find X8",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKB110"
+  },
+  {
+   "id": "oplus-pkc110",
+   "brand": "oplus",
+   "model": "PKC110",
+   "region": "cn",
+   "display": "OPPO Find X8 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKC110"
+  },
+  {
+   "id": "oplus-pkc130",
+   "brand": "oplus",
+   "model": "PKC130",
+   "region": "cn",
+   "display": "OPPO Find X8 Pro 卫星通信版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKC130"
+  },
+  {
+   "id": "oplus-pkd110",
+   "brand": "oplus",
+   "model": "PKD110",
+   "region": "cn",
+   "display": "OPPO A3 活力版 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKD110"
+  },
+  {
+   "id": "oplus-pkd130",
+   "brand": "oplus",
+   "model": "PKD130",
+   "region": "cn",
+   "display": "OPPO A3 X 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKD130"
+  },
+  {
+   "id": "oplus-pkg110",
+   "brand": "oplus",
+   "model": "PKG110",
+   "region": "cn",
+   "display": "一加 Ace 5",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PKG110"
+  },
+  {
+   "id": "oplus-pkh110",
+   "brand": "oplus",
+   "model": "PKH110",
+   "region": "cn",
+   "display": "OPPO Find N5",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKH110"
+  },
+  {
+   "id": "oplus-pkh120",
+   "brand": "oplus",
+   "model": "PKH120",
+   "region": "cn",
+   "display": "OPPO Find N5 卫星通信版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKH120"
+  },
+  {
+   "id": "oplus-pkj110",
+   "brand": "oplus",
+   "model": "PKJ110",
+   "region": "cn",
+   "display": "OPPO Find X8 Ultra",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKJ110"
+  },
+  {
+   "id": "oplus-pkk110",
+   "brand": "oplus",
+   "model": "PKK110",
+   "region": "cn",
+   "display": "OPPO Reno13 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKK110"
+  },
+  {
+   "id": "oplus-pkl110",
+   "brand": "oplus",
+   "model": "PKL110",
+   "region": "cn",
+   "display": "OPPO A3 i 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKL110"
+  },
+  {
+   "id": "oplus-pkm110",
+   "brand": "oplus",
+   "model": "PKM110",
+   "region": "cn",
+   "display": "OPPO Reno13",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKM110"
+  },
+  {
+   "id": "oplus-pkp110",
+   "brand": "oplus",
+   "model": "PKP110",
+   "region": "cn",
+   "display": "OPPO A5 Pro 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKP110"
+  },
+  {
+   "id": "oplus-pkq110",
+   "brand": "oplus",
+   "model": "PKQ110",
+   "region": "cn",
+   "display": "OPPO A5 5G",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKQ110"
+  },
+  {
+   "id": "oplus-pkr110",
+   "brand": "oplus",
+   "model": "PKR110",
+   "region": "cn",
+   "display": "一加 Ace 5 Pro",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PKR110"
+  },
+  {
+   "id": "oplus-pks110",
+   "brand": "oplus",
+   "model": "PKS110",
+   "region": "cn",
+   "display": "OPPO K12 Plus",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKS110"
+  },
+  {
+   "id": "oplus-pkt110",
+   "brand": "oplus",
+   "model": "PKT110",
+   "region": "cn",
+   "display": "OPPO Find X8S",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKT110"
+  },
+  {
+   "id": "oplus-pku110",
+   "brand": "oplus",
+   "model": "PKU110",
+   "region": "cn",
+   "display": "OPPO Find X8 Ultra 卫星通信版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKU110"
+  },
+  {
+   "id": "oplus-pkv110",
+   "brand": "oplus",
+   "model": "PKV110",
+   "region": "cn",
+   "display": "OPPO K13 X/OPPO A5活力版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKV110"
+  },
+  {
+   "id": "oplus-pkw110",
+   "brand": "oplus",
+   "model": "PKW110",
+   "region": "cn",
+   "display": "OPPO A5x / OPPO A5m",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKW110"
+  },
+  {
+   "id": "oplus-pkw120",
+   "brand": "oplus",
+   "model": "PKW120",
+   "region": "cn",
+   "display": "OPPO A6i",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKW120"
+  },
+  {
+   "id": "oplus-pkx110",
+   "brand": "oplus",
+   "model": "PKX110",
+   "region": "cn",
+   "display": "一加 13T",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PKX110"
+  },
+  {
+   "id": "oplus-pkz110",
+   "brand": "oplus",
+   "model": "PKZ110",
+   "region": "cn",
+   "display": "OPPO Reno14 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PKZ110"
+  },
+  {
+   "id": "oplus-pla110",
+   "brand": "oplus",
+   "model": "PLA110",
+   "region": "cn",
+   "display": "OPPO Reno14",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLA110"
+  },
+  {
+   "id": "oplus-plb110",
+   "brand": "oplus",
+   "model": "PLB110",
+   "region": "cn",
+   "display": "OPPO Find X8S+",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLB110"
+  },
+  {
+   "id": "oplus-plc110",
+   "brand": "oplus",
+   "model": "PLC110",
+   "region": "cn",
+   "display": "一加 Ace 5 至尊版",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PLC110"
+  },
+  {
+   "id": "oplus-pld110",
+   "brand": "oplus",
+   "model": "PLD110",
+   "region": "cn",
+   "display": "OPPO K12 S",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLD110"
+  },
+  {
+   "id": "oplus-ple110",
+   "brand": "oplus",
+   "model": "PLE110",
+   "region": "cn",
+   "display": "OPPO K13 Turbo Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLE110"
+  },
+  {
+   "id": "oplus-plf110",
+   "brand": "oplus",
+   "model": "PLF110",
+   "region": "cn",
+   "display": "一加 Ace 5 竞速版",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PLF110"
+  },
+  {
+   "id": "oplus-plg110",
+   "brand": "oplus",
+   "model": "PLG110",
+   "region": "cn",
+   "display": "OPPO Find X9 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLG110"
+  },
+  {
+   "id": "oplus-plg120",
+   "brand": "oplus",
+   "model": "PLG120",
+   "region": "cn",
+   "display": "OPPO Find X9 Pro 卫星通信版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLG120"
+  },
+  {
+   "id": "oplus-plj110",
+   "brand": "oplus",
+   "model": "PLJ110",
+   "region": "cn",
+   "display": "OPPO Find X9",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLJ110"
+  },
+  {
+   "id": "oplus-plk110",
+   "brand": "oplus",
+   "model": "PLK110",
+   "region": "cn",
+   "display": "一加 15",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PLK110"
+  },
+  {
+   "id": "oplus-pll110",
+   "brand": "oplus",
+   "model": "PLL110",
+   "region": "cn",
+   "display": "OPPO K13 S/OPPO A6 GT/OPPO A6 Max/OPPO A6l",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLL110"
+  },
+  {
+   "id": "oplus-plm110",
+   "brand": "oplus",
+   "model": "PLM110",
+   "region": "cn",
+   "display": "OPPO K13 Turbo",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLM110"
+  },
+  {
+   "id": "oplus-pln110",
+   "brand": "oplus",
+   "model": "PLN110",
+   "region": "cn",
+   "display": "OPPO A6 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLN110"
+  },
+  {
+   "id": "oplus-plp110",
+   "brand": "oplus",
+   "model": "PLP110",
+   "region": "cn",
+   "display": "OPPO Find N6",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLP110"
+  },
+  {
+   "id": "oplus-plp120",
+   "brand": "oplus",
+   "model": "PLP120",
+   "region": "cn",
+   "display": "OPPO Find N6 卫星通信版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLP120"
+  },
+  {
+   "id": "oplus-plq110",
+   "brand": "oplus",
+   "model": "PLQ110",
+   "region": "cn",
+   "display": "一加 Ace 6",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PLQ110"
+  },
+  {
+   "id": "oplus-plr110",
+   "brand": "oplus",
+   "model": "PLR110",
+   "region": "cn",
+   "display": "一加 Ace 6T",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PLR110"
+  },
+  {
+   "id": "oplus-pls120",
+   "brand": "oplus",
+   "model": "PLS120",
+   "region": "cn",
+   "display": "OPPO A6",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLS120"
+  },
+  {
+   "id": "oplus-plt120",
+   "brand": "oplus",
+   "model": "PLT120",
+   "region": "cn",
+   "display": "OPPO A6s / OPPO A6i+ / OPPO A6k",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLT120"
+  },
+  {
+   "id": "oplus-plt130",
+   "brand": "oplus",
+   "model": "PLT130",
+   "region": "cn",
+   "display": "OPPO A6v",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLT130"
+  },
+  {
+   "id": "oplus-plt140",
+   "brand": "oplus",
+   "model": "PLT140",
+   "region": "cn",
+   "display": "OPPO A6x",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLT140"
+  },
+  {
+   "id": "oplus-plu110",
+   "brand": "oplus",
+   "model": "PLU110",
+   "region": "cn",
+   "display": "一加 Turbo 6",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PLU110"
+  },
+  {
+   "id": "oplus-plv110",
+   "brand": "oplus",
+   "model": "PLV110",
+   "region": "cn",
+   "display": "OPPO Reno15 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLV110"
+  },
+  {
+   "id": "oplus-plw110",
+   "brand": "oplus",
+   "model": "PLW110",
+   "region": "cn",
+   "display": "OPPO Reno15",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PLW110"
+  },
+  {
+   "id": "oplus-ply110",
+   "brand": "oplus",
+   "model": "PLY110",
+   "region": "cn",
+   "display": "一加 Turbo 6V",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PLY110"
+  },
+  {
+   "id": "oplus-plz110",
+   "brand": "oplus",
+   "model": "PLZ110",
+   "region": "cn",
+   "display": "一加 15T",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PLZ110"
+  },
+  {
+   "id": "oplus-pma110",
+   "brand": "oplus",
+   "model": "PMA110",
+   "region": "cn",
+   "display": "OPPO Find X9 Ultra",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PMA110"
+  },
+  {
+   "id": "oplus-pma120",
+   "brand": "oplus",
+   "model": "PMA120",
+   "region": "cn",
+   "display": "OPPO Find X9 Ultra 卫星通信版",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PMA120"
+  },
+  {
+   "id": "oplus-pmb110",
+   "brand": "oplus",
+   "model": "PMB110",
+   "region": "cn",
+   "display": "一加 Ace 6 至尊版",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PMB110"
+  },
+  {
+   "id": "oplus-pmc110",
+   "brand": "oplus",
+   "model": "PMC110",
+   "region": "cn",
+   "display": "OPPO A6c",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PMC110"
+  },
+  {
+   "id": "oplus-pmd110",
+   "brand": "oplus",
+   "model": "PMD110",
+   "region": "cn",
+   "display": "OPPO Reno15c",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PMD110"
+  },
+  {
+   "id": "oplus-pme110",
+   "brand": "oplus",
+   "model": "PME110",
+   "region": "cn",
+   "display": "OPPO Find X9s Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PME110"
+  },
+  {
+   "id": "oplus-pmg110",
+   "brand": "oplus",
+   "model": "PMG110",
+   "region": "cn",
+   "display": "OPPO K15 Pro+",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PMG110"
+  },
+  {
+   "id": "oplus-pmh110",
+   "brand": "oplus",
+   "model": "PMH110",
+   "region": "cn",
+   "display": "OPPO K15 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PMH110"
+  },
+  {
+   "id": "oplus-pmk110",
+   "brand": "oplus",
+   "model": "PMK110",
+   "region": "cn",
+   "display": "OPPO Reno16 Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PMK110"
+  },
+  {
+   "id": "oplus-pmm110",
+   "brand": "oplus",
+   "model": "PMM110",
+   "region": "cn",
+   "display": "OPPO Reno16",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PMM110"
+  },
+  {
+   "id": "oplus-pmt110",
+   "brand": "oplus",
+   "model": "PMT110",
+   "region": "cn",
+   "display": "OPPO A6s Pro",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PMT110"
+  },
+  {
+   "id": "oplus-pmw110",
+   "brand": "oplus",
+   "model": "PMW110",
+   "region": "cn",
+   "display": "OPPO Find X10",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PMW110"
+  },
+  {
+   "id": "oplus-pmx110",
+   "brand": "oplus",
+   "model": "PMX110",
+   "region": "cn",
+   "display": "OPPO Find X10 Pro Max",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PMX110"
+  },
+  {
+   "id": "oplus-pna110",
+   "brand": "oplus",
+   "model": "PNA110",
+   "region": "cn",
+   "display": "OPPO Find X10 E",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PNA110"
+  },
+  {
+   "id": "oplus-pyb110",
+   "brand": "oplus",
+   "model": "PYB110",
+   "region": "cn",
+   "display": "一加 16",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PYB110"
+  },
+  {
+   "id": "oplus-pyc110",
+   "brand": "oplus",
+   "model": "PYC110",
+   "region": "cn",
+   "display": "OPPO A7 Pro Max",
+   "family": "oppo",
+   "source": "https://roms.lian86.top/brand/OPPO/model/PYC110"
+  },
+  {
+   "id": "oplus-pyr110",
+   "brand": "oplus",
+   "model": "PYR110",
+   "region": "cn",
+   "display": "一加 Turbo 6X Pro",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PYR110"
+  },
+  {
+   "id": "oplus-pys110",
+   "brand": "oplus",
+   "model": "PYS110",
+   "region": "cn",
+   "display": "一加 Turbo 6X",
+   "family": "oneplus",
+   "source": "https://roms.lian86.top/brand/OnePlus/model/PYS110"
+  },
+  {
+   "id": "oplus-rmp2108",
+   "brand": "oplus",
+   "model": "RMP2108",
+   "region": "cn",
+   "display": "Realme 平板 X",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMP2108"
+  },
+  {
+   "id": "oplus-rmx1851",
+   "brand": "oplus",
+   "model": "RMX1851",
+   "region": "cn",
+   "display": "Realme X 青春版",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX1851"
+  },
+  {
+   "id": "oplus-rmx1901",
+   "brand": "oplus",
+   "model": "RMX1901",
+   "region": "cn",
+   "display": "Realme X",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX1901"
+  },
+  {
+   "id": "oplus-rmx1931",
+   "brand": "oplus",
+   "model": "RMX1931",
+   "region": "cn",
+   "display": "Realme X2 Pro",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX1931"
+  },
+  {
+   "id": "oplus-rmx1971",
+   "brand": "oplus",
+   "model": "RMX1971",
+   "region": "cn",
+   "display": "Realme Q",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX1971"
+  },
+  {
+   "id": "oplus-rmx1991",
+   "brand": "oplus",
+   "model": "RMX1991",
+   "region": "cn",
+   "display": "Realme X2",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX1991"
+  },
+  {
+   "id": "oplus-rmx2051",
+   "brand": "oplus",
+   "model": "RMX2051",
+   "region": "cn",
+   "display": "Realme X50 5G",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX2051"
+  },
+  {
+   "id": "oplus-rmx2071",
+   "brand": "oplus",
+   "model": "RMX2071",
+   "region": "cn",
+   "display": "Realme X50 Pro 5G",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX2071"
+  },
+  {
+   "id": "oplus-rmx2072",
+   "brand": "oplus",
+   "model": "RMX2072",
+   "region": "cn",
+   "display": "Realme X50 Pro 玩家版",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX2072"
+  },
+  {
+   "id": "oplus-rmx2112",
+   "brand": "oplus",
+   "model": "RMX2112",
+   "region": "cn",
+   "display": "Realme V5 5G 运营商定制版",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX2112"
+  },
+  {
+   "id": "oplus-rmx2117",
+   "brand": "oplus",
+   "model": "RMX2117",
+   "region": "cn",
+   "display": "Realme Q2 5G / Realme V5 5G",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX2117"
+  },
+  {
+   "id": "oplus-rmx2121",
+   "brand": "oplus",
+   "model": "RMX2121",
+   "region": "cn",
+   "display": "Realme X7 Pro 5G",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX2121"
+  },
+  {
+   "id": "oplus-rmx2141",
+   "brand": "oplus",
+   "model": "RMX2141",
+   "region": "cn",
+   "display": "Realme X50M 5G",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX2141"
+  },
+  {
+   "id": "oplus-rmx2202",
+   "brand": "oplus",
+   "model": "RMX2202",
+   "region": "cn",
+   "display": "Realme GT 5G",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX2202"
+  },
+  {
+   "id": "oplus-rmx2205",
+   "brand": "oplus",
+   "model": "RMX2205",
+   "region": "cn",
+   "display": "Realme Q3 Pro 5G",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX2205"
+  },
+  {
+   "id": "oplus-rmx3031",
+   "brand": "oplus",
+   "model": "RMX3031",
+   "region": "cn",
+   "display": "Realme GT Neo 5G",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3031"
+  },
+  {
+   "id": "oplus-rmx3041",
+   "brand": "oplus",
+   "model": "RMX3041",
+   "region": "cn",
+   "display": "Realme V13 5G 全网通版",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3041"
+  },
+  {
+   "id": "oplus-rmx3042",
+   "brand": "oplus",
+   "model": "RMX3042",
+   "region": "cn",
+   "display": "Realme Q3i 5G / Realme V13 5G",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3042"
+  },
+  {
+   "id": "oplus-rmx3043",
+   "brand": "oplus",
+   "model": "RMX3043",
+   "region": "cn",
+   "display": "Realme V13 5G 运营商定制版",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3043"
+  },
+  {
+   "id": "oplus-rmx3093",
+   "brand": "oplus",
+   "model": "RMX3093",
+   "region": "cn",
+   "display": "Realme V15 5G 运营商定制版",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3093"
+  },
+  {
+   "id": "oplus-rmx3122",
+   "brand": "oplus",
+   "model": "RMX3122",
+   "region": "cn",
+   "display": "Realme V11 5G 运营商定制版",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3122"
+  },
+  {
+   "id": "oplus-rmx3161",
+   "brand": "oplus",
+   "model": "RMX3161",
+   "region": "cn",
+   "display": "Realme Q3 5G",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3161"
+  },
+  {
+   "id": "oplus-rmx3300",
+   "brand": "oplus",
+   "model": "RMX3300",
+   "region": "cn",
+   "display": "Realme GT2 Pro",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3300"
+  },
+  {
+   "id": "oplus-rmx3310",
+   "brand": "oplus",
+   "model": "RMX3310",
+   "region": "cn",
+   "display": "Realme GT2",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3310"
+  },
+  {
+   "id": "oplus-rmx3350",
+   "brand": "oplus",
+   "model": "RMX3350",
+   "region": "cn",
+   "display": "Realme GT Neo 闪速版",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3350"
+  },
+  {
+   "id": "oplus-rmx3357",
+   "brand": "oplus",
+   "model": "RMX3357",
+   "region": "cn",
+   "display": "Realme GT Neo2T",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3357"
+  },
+  {
+   "id": "oplus-rmx3366",
+   "brand": "oplus",
+   "model": "RMX3366",
+   "region": "cn",
+   "display": "Realme GT 大师探索版",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3366"
+  },
+  {
+   "id": "oplus-rmx3370",
+   "brand": "oplus",
+   "model": "RMX3370",
+   "region": "cn",
+   "display": "Realme GT Neo2",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3370"
+  },
+  {
+   "id": "oplus-rmx3372",
+   "brand": "oplus",
+   "model": "RMX3372",
+   "region": "cn",
+   "display": "Realme Q5 Pro",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3372"
+  },
+  {
+   "id": "oplus-rmx3461",
+   "brand": "oplus",
+   "model": "RMX3461",
+   "region": "cn",
+   "display": "Realme Q3S",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3461"
+  },
+  {
+   "id": "oplus-rmx3475",
+   "brand": "oplus",
+   "model": "RMX3475",
+   "region": "cn",
+   "display": "Realme V25",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3475"
+  },
+  {
+   "id": "oplus-rmx3478",
+   "brand": "oplus",
+   "model": "RMX3478",
+   "region": "cn",
+   "display": "Realme Q5",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3478"
+  },
+  {
+   "id": "oplus-rmx3551",
+   "brand": "oplus",
+   "model": "RMX3551",
+   "region": "cn",
+   "display": "Realme GT2 大师探索版",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3551"
+  },
+  {
+   "id": "oplus-rmx3560",
+   "brand": "oplus",
+   "model": "RMX3560",
+   "region": "cn",
+   "display": "Realme GT Neo3 80W",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3560"
+  },
+  {
+   "id": "oplus-rmx3562",
+   "brand": "oplus",
+   "model": "RMX3562",
+   "region": "cn",
+   "display": "Realme GT Neo3 150W",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3562"
+  },
+  {
+   "id": "oplus-rmx3571",
+   "brand": "oplus",
+   "model": "RMX3571",
+   "region": "cn",
+   "display": "Realme V23",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3571"
+  },
+  {
+   "id": "oplus-rmx3574",
+   "brand": "oplus",
+   "model": "RMX3574",
+   "region": "cn",
+   "display": "Realme Q5i",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3574"
+  },
+  {
+   "id": "oplus-rmx3576",
+   "brand": "oplus",
+   "model": "RMX3576",
+   "region": "cn",
+   "display": "Realme V23i",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3576"
+  },
+  {
+   "id": "oplus-rmx3611",
+   "brand": "oplus",
+   "model": "RMX3611",
+   "region": "cn",
+   "display": "Realme V20",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3611"
+  },
+  {
+   "id": "oplus-rmx3615",
+   "brand": "oplus",
+   "model": "RMX3615",
+   "region": "cn",
+   "display": "Realme 10",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3615"
+  },
+  {
+   "id": "oplus-rmx3617",
+   "brand": "oplus",
+   "model": "RMX3617",
+   "region": "cn",
+   "display": "Realme 10S",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3617"
+  },
+  {
+   "id": "oplus-rmx3618",
+   "brand": "oplus",
+   "model": "RMX3618",
+   "region": "cn",
+   "display": "Realme V30T",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3618"
+  },
+  {
+   "id": "oplus-rmx3663",
+   "brand": "oplus",
+   "model": "RMX3663",
+   "region": "cn",
+   "display": "Realme 10 Pro",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3663"
+  },
+  {
+   "id": "oplus-rmx3687",
+   "brand": "oplus",
+   "model": "RMX3687",
+   "region": "cn",
+   "display": "Realme 10 Pro+",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3687"
+  },
+  {
+   "id": "oplus-rmx3700",
+   "brand": "oplus",
+   "model": "RMX3700",
+   "region": "cn",
+   "display": "Realme GT Neo5 SE",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3700"
+  },
+  {
+   "id": "oplus-rmx3706",
+   "brand": "oplus",
+   "model": "RMX3706",
+   "region": "cn",
+   "display": "Realme GT Neo5 150W",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3706"
+  },
+  {
+   "id": "oplus-rmx3708",
+   "brand": "oplus",
+   "model": "RMX3708",
+   "region": "cn",
+   "display": "Realme GT Neo5 240W",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3708"
+  },
+  {
+   "id": "oplus-rmx3740",
+   "brand": "oplus",
+   "model": "RMX3740",
+   "region": "cn",
+   "display": "Realme 11 Pro+",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3740"
+  },
+  {
+   "id": "oplus-rmx3751",
+   "brand": "oplus",
+   "model": "RMX3751",
+   "region": "cn",
+   "display": "Realme 11",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3751"
+  },
+  {
+   "id": "oplus-rmx3770",
+   "brand": "oplus",
+   "model": "RMX3770",
+   "region": "cn",
+   "display": "Realme 11 Pro",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3770"
+  },
+  {
+   "id": "oplus-rmx3781",
+   "brand": "oplus",
+   "model": "RMX3781",
+   "region": "cn",
+   "display": "Realme V50S",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3781"
+  },
+  {
+   "id": "oplus-rmx3783",
+   "brand": "oplus",
+   "model": "RMX3783",
+   "region": "cn",
+   "display": "Realme V50",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3783"
+  },
+  {
+   "id": "oplus-rmx3800",
+   "brand": "oplus",
+   "model": "RMX3800",
+   "region": "cn",
+   "display": "Realme GT6",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3800"
+  },
+  {
+   "id": "oplus-rmx3820",
+   "brand": "oplus",
+   "model": "RMX3820",
+   "region": "cn",
+   "display": "Realme GT5 150W",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3820"
+  },
+  {
+   "id": "oplus-rmx3823",
+   "brand": "oplus",
+   "model": "RMX3823",
+   "region": "cn",
+   "display": "Realme GT5 240W",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3823"
+  },
+  {
+   "id": "oplus-rmx3841",
+   "brand": "oplus",
+   "model": "RMX3841",
+   "region": "cn",
+   "display": "Realme 12 Pro+",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3841"
+  },
+  {
+   "id": "oplus-rmx3843",
+   "brand": "oplus",
+   "model": "RMX3843",
+   "region": "cn",
+   "display": "Realme 12 Pro/Pro 至尊版",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3843"
+  },
+  {
+   "id": "oplus-rmx3850",
+   "brand": "oplus",
+   "model": "RMX3850",
+   "region": "cn",
+   "display": "Realme GT Neo6 SE",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3850"
+  },
+  {
+   "id": "oplus-rmx3852",
+   "brand": "oplus",
+   "model": "RMX3852",
+   "region": "cn",
+   "display": "Realme GT Neo6",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3852"
+  },
+  {
+   "id": "oplus-rmx3888",
+   "brand": "oplus",
+   "model": "RMX3888",
+   "region": "cn",
+   "display": "Realme GT5 Pro",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3888"
+  },
+  {
+   "id": "oplus-rmx3920",
+   "brand": "oplus",
+   "model": "RMX3920",
+   "region": "cn",
+   "display": "Realme 13 Pro+",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3920"
+  },
+  {
+   "id": "oplus-rmx3946",
+   "brand": "oplus",
+   "model": "RMX3946",
+   "region": "cn",
+   "display": "Realme V70",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3946"
+  },
+  {
+   "id": "oplus-rmx3948",
+   "brand": "oplus",
+   "model": "RMX3948",
+   "region": "cn",
+   "display": "Realme V70S",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3948"
+  },
+  {
+   "id": "oplus-rmx3952",
+   "brand": "oplus",
+   "model": "RMX3952",
+   "region": "cn",
+   "display": "Realme 13",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3952"
+  },
+  {
+   "id": "oplus-rmx3953",
+   "brand": "oplus",
+   "model": "RMX3953",
+   "region": "cn",
+   "display": "Realme V60 Pro",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3953"
+  },
+  {
+   "id": "oplus-rmx3989",
+   "brand": "oplus",
+   "model": "RMX3989",
+   "region": "cn",
+   "display": "Realme 13 Pro 至尊版",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3989"
+  },
+  {
+   "id": "oplus-rmx3992",
+   "brand": "oplus",
+   "model": "RMX3992",
+   "region": "cn",
+   "display": "Realme 12",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3992"
+  },
+  {
+   "id": "oplus-rmx3993",
+   "brand": "oplus",
+   "model": "RMX3993",
+   "region": "cn",
+   "display": "Realme 12x",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3993"
+  },
+  {
+   "id": "oplus-rmx3995",
+   "brand": "oplus",
+   "model": "RMX3995",
+   "region": "cn",
+   "display": "Realme 12x 运营商定制版 / Realme V60",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3995"
+  },
+  {
+   "id": "oplus-rmx3996",
+   "brand": "oplus",
+   "model": "RMX3996",
+   "region": "cn",
+   "display": "Realme V60S",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX3996"
+  },
+  {
+   "id": "oplus-rmx5002",
+   "brand": "oplus",
+   "model": "RMX5002",
+   "region": "cn",
+   "display": "Realme 13 Pro",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5002"
+  },
+  {
+   "id": "oplus-rmx5010",
+   "brand": "oplus",
+   "model": "RMX5010",
+   "region": "cn",
+   "display": "Realme GT7 Pro",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5010"
+  },
+  {
+   "id": "oplus-rmx5050",
+   "brand": "oplus",
+   "model": "RMX5050",
+   "region": "cn",
+   "display": "Realme 14 Pro+",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5050"
+  },
+  {
+   "id": "oplus-rmx5055",
+   "brand": "oplus",
+   "model": "RMX5055",
+   "region": "cn",
+   "display": "Realme 14 Pro",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5055"
+  },
+  {
+   "id": "oplus-rmx5060",
+   "brand": "oplus",
+   "model": "RMX5060",
+   "region": "cn",
+   "display": "Realme Neo7",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5060"
+  },
+  {
+   "id": "oplus-rmx5062",
+   "brand": "oplus",
+   "model": "RMX5062",
+   "region": "cn",
+   "display": "Realme Neo7 Turbo",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5062"
+  },
+  {
+   "id": "oplus-rmx5071",
+   "brand": "oplus",
+   "model": "RMX5071",
+   "region": "cn",
+   "display": "Realme Neo7x",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5071"
+  },
+  {
+   "id": "oplus-rmx5075",
+   "brand": "oplus",
+   "model": "RMX5075",
+   "region": "cn",
+   "display": "Realme 14",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5075"
+  },
+  {
+   "id": "oplus-rmx5080",
+   "brand": "oplus",
+   "model": "RMX5080",
+   "region": "cn",
+   "display": "Realme Neo7 SE",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5080"
+  },
+  {
+   "id": "oplus-rmx5090",
+   "brand": "oplus",
+   "model": "RMX5090",
+   "region": "cn",
+   "display": "Realme GT7 Pro 竞速版",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5090"
+  },
+  {
+   "id": "oplus-rmx5100",
+   "brand": "oplus",
+   "model": "RMX5100",
+   "region": "cn",
+   "display": "Realme 15 Pro",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5100"
+  },
+  {
+   "id": "oplus-rmx5105",
+   "brand": "oplus",
+   "model": "RMX5105",
+   "region": "cn",
+   "display": "Realme 15",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5105"
+  },
+  {
+   "id": "oplus-rmx5112",
+   "brand": "oplus",
+   "model": "RMX5112",
+   "region": "cn",
+   "display": "Realme 15T",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5112"
+  },
+  {
+   "id": "oplus-rmx5200",
+   "brand": "oplus",
+   "model": "RMX5200",
+   "region": "cn",
+   "display": "Realme GT8 Pro",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX5200"
+  },
+  {
+   "id": "oplus-rmx6688",
+   "brand": "oplus",
+   "model": "RMX6688",
+   "region": "cn",
+   "display": "Realme GT7",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX6688"
+  },
+  {
+   "id": "oplus-rmx6699",
+   "brand": "oplus",
+   "model": "RMX6699",
+   "region": "cn",
+   "display": "Realme GT8",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX6699"
+  },
+  {
+   "id": "oplus-rmx8899",
+   "brand": "oplus",
+   "model": "RMX8899",
+   "region": "cn",
+   "display": "Realme Neo8",
+   "family": "realme",
+   "source": "https://roms.lian86.top/brand/Realme/model/RMX8899"
+  }
+ ]
+}

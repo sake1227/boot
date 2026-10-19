@@ -1,0 +1,6 @@
+# 手工链接队列 —— 一行一个，`名称|url` 也可以（行首 # 是注释）。
+# 这个文件只是过渡：先把「你已经在做的找链接」接进批量流水线，
+# 之后逐步换成 google / samsung / lolinet / cmd 自动适配器。
+#
+# https://rms11.realme.net/sw/RMX8899domestic_11_16.0.3.532CN01_2026013016580190.zip
+# 小米15_OS2.0.1.0|https://example.com/path/to/rom.zip

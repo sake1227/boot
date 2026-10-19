@@ -1,0 +1,69 @@
+{
+  "_comment": "机型表 = 你真正的资产。加一行就多一个自动抓取目标，不用改代码。小米的 model 填机型代号(codename)。",
+  "_schema": {
+    "id": "唯一标识，去重键和产物命名都用它，别随便改",
+    "brand": "选 adapter：xiaomi / google / samsung / lolinet / manual / cmd",
+    "model": "机型代号：小米填 codename(dada=小米15)，三星填 SM-xxx，lolinet 填 XT-xxx",
+    "region": "cn/global/eea/in/id/ru/tr/tw/jp/kr/sg；三星填 CSC(如 CHC)",
+    "adapter_args": "透传给 adapter：rom_type=stable|developer，max_new_per_device，tag 等"
+  },
+  "devices": [
+    { "id": "xiaomi-17-ultra",   "brand": "xiaomi", "model": "nezha",    "region": "cn" },
+    { "id": "xiaomi-17-pro-max", "brand": "xiaomi", "model": "popsicle", "region": "cn" },
+    { "id": "xiaomi-17-pro",     "brand": "xiaomi", "model": "pandora",  "region": "cn" },
+    { "id": "xiaomi-17",         "brand": "xiaomi", "model": "pudding",  "region": "cn" },
+    { "id": "xiaomi-15-ultra",   "brand": "xiaomi", "model": "xuanyuan", "region": "cn" },
+    { "id": "xiaomi-15-pro",     "brand": "xiaomi", "model": "haotian",  "region": "cn" },
+    { "id": "xiaomi-15",         "brand": "xiaomi", "model": "dada",     "region": "cn" },
+    { "id": "xiaomi-14-ultra",   "brand": "xiaomi", "model": "aurora",   "region": "cn" },
+    { "id": "xiaomi-14-pro",     "brand": "xiaomi", "model": "shennong", "region": "cn" },
+    { "id": "xiaomi-14",         "brand": "xiaomi", "model": "houji",    "region": "cn" },
+    { "id": "xiaomi-13-ultra",   "brand": "xiaomi", "model": "ishtar",   "region": "cn" },
+    { "id": "xiaomi-13-pro",     "brand": "xiaomi", "model": "nuwa",     "region": "cn" },
+    { "id": "xiaomi-13",         "brand": "xiaomi", "model": "fuxi",     "region": "cn" },
+    { "id": "redmi-k90-pro-max", "brand": "xiaomi", "model": "myron",    "region": "cn" },
+    { "id": "redmi-k90",         "brand": "xiaomi", "model": "annibale", "region": "cn" },
+    { "id": "redmi-k80-ultra",   "brand": "xiaomi", "model": "dali",     "region": "cn" },
+    { "id": "redmi-k80-pro",     "brand": "xiaomi", "model": "miro",     "region": "cn" },
+    { "id": "redmi-k80",         "brand": "xiaomi", "model": "zorn",     "region": "cn" },
+    { "id": "redmi-k70-pro",     "brand": "xiaomi", "model": "manet",    "region": "cn" },
+    { "id": "redmi-k70",         "brand": "xiaomi", "model": "vermeer",  "region": "cn" },
+    { "id": "redmi-turbo4-pro",  "brand": "xiaomi", "model": "onyx",     "region": "cn" },
+    { "id": "redmi-turbo3",      "brand": "xiaomi", "model": "peridot",  "region": "cn" },
+    { "id": "redmi-note12-turbo","brand": "xiaomi", "model": "marble",   "region": "cn" },
+    { "id": "redmi-note13-pro",  "brand": "xiaomi", "model": "garnet",   "region": "cn" },
+
+    { "id": "pixel-8",     "brand": "google", "model": "shiba",  "adapter_args": { "kind": "factory" } },
+    { "id": "pixel-8-pro", "brand": "google", "model": "husky",  "adapter_args": { "kind": "factory" } },
+    { "id": "pixel-8a",    "brand": "google", "model": "akita",  "adapter_args": { "kind": "factory" } },
+
+    { "id": "samsung-s23-cn", "brand": "samsung", "model": "SM-S9110", "region": "CHC" },
+
+    {
+      "id": "moto-edge50-cn",
+      "brand": "lolinet",
+      "model": "XT2401",
+      "adapter_args": {
+        "root": "https://mirrors.lolinet.com/firmware/lenomola/2025/",
+        "max_depth": 2,
+        "match": "XT2401"
+      }
+    },
+
+    { "id": "manual-queue", "brand": "manual", "model": "links.txt" },
+
+    { "id": "oneplus-13", "brand": "oplus", "model": "PJZ110", "region": "cn", "label": "oneplus-13" },
+    { "id": "oneplus-ace3-pro", "brand": "oplus", "model": "PJX110", "region": "cn", "label": "oneplus-ace3-pro" },
+    { "id": "oneplus-12", "brand": "oplus", "model": "PJD110", "region": "cn", "label": "oneplus-12" },
+    { "id": "oneplus-ace3", "brand": "oplus", "model": "PJE110", "region": "cn", "label": "oneplus-ace3" },
+    { "id": "oneplus-ace2-pro", "brand": "oplus", "model": "PJA110", "region": "cn", "label": "oneplus-ace2-pro" },
+    { "id": "oneplus-11", "brand": "oplus", "model": "PHB110", "region": "cn", "label": "oneplus-11" },
+    { "id": "oneplus-10-pro", "brand": "oplus", "model": "NE2210", "region": "cn", "label": "oneplus-10-pro" },
+    { "id": "oppo-reno14", "brand": "oplus", "model": "PLA110", "region": "cn", "label": "oppo-reno14" },
+    { "id": "oppo-find-x7", "brand": "oplus", "model": "PHZ110", "region": "cn", "label": "oppo-find-x7" },
+    { "id": "oppo-find-x8", "brand": "oplus", "model": "PJT110", "region": "cn", "label": "oppo-find-x8" },
+    { "id": "realme-gt5", "brand": "oplus", "model": "RMX3820", "region": "cn", "label": "realme-gt5" },
+    { "id": "realme-gt-neo5", "brand": "oplus", "model": "RMX3706", "region": "cn", "label": "realme-gt-neo5" },
+    { "id": "realme-rmx5200", "brand": "oplus", "model": "RMX5200", "region": "cn", "label": "realme-rmx5200" }
+  ]
+}
