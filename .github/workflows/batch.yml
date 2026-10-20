@@ -30,6 +30,9 @@ on:
         description: '对账模式：扫全部版本，只补网盘上缺的（每 3 天自动跑一次这个）'
         type: boolean
         default: false
+      max_parallel:
+        description: '并发数（免费账号上限 20）'
+        default: '10'
   schedule:
     # 每天 UTC 18:00 = 北京 02:00 —— 增量：每个机型推 1 个新版本
     - cron: '0 18 * * *'
@@ -179,8 +182,9 @@ jobs:
     timeout-minutes: 240
     strategy:
       fail-fast: false
-      # 并发数：免费额度下 3 已经很快；123 上传并发太高会被限速
-      max-parallel: 3
+      # 远程提取后单个 job 只要 1~3 分钟，可开到 10~20
+      # GitHub 免费账号并发上限 20；123 上传并发太高会被限速
+      max-parallel: ${{ fromJSON(inputs.max_parallel || '10') }}
       matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v7
@@ -201,7 +205,9 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq aria2 p7zip-full unzip curl lz4 python3-pip
           curl -fsSL https://rclone.org/install.sh | sudo bash
-          pip install --upgrade "git+https://github.com/sake1227/payload-dumper"
+          # 支持「URL 直接提取、只拉需要的分片」的 fork
+          python3 -m pip install --upgrade "git+https://github.com/5ec1cff/payload-dumper"
+          payload_dumper --help | head -5 || true
 
       - name: 配置 rclone
         env:
