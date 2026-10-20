@@ -1,75 +1,4850 @@
 {
-  "_comment": "机型表 = 你真正的资产。加一行就多一个自动抓取目标，不用改代码。小米的 model 填机型代号(codename)。",
-  "_schema": {
-    "id": "唯一标识，去重键和产物命名都用它，别随便改",
-    "brand": "选 adapter：xiaomi / google / samsung / lolinet / manual / cmd",
-    "model": "机型代号：小米填 codename(dada=小米15)，三星填 SM-xxx，lolinet 填 XT-xxx",
-    "region": "cn/global/eea/in/id/ru/tr/tw/jp/kr/sg；三星填 CSC(如 CHC)",
-    "adapter_args": "透传给 adapter：rom_type=stable|developer，max_new_per_device，tag 等"
+ "_comment": "机型表：小米来自 miuiver 索引，欧加来自 RomCloud，魅族来自 flyme，其它手工维护。display/series 决定网盘目录名。",
+ "devices": [
+  {
+   "id": "xiaomi-umi",
+   "brand": "xiaomi",
+   "model": "umi",
+   "region": "cn",
+   "display": "小米10",
+   "series": "数字系列"
   },
-  "devices": [
-    { "id": "xiaomi-17-ultra",   "brand": "xiaomi", "model": "nezha",    "region": "cn" },
-    { "id": "xiaomi-17-pro-max", "brand": "xiaomi", "model": "popsicle", "region": "cn" },
-    { "id": "xiaomi-17-pro",     "brand": "xiaomi", "model": "pandora",  "region": "cn" },
-    { "id": "xiaomi-17",         "brand": "xiaomi", "model": "pudding",  "region": "cn" },
-    { "id": "xiaomi-15-ultra",   "brand": "xiaomi", "model": "xuanyuan", "region": "cn" },
-    { "id": "xiaomi-15-pro",     "brand": "xiaomi", "model": "haotian",  "region": "cn" },
-    { "id": "xiaomi-15",         "brand": "xiaomi", "model": "dada",     "region": "cn" },
-    { "id": "xiaomi-14-ultra",   "brand": "xiaomi", "model": "aurora",   "region": "cn" },
-    { "id": "xiaomi-14-pro",     "brand": "xiaomi", "model": "shennong", "region": "cn" },
-    { "id": "xiaomi-14",         "brand": "xiaomi", "model": "houji",    "region": "cn" },
-    { "id": "xiaomi-13-ultra",   "brand": "xiaomi", "model": "ishtar",   "region": "cn" },
-    { "id": "xiaomi-13-pro",     "brand": "xiaomi", "model": "nuwa",     "region": "cn" },
-    { "id": "xiaomi-13",         "brand": "xiaomi", "model": "fuxi",     "region": "cn" },
-    { "id": "redmi-k90-pro-max", "brand": "xiaomi", "model": "myron",    "region": "cn" },
-    { "id": "redmi-k90",         "brand": "xiaomi", "model": "annibale", "region": "cn" },
-    { "id": "redmi-k80-ultra",   "brand": "xiaomi", "model": "dali",     "region": "cn" },
-    { "id": "redmi-k80-pro",     "brand": "xiaomi", "model": "miro",     "region": "cn" },
-    { "id": "redmi-k80",         "brand": "xiaomi", "model": "zorn",     "region": "cn" },
-    { "id": "redmi-k70-pro",     "brand": "xiaomi", "model": "manet",    "region": "cn" },
-    { "id": "redmi-k70",         "brand": "xiaomi", "model": "vermeer",  "region": "cn" },
-    { "id": "redmi-turbo4-pro",  "brand": "xiaomi", "model": "onyx",     "region": "cn" },
-    { "id": "redmi-turbo3",      "brand": "xiaomi", "model": "peridot",  "region": "cn" },
-    { "id": "redmi-note12-turbo","brand": "xiaomi", "model": "marble",   "region": "cn" },
-    { "id": "redmi-note13-pro",  "brand": "xiaomi", "model": "garnet",   "region": "cn" },
-
-    { "id": "mi-9", "brand": "xiaomi", "model": "cepheus", "region": "cn" },
-    { "id": "mi-8", "brand": "xiaomi", "model": "dipper", "region": "cn" },
-    { "id": "pixel-8",     "brand": "google", "model": "shiba",  "adapter_args": { "kind": "factory" } },
-    { "id": "pixel-8-pro", "brand": "google", "model": "husky",  "adapter_args": { "kind": "factory" } },
-    { "id": "pixel-8a",    "brand": "google", "model": "akita",  "adapter_args": { "kind": "factory" } },
-
-    { "id": "samsung-s23-cn", "brand": "samsung", "model": "SM-S9110", "region": "CHC" },
-
-    {
-      "id": "moto-edge50-cn",
-      "brand": "lolinet",
-      "model": "XT2401",
-      "adapter_args": {
-        "root": "https://mirrors.lolinet.com/firmware/lenomola/2025/",
-        "max_depth": 2,
-        "match": "XT2401"
-      }
-    },
-
-    { "id": "meizu-22", "brand": "meizu", "model": "207", "display": "魅族 22" },
-    { "id": "meizu-21-pro", "brand": "meizu", "model": "205", "display": "魅族 21 PRO" },
-    { "id": "meizu-note16-pro", "brand": "meizu", "model": "204", "display": "魅族 Note 16 Pro" },
-    { "id": "meizu-lucky08", "brand": "meizu", "model": "202", "display": "魅族 Lucky 08" },
-    { "id": "manual-queue", "brand": "manual", "model": "links.txt" },
-
-    { "id": "oneplus-13", "brand": "oplus", "model": "PJZ110", "region": "cn", "label": "oneplus-13", "display": "一加 13" },
-    { "id": "oneplus-ace3-pro", "brand": "oplus", "model": "PJX110", "region": "cn", "label": "oneplus-ace3-pro", "display": "一加 Ace 3 Pro" },
-    { "id": "oneplus-12", "brand": "oplus", "model": "PJD110", "region": "cn", "label": "oneplus-12", "display": "一加 12" },
-    { "id": "oneplus-ace3", "brand": "oplus", "model": "PJE110", "region": "cn", "label": "oneplus-ace3", "display": "一加 Ace 3" },
-    { "id": "oneplus-ace2-pro", "brand": "oplus", "model": "PJA110", "region": "cn", "label": "oneplus-ace2-pro", "display": "一加 Ace 2 Pro" },
-    { "id": "oneplus-11", "brand": "oplus", "model": "PHB110", "region": "cn", "label": "oneplus-11", "display": "一加 11" },
-    { "id": "oneplus-10-pro", "brand": "oplus", "model": "NE2210", "region": "cn", "label": "oneplus-10-pro", "display": "一加 10 Pro" },
-    { "id": "oppo-reno14", "brand": "oplus", "model": "PLA110", "region": "cn", "label": "oppo-reno14", "display": "OPPO Reno14" },
-    { "id": "oppo-find-x7", "brand": "oplus", "model": "PHZ110", "region": "cn", "label": "oppo-find-x7", "display": "OPPO Find X7" },
-    { "id": "oppo-find-x8", "brand": "oplus", "model": "PJT110", "region": "cn", "label": "oppo-find-x8", "display": "OPPO Find X8" },
-    { "id": "realme-gt5", "brand": "oplus", "model": "RMX3820", "region": "cn", "label": "realme-gt5", "display": "Realme GT5 150W" },
-    { "id": "realme-gt-neo5", "brand": "oplus", "model": "RMX3706", "region": "cn", "label": "realme-gt-neo5", "display": "Realme GT Neo5" },
-    { "id": "realme-rmx5200", "brand": "oplus", "model": "RMX5200", "region": "cn", "label": "realme-rmx5200", "display": "Realme RMX5200" }
-  ]
+  {
+   "id": "xiaomi-cmi",
+   "brand": "xiaomi",
+   "model": "cmi",
+   "region": "cn",
+   "display": "小米10 Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-cas",
+   "brand": "xiaomi",
+   "model": "cas",
+   "region": "cn",
+   "display": "小米10 至尊纪念版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-vangogh",
+   "brand": "xiaomi",
+   "model": "vangogh",
+   "region": "cn",
+   "display": "小米10 青春版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-thyme",
+   "brand": "xiaomi",
+   "model": "thyme",
+   "region": "cn",
+   "display": "小米10S",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-venus",
+   "brand": "xiaomi",
+   "model": "venus",
+   "region": "cn",
+   "display": "小米11",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-star",
+   "brand": "xiaomi",
+   "model": "star",
+   "region": "cn",
+   "display": "小米11 Pro小米11 Ultra",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-lisa",
+   "brand": "xiaomi",
+   "model": "lisa",
+   "region": "cn",
+   "display": "小米11 青春活力版小米11 Lite 5G NE",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-renoir",
+   "brand": "xiaomi",
+   "model": "renoir",
+   "region": "cn",
+   "display": "小米11 青春版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-cupid",
+   "brand": "xiaomi",
+   "model": "cupid",
+   "region": "cn",
+   "display": "小米12",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-zeus",
+   "brand": "xiaomi",
+   "model": "zeus",
+   "region": "cn",
+   "display": "小米12 Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-daumier",
+   "brand": "xiaomi",
+   "model": "daumier",
+   "region": "cn",
+   "display": "小米12 Pro 天玑版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-mayfly",
+   "brand": "xiaomi",
+   "model": "mayfly",
+   "region": "cn",
+   "display": "小米12S",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-unicorn",
+   "brand": "xiaomi",
+   "model": "unicorn",
+   "region": "cn",
+   "display": "小米12S Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-thor",
+   "brand": "xiaomi",
+   "model": "thor",
+   "region": "cn",
+   "display": "小米12S Ultra",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-psyche",
+   "brand": "xiaomi",
+   "model": "psyche",
+   "region": "cn",
+   "display": "小米12X",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-fuxi",
+   "brand": "xiaomi",
+   "model": "fuxi",
+   "region": "cn",
+   "display": "小米13",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-nuwa",
+   "brand": "xiaomi",
+   "model": "nuwa",
+   "region": "cn",
+   "display": "小米13 Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-ishtar",
+   "brand": "xiaomi",
+   "model": "ishtar",
+   "region": "cn",
+   "display": "小米13 Ultra",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-houji",
+   "brand": "xiaomi",
+   "model": "houji",
+   "region": "cn",
+   "display": "小米14",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-shennong",
+   "brand": "xiaomi",
+   "model": "shennong",
+   "region": "cn",
+   "display": "小米14 Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-shennongt",
+   "brand": "xiaomi",
+   "model": "shennongt",
+   "region": "cn",
+   "display": "小米14 Pro 钛金属版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-aurora",
+   "brand": "xiaomi",
+   "model": "aurora",
+   "region": "cn",
+   "display": "小米14 Ultra",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-dada",
+   "brand": "xiaomi",
+   "model": "dada",
+   "region": "cn",
+   "display": "小米15",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-haotian",
+   "brand": "xiaomi",
+   "model": "haotian",
+   "region": "cn",
+   "display": "小米15 Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-xuanyuan",
+   "brand": "xiaomi",
+   "model": "xuanyuan",
+   "region": "cn",
+   "display": "小米15 Ultra",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-dijun",
+   "brand": "xiaomi",
+   "model": "dijun",
+   "region": "cn",
+   "display": "小米15S Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-pudding",
+   "brand": "xiaomi",
+   "model": "pudding",
+   "region": "cn",
+   "display": "小米17",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-byron",
+   "brand": "xiaomi",
+   "model": "byron",
+   "region": "cn",
+   "display": "小米17 Max",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-pandora",
+   "brand": "xiaomi",
+   "model": "pandora",
+   "region": "cn",
+   "display": "小米17 Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-popsicle",
+   "brand": "xiaomi",
+   "model": "popsicle",
+   "region": "cn",
+   "display": "小米17 Pro Max",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-nezha",
+   "brand": "xiaomi",
+   "model": "nezha",
+   "region": "cn",
+   "display": "小米17 Ultra",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-chagall",
+   "brand": "xiaomi",
+   "model": "chagall",
+   "region": "cn",
+   "display": "小米17T",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-warhol",
+   "brand": "xiaomi",
+   "model": "warhol",
+   "region": "cn",
+   "display": "小米17T Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-lhasa",
+   "brand": "xiaomi",
+   "model": "lhasa",
+   "region": "cn",
+   "display": "小米18 Fold",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-hongkong",
+   "brand": "xiaomi",
+   "model": "hongkong",
+   "region": "cn",
+   "display": "小米18 Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-madrid",
+   "brand": "xiaomi",
+   "model": "madrid",
+   "region": "cn",
+   "display": "小米18 Pro Max",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-mione",
+   "brand": "xiaomi",
+   "model": "mione",
+   "region": "cn",
+   "display": "小米1S",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-taurus",
+   "brand": "xiaomi",
+   "model": "taurus",
+   "region": "cn",
+   "display": "小米2A",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-aries",
+   "brand": "xiaomi",
+   "model": "aries",
+   "region": "cn",
+   "display": "小米2S",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-pisces",
+   "brand": "xiaomi",
+   "model": "pisces",
+   "region": "cn",
+   "display": "小米3 移动版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-cancro",
+   "brand": "xiaomi",
+   "model": "cancro",
+   "region": "cn",
+   "display": "小米3小米4",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-libra",
+   "brand": "xiaomi",
+   "model": "libra",
+   "region": "cn",
+   "display": "小米4C",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-aqua",
+   "brand": "xiaomi",
+   "model": "aqua",
+   "region": "cn",
+   "display": "小米4S",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-ferrari",
+   "brand": "xiaomi",
+   "model": "ferrari",
+   "region": "cn",
+   "display": "小米4i",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-gemini",
+   "brand": "xiaomi",
+   "model": "gemini",
+   "region": "cn",
+   "display": "小米5",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-meri",
+   "brand": "xiaomi",
+   "model": "meri",
+   "region": "cn",
+   "display": "小米5C",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-capricorn",
+   "brand": "xiaomi",
+   "model": "capricorn",
+   "region": "cn",
+   "display": "小米5S",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-natrium",
+   "brand": "xiaomi",
+   "model": "natrium",
+   "region": "cn",
+   "display": "小米5S Plus",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-tiffany",
+   "brand": "xiaomi",
+   "model": "tiffany",
+   "region": "cn",
+   "display": "小米5X",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-sagit",
+   "brand": "xiaomi",
+   "model": "sagit",
+   "region": "cn",
+   "display": "小米6",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-wayne",
+   "brand": "xiaomi",
+   "model": "wayne",
+   "region": "cn",
+   "display": "小米6X",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-dipper",
+   "brand": "xiaomi",
+   "model": "dipper",
+   "region": "cn",
+   "display": "小米8",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-platina",
+   "brand": "xiaomi",
+   "model": "platina",
+   "region": "cn",
+   "display": "小米8 Lite",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-equuleus",
+   "brand": "xiaomi",
+   "model": "equuleus",
+   "region": "cn",
+   "display": "小米8 Pro 屏幕指纹版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-sirius",
+   "brand": "xiaomi",
+   "model": "sirius",
+   "region": "cn",
+   "display": "小米8 SE",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-ursa",
+   "brand": "xiaomi",
+   "model": "ursa",
+   "region": "cn",
+   "display": "小米8 透明探索版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-cepheus",
+   "brand": "xiaomi",
+   "model": "cepheus",
+   "region": "cn",
+   "display": "小米9",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-crux",
+   "brand": "xiaomi",
+   "model": "crux",
+   "region": "cn",
+   "display": "小米9 Pro 5G",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-grus",
+   "brand": "xiaomi",
+   "model": "grus",
+   "region": "cn",
+   "display": "小米9 SE",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-tucana",
+   "brand": "xiaomi",
+   "model": "tucana",
+   "region": "cn",
+   "display": "小米CC9 Pro小米Note 10小米Note 10 Pro",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-vela",
+   "brand": "xiaomi",
+   "model": "vela",
+   "region": "cn",
+   "display": "小米CC9 美图定制版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-laurus",
+   "brand": "xiaomi",
+   "model": "laurus",
+   "region": "cn",
+   "display": "小米CC9e",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-pyxis",
+   "brand": "xiaomi",
+   "model": "pyxis",
+   "region": "cn",
+   "display": "小米CC9小米9 Lite",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-mona",
+   "brand": "xiaomi",
+   "model": "mona",
+   "region": "cn",
+   "display": "小米CIVI",
+   "series": "Civi 系列"
+  },
+  {
+   "id": "xiaomi-zijin",
+   "brand": "xiaomi",
+   "model": "zijin",
+   "region": "cn",
+   "display": "小米CIVI 1S",
+   "series": "Civi 系列"
+  },
+  {
+   "id": "xiaomi-ziyi",
+   "brand": "xiaomi",
+   "model": "ziyi",
+   "region": "cn",
+   "display": "小米CIVI 2小米13 Lite",
+   "series": "Civi 系列"
+  },
+  {
+   "id": "xiaomi-yuechu",
+   "brand": "xiaomi",
+   "model": "yuechu",
+   "region": "cn",
+   "display": "小米CIVI 3",
+   "series": "Civi 系列"
+  },
+  {
+   "id": "xiaomi-chenfeng",
+   "brand": "xiaomi",
+   "model": "chenfeng",
+   "region": "cn",
+   "display": "小米CIVI 4 Pro",
+   "series": "Civi 系列"
+  },
+  {
+   "id": "xiaomi-luming",
+   "brand": "xiaomi",
+   "model": "luming",
+   "region": "cn",
+   "display": "小米Civi5 Pro",
+   "series": "Civi 系列"
+  },
+  {
+   "id": "xiaomi-lithium",
+   "brand": "xiaomi",
+   "model": "lithium",
+   "region": "cn",
+   "display": "小米MIX",
+   "series": "MIX 系列"
+  },
+  {
+   "id": "xiaomi-chiron",
+   "brand": "xiaomi",
+   "model": "chiron",
+   "region": "cn",
+   "display": "小米MIX 2",
+   "series": "MIX 系列"
+  },
+  {
+   "id": "xiaomi-polaris",
+   "brand": "xiaomi",
+   "model": "polaris",
+   "region": "cn",
+   "display": "小米MIX 2S",
+   "series": "MIX 系列"
+  },
+  {
+   "id": "xiaomi-perseus",
+   "brand": "xiaomi",
+   "model": "perseus",
+   "region": "cn",
+   "display": "小米MIX 3",
+   "series": "MIX 系列"
+  },
+  {
+   "id": "xiaomi-andromeda",
+   "brand": "xiaomi",
+   "model": "andromeda",
+   "region": "cn",
+   "display": "小米MIX 3 5G",
+   "series": "MIX 系列"
+  },
+  {
+   "id": "xiaomi-ruyi",
+   "brand": "xiaomi",
+   "model": "ruyi",
+   "region": "cn",
+   "display": "小米MIX Flip",
+   "series": "MIX 系列"
+  },
+  {
+   "id": "xiaomi-bixi",
+   "brand": "xiaomi",
+   "model": "bixi",
+   "region": "cn",
+   "display": "小米MIX Flip 2",
+   "series": "MIX 系列"
+  },
+  {
+   "id": "xiaomi-cetus",
+   "brand": "xiaomi",
+   "model": "cetus",
+   "region": "cn",
+   "display": "小米MIX Fold",
+   "series": "MIX 系列"
+  },
+  {
+   "id": "xiaomi-zizhan",
+   "brand": "xiaomi",
+   "model": "zizhan",
+   "region": "cn",
+   "display": "小米MIX Fold 2",
+   "series": "MIX 系列"
+  },
+  {
+   "id": "xiaomi-babylon",
+   "brand": "xiaomi",
+   "model": "babylon",
+   "region": "cn",
+   "display": "小米MIX Fold 3",
+   "series": "MIX 系列"
+  },
+  {
+   "id": "xiaomi-goku",
+   "brand": "xiaomi",
+   "model": "goku",
+   "region": "cn",
+   "display": "小米MIX Fold 4",
+   "series": "MIX 系列"
+  },
+  {
+   "id": "xiaomi-odin",
+   "brand": "xiaomi",
+   "model": "odin",
+   "region": "cn",
+   "display": "小米MIX4",
+   "series": "MIX 系列"
+  },
+  {
+   "id": "xiaomi-oxygen",
+   "brand": "xiaomi",
+   "model": "oxygen",
+   "region": "cn",
+   "display": "小米Max 2",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-nitrogen",
+   "brand": "xiaomi",
+   "model": "nitrogen",
+   "region": "cn",
+   "display": "小米Max 3",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-hydrogen",
+   "brand": "xiaomi",
+   "model": "hydrogen",
+   "region": "cn",
+   "display": "小米Max 标准版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-helium",
+   "brand": "xiaomi",
+   "model": "helium",
+   "region": "cn",
+   "display": "小米Max 高配版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-scorpio",
+   "brand": "xiaomi",
+   "model": "scorpio",
+   "region": "cn",
+   "display": "小米Note 2",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-jason",
+   "brand": "xiaomi",
+   "model": "jason",
+   "region": "cn",
+   "display": "小米Note 3",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-virgo",
+   "brand": "xiaomi",
+   "model": "virgo",
+   "region": "cn",
+   "display": "小米Note 双网通版",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-leo",
+   "brand": "xiaomi",
+   "model": "leo",
+   "region": "cn",
+   "display": "小米Note 顶配版",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-lotus",
+   "brand": "xiaomi",
+   "model": "lotus",
+   "region": "cn",
+   "display": "小米Play",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-mocha",
+   "brand": "xiaomi",
+   "model": "mocha",
+   "region": "cn",
+   "display": "小米平板1",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-latte",
+   "brand": "xiaomi",
+   "model": "latte",
+   "region": "cn",
+   "display": "小米平板2",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-cappu",
+   "brand": "xiaomi",
+   "model": "cappu",
+   "region": "cn",
+   "display": "小米平板3",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-clover",
+   "brand": "xiaomi",
+   "model": "clover",
+   "region": "cn",
+   "display": "小米平板4小米平板4 Plus",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-nabu",
+   "brand": "xiaomi",
+   "model": "nabu",
+   "region": "cn",
+   "display": "小米平板5",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-enuma",
+   "brand": "xiaomi",
+   "model": "enuma",
+   "region": "cn",
+   "display": "小米平板5 Pro (5G)",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-elish",
+   "brand": "xiaomi",
+   "model": "elish",
+   "region": "cn",
+   "display": "小米平板5 Pro (WiFi)",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-dagu",
+   "brand": "xiaomi",
+   "model": "dagu",
+   "region": "cn",
+   "display": "小米平板5 Pro 12.4",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-pipa",
+   "brand": "xiaomi",
+   "model": "pipa",
+   "region": "cn",
+   "display": "小米平板6",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-yudi",
+   "brand": "xiaomi",
+   "model": "yudi",
+   "region": "cn",
+   "display": "小米平板6 Max",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-liuqin",
+   "brand": "xiaomi",
+   "model": "liuqin",
+   "region": "cn",
+   "display": "小米平板6 Pro",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-sheng",
+   "brand": "xiaomi",
+   "model": "sheng",
+   "region": "cn",
+   "display": "小米平板6S Pro 12.4",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-muyu",
+   "brand": "xiaomi",
+   "model": "muyu",
+   "region": "cn",
+   "display": "小米平板7 Pro",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-jinghu",
+   "brand": "xiaomi",
+   "model": "jinghu",
+   "region": "cn",
+   "display": "小米平板7 Ultra",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-uke",
+   "brand": "xiaomi",
+   "model": "uke",
+   "region": "cn",
+   "display": "小米平板7POCO Pad X1",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-violin",
+   "brand": "xiaomi",
+   "model": "violin",
+   "region": "cn",
+   "display": "小米平板7S Pro 12.5",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-piano",
+   "brand": "xiaomi",
+   "model": "piano",
+   "region": "cn",
+   "display": "小米平板8 Pro",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-yupei",
+   "brand": "xiaomi",
+   "model": "yupei",
+   "region": "cn",
+   "display": "小米平板8小米平板9",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-shuntian",
+   "brand": "xiaomi",
+   "model": "shuntian",
+   "region": "cn",
+   "display": "小米平板9 Pro",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-yingtian",
+   "brand": "xiaomi",
+   "model": "yingtian",
+   "region": "cn",
+   "display": "小米平板9 Pro Max",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-merlin",
+   "brand": "xiaomi",
+   "model": "merlin",
+   "region": "cn",
+   "display": "红米10X 4G红米Note 9",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-atom",
+   "brand": "xiaomi",
+   "model": "atom",
+   "region": "cn",
+   "display": "红米10X 5G",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-bomb",
+   "brand": "xiaomi",
+   "model": "bomb",
+   "region": "cn",
+   "display": "红米10X Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-selene",
+   "brand": "xiaomi",
+   "model": "selene",
+   "region": "cn",
+   "display": "红米10红米10 Prime",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-earth",
+   "brand": "xiaomi",
+   "model": "earth",
+   "region": "cn",
+   "display": "红米12CPOCO C55",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-air",
+   "brand": "xiaomi",
+   "model": "air",
+   "region": "cn",
+   "display": "红米13R 5G红米13C 5GPOCO M6 5G",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-lake",
+   "brand": "xiaomi",
+   "model": "lake",
+   "region": "cn",
+   "display": "红米14C红米A3 ProPOCO C75",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-flame",
+   "brand": "xiaomi",
+   "model": "flame",
+   "region": "cn",
+   "display": "红米14R 5GPOCO M7 5G",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-tornado",
+   "brand": "xiaomi",
+   "model": "tornado",
+   "region": "cn",
+   "display": "红米15R 5G红米15C 5G",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-lte26007",
+   "brand": "xiaomi",
+   "model": "lte26007",
+   "region": "cn",
+   "display": "红米2A 标准版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-land",
+   "brand": "xiaomi",
+   "model": "land",
+   "region": "cn",
+   "display": "红米3S",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-ido",
+   "brand": "xiaomi",
+   "model": "ido",
+   "region": "cn",
+   "display": "红米3红米3 Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-prada",
+   "brand": "xiaomi",
+   "model": "prada",
+   "region": "cn",
+   "display": "红米4",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-markw",
+   "brand": "xiaomi",
+   "model": "markw",
+   "region": "cn",
+   "display": "红米4 高配版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-rolex",
+   "brand": "xiaomi",
+   "model": "rolex",
+   "region": "cn",
+   "display": "红米4A",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-santoni",
+   "brand": "xiaomi",
+   "model": "santoni",
+   "region": "cn",
+   "display": "红米4X",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-rosy",
+   "brand": "xiaomi",
+   "model": "rosy",
+   "region": "cn",
+   "display": "红米5",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-vince",
+   "brand": "xiaomi",
+   "model": "vince",
+   "region": "cn",
+   "display": "红米5 Plus",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-riva",
+   "brand": "xiaomi",
+   "model": "riva",
+   "region": "cn",
+   "display": "红米5A",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-cereus",
+   "brand": "xiaomi",
+   "model": "cereus",
+   "region": "cn",
+   "display": "红米6",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-sakura",
+   "brand": "xiaomi",
+   "model": "sakura",
+   "region": "cn",
+   "display": "红米6 Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-cactus",
+   "brand": "xiaomi",
+   "model": "cactus",
+   "region": "cn",
+   "display": "红米6A",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-onclite",
+   "brand": "xiaomi",
+   "model": "onclite",
+   "region": "cn",
+   "display": "红米7",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-pine",
+   "brand": "xiaomi",
+   "model": "pine",
+   "region": "cn",
+   "display": "红米7A",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-olive",
+   "brand": "xiaomi",
+   "model": "olive",
+   "region": "cn",
+   "display": "红米8",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-olivelite",
+   "brand": "xiaomi",
+   "model": "olivelite",
+   "region": "cn",
+   "display": "红米8A",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-dandelion",
+   "brand": "xiaomi",
+   "model": "dandelion",
+   "region": "cn",
+   "display": "红米9A红米9AT",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-lancelot",
+   "brand": "xiaomi",
+   "model": "lancelot",
+   "region": "cn",
+   "display": "红米9红米9 Prime",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-songyuan",
+   "brand": "xiaomi",
+   "model": "songyuan",
+   "region": "cn",
+   "display": "红米K100 Pro MaxPOCO F9 Ultra",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-athens",
+   "brand": "xiaomi",
+   "model": "athens",
+   "region": "cn",
+   "display": "红米K100 ProPOCO F9 Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-raphaels",
+   "brand": "xiaomi",
+   "model": "raphaels",
+   "region": "cn",
+   "display": "红米K20 Pro 尊享版",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-raphael",
+   "brand": "xiaomi",
+   "model": "raphael",
+   "region": "cn",
+   "display": "红米K20 Pro小米9T Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-davinci",
+   "brand": "xiaomi",
+   "model": "davinci",
+   "region": "cn",
+   "display": "红米K20小米9T",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-phoenix",
+   "brand": "xiaomi",
+   "model": "phoenix",
+   "region": "cn",
+   "display": "红米K30 4GPOCO X2",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-picasso",
+   "brand": "xiaomi",
+   "model": "picasso",
+   "region": "cn",
+   "display": "红米K30 5G",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-lmi",
+   "brand": "xiaomi",
+   "model": "lmi",
+   "region": "cn",
+   "display": "红米K30 Pro红米K30 Pro 变焦版POCO F2 Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-cezanne",
+   "brand": "xiaomi",
+   "model": "cezanne",
+   "region": "cn",
+   "display": "红米K30 至尊纪念版",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-apollo",
+   "brand": "xiaomi",
+   "model": "apollo",
+   "region": "cn",
+   "display": "红米K30S 至尊纪念版小米10T小米10T Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-picasso_48m",
+   "brand": "xiaomi",
+   "model": "picasso_48m",
+   "region": "cn",
+   "display": "红米K30i 5G",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-haydn",
+   "brand": "xiaomi",
+   "model": "haydn",
+   "region": "cn",
+   "display": "红米K40 Pro红米K40 Pro+小米11i小米11X Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-ares",
+   "brand": "xiaomi",
+   "model": "ares",
+   "region": "cn",
+   "display": "红米K40 游戏增强版POCO F3 GT",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-alioth",
+   "brand": "xiaomi",
+   "model": "alioth",
+   "region": "cn",
+   "display": "红米K40POCO F3小米11X",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-munch",
+   "brand": "xiaomi",
+   "model": "munch",
+   "region": "cn",
+   "display": "红米K40SPOCO F4",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-rubens",
+   "brand": "xiaomi",
+   "model": "rubens",
+   "region": "cn",
+   "display": "红米K50",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-matisse",
+   "brand": "xiaomi",
+   "model": "matisse",
+   "region": "cn",
+   "display": "红米K50 Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-ingres",
+   "brand": "xiaomi",
+   "model": "ingres",
+   "region": "cn",
+   "display": "红米K50 电竞版POCO F4 GT",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-diting",
+   "brand": "xiaomi",
+   "model": "diting",
+   "region": "cn",
+   "display": "红米K50 至尊版小米12T Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-socrates",
+   "brand": "xiaomi",
+   "model": "socrates",
+   "region": "cn",
+   "display": "红米K60 Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-corot",
+   "brand": "xiaomi",
+   "model": "corot",
+   "region": "cn",
+   "display": "红米K60 至尊版小米13T Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-rembrandt",
+   "brand": "xiaomi",
+   "model": "rembrandt",
+   "region": "cn",
+   "display": "红米K60E",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-mondrian",
+   "brand": "xiaomi",
+   "model": "mondrian",
+   "region": "cn",
+   "display": "红米K60POCO F5 Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-manet",
+   "brand": "xiaomi",
+   "model": "manet",
+   "region": "cn",
+   "display": "红米K70 Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-rothko",
+   "brand": "xiaomi",
+   "model": "rothko",
+   "region": "cn",
+   "display": "红米K70 至尊版小米14T Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-duchamp",
+   "brand": "xiaomi",
+   "model": "duchamp",
+   "region": "cn",
+   "display": "红米K70EPOCO X6 Pro 5G",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-vermeer",
+   "brand": "xiaomi",
+   "model": "vermeer",
+   "region": "cn",
+   "display": "红米K70POCO F6 Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-miro",
+   "brand": "xiaomi",
+   "model": "miro",
+   "region": "cn",
+   "display": "红米K80 ProPOCO F7 Ultra",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-dali",
+   "brand": "xiaomi",
+   "model": "dali",
+   "region": "cn",
+   "display": "红米K80 至尊版",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-zorn",
+   "brand": "xiaomi",
+   "model": "zorn",
+   "region": "cn",
+   "display": "红米K80POCO F7 Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-prague",
+   "brand": "xiaomi",
+   "model": "prague",
+   "region": "cn",
+   "display": "红米K90 Max",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-myron",
+   "brand": "xiaomi",
+   "model": "myron",
+   "region": "cn",
+   "display": "红米K90 Pro MaxPOCO F8 Ultra",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-warsaw",
+   "brand": "xiaomi",
+   "model": "warsaw",
+   "region": "cn",
+   "display": "红米K90 至尊版",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-annibale",
+   "brand": "xiaomi",
+   "model": "annibale",
+   "region": "cn",
+   "display": "红米K90POCO F8 Pro",
+   "series": "K 系列"
+  },
+  {
+   "id": "xiaomi-yili",
+   "brand": "xiaomi",
+   "model": "yili",
+   "region": "cn",
+   "display": "红米K平板2",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-turner",
+   "brand": "xiaomi",
+   "model": "turner",
+   "region": "cn",
+   "display": "红米K平板小米平板Mini",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-steppe",
+   "brand": "xiaomi",
+   "model": "steppe",
+   "region": "cn",
+   "display": "红米M100红米17 5G红米M8x",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-camellia",
+   "brand": "xiaomi",
+   "model": "camellia",
+   "region": "cn",
+   "display": "红米Note 10 (China)POCO M3 Pro红米Note 11 SE",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-chopin",
+   "brand": "xiaomi",
+   "model": "chopin",
+   "region": "cn",
+   "display": "红米Note 10 Pro (China)POCO X3 GT",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-veux",
+   "brand": "xiaomi",
+   "model": "veux",
+   "region": "cn",
+   "display": "红米Note 11E Pro红米Note11 Pro 5G",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-light",
+   "brand": "xiaomi",
+   "model": "light",
+   "region": "cn",
+   "display": "红米Note 11EPOCO M4 5G红米10 Prime+ 5G",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-lightcm",
+   "brand": "xiaomi",
+   "model": "lightcm",
+   "region": "cn",
+   "display": "红米Note 11R",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-breeze",
+   "brand": "xiaomi",
+   "model": "breeze",
+   "region": "cn",
+   "display": "红米Note 13R红米13 5GPOCO M6 Plus 5G",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-iolite",
+   "brand": "xiaomi",
+   "model": "iolite",
+   "region": "cn",
+   "display": "红米Note 17 ProPOCO X8",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-mist",
+   "brand": "xiaomi",
+   "model": "mist",
+   "region": "cn",
+   "display": "红米Note 17POCO M8 Power",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-hermes",
+   "brand": "xiaomi",
+   "model": "hermes",
+   "region": "cn",
+   "display": "红米Note 2",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-kenzo",
+   "brand": "xiaomi",
+   "model": "kenzo",
+   "region": "cn",
+   "display": "红米Note 3 全网通版",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-hennessy",
+   "brand": "xiaomi",
+   "model": "hennessy",
+   "region": "cn",
+   "display": "红米Note 3 双网通版",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-lcsh92_wet_jb9",
+   "brand": "xiaomi",
+   "model": "lcsh92_wet_jb9",
+   "region": "cn",
+   "display": "红米Note 3G联通版",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-nikel",
+   "brand": "xiaomi",
+   "model": "nikel",
+   "region": "cn",
+   "display": "红米Note 4 联发科版",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-dior",
+   "brand": "xiaomi",
+   "model": "dior",
+   "region": "cn",
+   "display": "红米Note 4G单卡版",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-gucci",
+   "brand": "xiaomi",
+   "model": "gucci",
+   "region": "cn",
+   "display": "红米Note 4G双卡版",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-mido",
+   "brand": "xiaomi",
+   "model": "mido",
+   "region": "cn",
+   "display": "红米Note 4X 高通版",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-whyred",
+   "brand": "xiaomi",
+   "model": "whyred",
+   "region": "cn",
+   "display": "红米Note 5",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-ugglite",
+   "brand": "xiaomi",
+   "model": "ugglite",
+   "region": "cn",
+   "display": "红米Note 5A 标准版",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-ugg",
+   "brand": "xiaomi",
+   "model": "ugg",
+   "region": "cn",
+   "display": "红米Note 5A 高配版",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-lavender",
+   "brand": "xiaomi",
+   "model": "lavender",
+   "region": "cn",
+   "display": "红米Note 7",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-violet",
+   "brand": "xiaomi",
+   "model": "violet",
+   "region": "cn",
+   "display": "红米Note 7 Pro",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-ginkgo",
+   "brand": "xiaomi",
+   "model": "ginkgo",
+   "region": "cn",
+   "display": "红米Note 8",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-begonia",
+   "brand": "xiaomi",
+   "model": "begonia",
+   "region": "cn",
+   "display": "红米Note 8 Pro",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-lime",
+   "brand": "xiaomi",
+   "model": "lime",
+   "region": "cn",
+   "display": "红米Note 9 4G (China)红米9T红米9 Power",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-cannon",
+   "brand": "xiaomi",
+   "model": "cannon",
+   "region": "cn",
+   "display": "红米Note 9 5G (China)",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-gauguin",
+   "brand": "xiaomi",
+   "model": "gauguin",
+   "region": "cn",
+   "display": "红米Note 9 Pro (China)小米10T Lite小米10i",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-selenes",
+   "brand": "xiaomi",
+   "model": "selenes",
+   "region": "cn",
+   "display": "红米Note11 4G",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-evergo",
+   "brand": "xiaomi",
+   "model": "evergo",
+   "region": "cn",
+   "display": "红米Note11 5G",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-pissarro",
+   "brand": "xiaomi",
+   "model": "pissarro",
+   "region": "cn",
+   "display": "红米Note11 Pro红米Note11 Pro+小米11i",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-xaga",
+   "brand": "xiaomi",
+   "model": "xaga",
+   "region": "cn",
+   "display": "红米Note11T Pro红米Note11T Pro+POCO X4 GT / Pro红米K50i / Pro",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-sunstone",
+   "brand": "xiaomi",
+   "model": "sunstone",
+   "region": "cn",
+   "display": "红米Note12 5G红米Note12R Pro",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-redwood",
+   "brand": "xiaomi",
+   "model": "redwood",
+   "region": "cn",
+   "display": "红米Note12 Pro 极速版POCO X5 Pro 5G",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-ruby",
+   "brand": "xiaomi",
+   "model": "ruby",
+   "region": "cn",
+   "display": "红米Note12 Pro+",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-marble",
+   "brand": "xiaomi",
+   "model": "marble",
+   "region": "cn",
+   "display": "红米Note12 TurboPOCO F5 5G",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-sky",
+   "brand": "xiaomi",
+   "model": "sky",
+   "region": "cn",
+   "display": "红米Note12RPOCO M6 Pro 5G红米12 5G",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-pearl",
+   "brand": "xiaomi",
+   "model": "pearl",
+   "region": "cn",
+   "display": "红米Note12T Pro",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-gold",
+   "brand": "xiaomi",
+   "model": "gold",
+   "region": "cn",
+   "display": "红米Note13 5G红米Note13R Pro",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-garnet",
+   "brand": "xiaomi",
+   "model": "garnet",
+   "region": "cn",
+   "display": "红米Note13 Pro 5GPOCO X6",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-zircon",
+   "brand": "xiaomi",
+   "model": "zircon",
+   "region": "cn",
+   "display": "红米Note13 Pro+ 5G",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-beryl",
+   "brand": "xiaomi",
+   "model": "beryl",
+   "region": "cn",
+   "display": "红米Note14 5GPOCO M7 Pro 5G",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-amethyst",
+   "brand": "xiaomi",
+   "model": "amethyst",
+   "region": "cn",
+   "display": "红米Note14 Pro+",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-malachite",
+   "brand": "xiaomi",
+   "model": "malachite",
+   "region": "cn",
+   "display": "红米Note14 ProPOCO X7",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-kunzite",
+   "brand": "xiaomi",
+   "model": "kunzite",
+   "region": "cn",
+   "display": "红米Note15 5G",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-lapis",
+   "brand": "xiaomi",
+   "model": "lapis",
+   "region": "cn",
+   "display": "红米Note15 Pro",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-flourite",
+   "brand": "xiaomi",
+   "model": "flourite",
+   "region": "cn",
+   "display": "红米Note15 Pro+POCO M8 Pro",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-spring",
+   "brand": "xiaomi",
+   "model": "spring",
+   "region": "cn",
+   "display": "红米Note15R红米15 5GPOCO M7 Plus 5G",
+   "series": "Note 系列"
+  },
+  {
+   "id": "xiaomi-omega",
+   "brand": "xiaomi",
+   "model": "omega",
+   "region": "cn",
+   "display": "红米Pro",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-somalia",
+   "brand": "xiaomi",
+   "model": "somalia",
+   "region": "cn",
+   "display": "红米R70 5G红米R70m 5GPOCO C85x 5G",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-ysl",
+   "brand": "xiaomi",
+   "model": "ysl",
+   "region": "cn",
+   "display": "红米S2红米Y2",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-peridot",
+   "brand": "xiaomi",
+   "model": "peridot",
+   "region": "cn",
+   "display": "红米Turbo 3POCO F6",
+   "series": "Turbo 系列"
+  },
+  {
+   "id": "xiaomi-onyx",
+   "brand": "xiaomi",
+   "model": "onyx",
+   "region": "cn",
+   "display": "红米Turbo 4 ProPOCO F7",
+   "series": "Turbo 系列"
+  },
+  {
+   "id": "xiaomi-rodin",
+   "brand": "xiaomi",
+   "model": "rodin",
+   "region": "cn",
+   "display": "红米Turbo 4POCO X7 Pro",
+   "series": "Turbo 系列"
+  },
+  {
+   "id": "xiaomi-dash",
+   "brand": "xiaomi",
+   "model": "dash",
+   "region": "cn",
+   "display": "红米Turbo 5 MaxPOCO X8 Pro Max",
+   "series": "Turbo 系列"
+  },
+  {
+   "id": "xiaomi-klee",
+   "brand": "xiaomi",
+   "model": "klee",
+   "region": "cn",
+   "display": "红米Turbo 5POCO X8 Pro",
+   "series": "Turbo 系列"
+  },
+  {
+   "id": "xiaomi-yunluo",
+   "brand": "xiaomi",
+   "model": "yunluo",
+   "region": "cn",
+   "display": "红米平板",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-dizi",
+   "brand": "xiaomi",
+   "model": "dizi",
+   "region": "cn",
+   "display": "红米平板 Pro",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-ruan",
+   "brand": "xiaomi",
+   "model": "ruan",
+   "region": "cn",
+   "display": "红米平板 Pro 5GPOCO Pad 5G",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-taiko",
+   "brand": "xiaomi",
+   "model": "taiko",
+   "region": "cn",
+   "display": "红米平板2",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-organ",
+   "brand": "xiaomi",
+   "model": "organ",
+   "region": "cn",
+   "display": "红米平板2 Pro 5G",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-flute",
+   "brand": "xiaomi",
+   "model": "flute",
+   "region": "cn",
+   "display": "红米平板2 ProPOCO Pad M1",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-erhu",
+   "brand": "xiaomi",
+   "model": "erhu",
+   "region": "cn",
+   "display": "红米平板2 SE 4G",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-guitar",
+   "brand": "xiaomi",
+   "model": "guitar",
+   "region": "cn",
+   "display": "红米平板2 SE红米平板2 9.7POCO Pad C1",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-xun",
+   "brand": "xiaomi",
+   "model": "xun",
+   "region": "cn",
+   "display": "红米平板SE",
+   "series": "平板系列"
+  },
+  {
+   "id": "xiaomi-wt98007",
+   "brand": "xiaomi",
+   "model": "wt98007",
+   "region": "cn",
+   "display": "红米手机",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-hmtd",
+   "brand": "xiaomi",
+   "model": "hmtd",
+   "region": "cn",
+   "display": "红米手机 移动版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-armani",
+   "brand": "xiaomi",
+   "model": "armani",
+   "region": "cn",
+   "display": "红米手机1S",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-wt93807",
+   "brand": "xiaomi",
+   "model": "wt93807",
+   "region": "cn",
+   "display": "红米手机1S 移动3G版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-wt96007",
+   "brand": "xiaomi",
+   "model": "wt96007",
+   "region": "cn",
+   "display": "红米手机1S 移动4G版",
+   "series": "数字系列"
+  },
+  {
+   "id": "xiaomi-wt88047",
+   "brand": "xiaomi",
+   "model": "wt88047",
+   "region": "cn",
+   "display": "红米手机2 联通电信标配版",
+   "series": "数字系列"
+  },
+  {
+   "id": "oplus-gm1900",
+   "brand": "oplus",
+   "model": "GM1900",
+   "region": "cn",
+   "display": "一加7",
+   "label": "oplus-gm1900"
+  },
+  {
+   "id": "oplus-gm1910",
+   "brand": "oplus",
+   "model": "GM1910",
+   "region": "cn",
+   "display": "一加7 Pro",
+   "label": "oplus-gm1910"
+  },
+  {
+   "id": "oplus-hd1900",
+   "brand": "oplus",
+   "model": "HD1900",
+   "region": "cn",
+   "display": "一加7T",
+   "label": "oplus-hd1900"
+  },
+  {
+   "id": "oplus-hd1910",
+   "brand": "oplus",
+   "model": "HD1910",
+   "region": "cn",
+   "display": "一加7T Pro",
+   "label": "oplus-hd1910"
+  },
+  {
+   "id": "oplus-in2010",
+   "brand": "oplus",
+   "model": "IN2010",
+   "region": "cn",
+   "display": "一加 8",
+   "label": "oplus-in2010"
+  },
+  {
+   "id": "oplus-in2020",
+   "brand": "oplus",
+   "model": "IN2020",
+   "region": "cn",
+   "display": "一加 8 Pro",
+   "label": "oplus-in2020"
+  },
+  {
+   "id": "oplus-kb2000",
+   "brand": "oplus",
+   "model": "KB2000",
+   "region": "cn",
+   "display": "一加 8T",
+   "label": "oplus-kb2000"
+  },
+  {
+   "id": "oplus-le2100",
+   "brand": "oplus",
+   "model": "LE2100",
+   "region": "cn",
+   "display": "一加 9R",
+   "label": "oplus-le2100"
+  },
+  {
+   "id": "oplus-le2110",
+   "brand": "oplus",
+   "model": "LE2110",
+   "region": "cn",
+   "display": "一加 9",
+   "label": "oplus-le2110"
+  },
+  {
+   "id": "oplus-le2120",
+   "brand": "oplus",
+   "model": "LE2120",
+   "region": "cn",
+   "display": "一加 9 Pro",
+   "label": "oplus-le2120"
+  },
+  {
+   "id": "oplus-mt2110",
+   "brand": "oplus",
+   "model": "MT2110",
+   "region": "cn",
+   "display": "一加 9RT",
+   "label": "oplus-mt2110"
+  },
+  {
+   "id": "oplus-ne2210",
+   "brand": "oplus",
+   "model": "NE2210",
+   "region": "cn",
+   "display": "一加 10 Pro",
+   "label": "oplus-ne2210"
+  },
+  {
+   "id": "oplus-opd2101",
+   "brand": "oplus",
+   "model": "OPD2101",
+   "region": "cn",
+   "display": "OPPO Pad",
+   "label": "oplus-opd2101"
+  },
+  {
+   "id": "oplus-opd2102",
+   "brand": "oplus",
+   "model": "OPD2102",
+   "region": "cn",
+   "display": "OPPO Pad Air",
+   "label": "oplus-opd2102"
+  },
+  {
+   "id": "oplus-opd2201",
+   "brand": "oplus",
+   "model": "OPD2201",
+   "region": "cn",
+   "display": "OPPO Pad 2",
+   "label": "oplus-opd2201"
+  },
+  {
+   "id": "oplus-opd2301",
+   "brand": "oplus",
+   "model": "OPD2301",
+   "region": "cn",
+   "display": "OPPO Pad Air2",
+   "label": "oplus-opd2301"
+  },
+  {
+   "id": "oplus-opd2401",
+   "brand": "oplus",
+   "model": "OPD2401",
+   "region": "cn",
+   "display": "OPPO Pad 3 Pro",
+   "label": "oplus-opd2401"
+  },
+  {
+   "id": "oplus-opd2404",
+   "brand": "oplus",
+   "model": "OPD2404",
+   "region": "cn",
+   "display": "一加 Pad Pro",
+   "label": "oplus-opd2404"
+  },
+  {
+   "id": "oplus-opd2405",
+   "brand": "oplus",
+   "model": "OPD2405",
+   "region": "cn",
+   "display": "OPPO Pad 3",
+   "label": "oplus-opd2405"
+  },
+  {
+   "id": "oplus-opd2407",
+   "brand": "oplus",
+   "model": "OPD2407",
+   "region": "cn",
+   "display": "一加 Pad",
+   "label": "oplus-opd2407"
+  },
+  {
+   "id": "oplus-opd2409",
+   "brand": "oplus",
+   "model": "OPD2409",
+   "region": "cn",
+   "display": "OPPO Pad 4 Pro",
+   "label": "oplus-opd2409"
+  },
+  {
+   "id": "oplus-opd2413",
+   "brand": "oplus",
+   "model": "OPD2413",
+   "region": "cn",
+   "display": "一加 Pad 2 Pro",
+   "label": "oplus-opd2413"
+  },
+  {
+   "id": "oplus-opd2417",
+   "brand": "oplus",
+   "model": "OPD2417",
+   "region": "cn",
+   "display": "OPPO Pad SE",
+   "label": "oplus-opd2417"
+  },
+  {
+   "id": "oplus-opd2501",
+   "brand": "oplus",
+   "model": "OPD2501",
+   "region": "cn",
+   "display": "OPPO Pad Air5",
+   "label": "oplus-opd2501"
+  },
+  {
+   "id": "oplus-opd2506",
+   "brand": "oplus",
+   "model": "OPD2506",
+   "region": "cn",
+   "display": "OPPO Pad 5",
+   "label": "oplus-opd2506"
+  },
+  {
+   "id": "oplus-opd2508",
+   "brand": "oplus",
+   "model": "OPD2508",
+   "region": "cn",
+   "display": "一加 Pad 2",
+   "label": "oplus-opd2508"
+  },
+  {
+   "id": "oplus-opd2511",
+   "brand": "oplus",
+   "model": "OPD2511",
+   "region": "cn",
+   "display": "OPPO Pad 5 Pro",
+   "label": "oplus-opd2511"
+  },
+  {
+   "id": "oplus-opd2513",
+   "brand": "oplus",
+   "model": "OPD2513",
+   "region": "cn",
+   "display": "一加 Pad 3 Pro",
+   "label": "oplus-opd2513"
+  },
+  {
+   "id": "oplus-opd2515",
+   "brand": "oplus",
+   "model": "OPD2515",
+   "region": "cn",
+   "display": "OPPO Pad Mini",
+   "label": "oplus-opd2515"
+  },
+  {
+   "id": "oplus-opd2601",
+   "brand": "oplus",
+   "model": "OPD2601",
+   "region": "cn",
+   "display": "OPPO Pad 6",
+   "label": "oplus-opd2601"
+  },
+  {
+   "id": "oplus-pafm00",
+   "brand": "oplus",
+   "model": "PAFM00",
+   "region": "cn",
+   "display": "OPPO Find X",
+   "label": "oplus-pafm00"
+  },
+  {
+   "id": "oplus-pahm00",
+   "brand": "oplus",
+   "model": "PAHM00",
+   "region": "cn",
+   "display": "OPPO Find X 超级闪充版/兰博基尼版 全网通版",
+   "label": "oplus-pahm00"
+  },
+  {
+   "id": "oplus-pcam00",
+   "brand": "oplus",
+   "model": "PCAM00",
+   "region": "cn",
+   "display": "OPPO Reno",
+   "label": "oplus-pcam00"
+  },
+  {
+   "id": "oplus-pcam10",
+   "brand": "oplus",
+   "model": "PCAM10",
+   "region": "cn",
+   "display": "OPPO A9",
+   "label": "oplus-pcam10"
+  },
+  {
+   "id": "oplus-pccm00",
+   "brand": "oplus",
+   "model": "PCCM00",
+   "region": "cn",
+   "display": "OPPO Reno 10倍变焦版",
+   "label": "oplus-pccm00"
+  },
+  {
+   "id": "oplus-pcdm10",
+   "brand": "oplus",
+   "model": "PCDM10",
+   "region": "cn",
+   "display": "OPPO Reno Z",
+   "label": "oplus-pcdm10"
+  },
+  {
+   "id": "oplus-pcem00",
+   "brand": "oplus",
+   "model": "PCEM00",
+   "region": "cn",
+   "display": "OPPO A9 X",
+   "label": "oplus-pcem00"
+  },
+  {
+   "id": "oplus-pcgm00",
+   "brand": "oplus",
+   "model": "PCGM00",
+   "region": "cn",
+   "display": "OPPO K3",
+   "label": "oplus-pcgm00"
+  },
+  {
+   "id": "oplus-pchm10",
+   "brand": "oplus",
+   "model": "PCHM10",
+   "region": "cn",
+   "display": "OPPO A11",
+   "label": "oplus-pchm10"
+  },
+  {
+   "id": "oplus-pchm30",
+   "brand": "oplus",
+   "model": "PCHM30",
+   "region": "cn",
+   "display": "OPPO A11x",
+   "label": "oplus-pchm30"
+  },
+  {
+   "id": "oplus-pckm00",
+   "brand": "oplus",
+   "model": "PCKM00",
+   "region": "cn",
+   "display": "OPPO Reno2",
+   "label": "oplus-pckm00"
+  },
+  {
+   "id": "oplus-pckm80",
+   "brand": "oplus",
+   "model": "PCKM80",
+   "region": "cn",
+   "display": "OPPO Reno2 Z",
+   "label": "oplus-pckm80"
+  },
+  {
+   "id": "oplus-pclm10",
+   "brand": "oplus",
+   "model": "PCLM10",
+   "region": "cn",
+   "display": "OPPO Reno Ace",
+   "label": "oplus-pclm10"
+  },
+  {
+   "id": "oplus-pcnm00",
+   "brand": "oplus",
+   "model": "PCNM00",
+   "region": "cn",
+   "display": "OPPO K5",
+   "label": "oplus-pcnm00"
+  },
+  {
+   "id": "oplus-pcpm00",
+   "brand": "oplus",
+   "model": "PCPM00",
+   "region": "cn",
+   "display": "OPPO A91",
+   "label": "oplus-pcpm00"
+  },
+  {
+   "id": "oplus-pcrm00",
+   "brand": "oplus",
+   "model": "PCRM00",
+   "region": "cn",
+   "display": "OPPO Reno3 Pro",
+   "label": "oplus-pcrm00"
+  },
+  {
+   "id": "oplus-pdam10",
+   "brand": "oplus",
+   "model": "PDAM10",
+   "region": "cn",
+   "display": "OPPO A52",
+   "label": "oplus-pdam10"
+  },
+  {
+   "id": "oplus-pdcm00",
+   "brand": "oplus",
+   "model": "PDCM00",
+   "region": "cn",
+   "display": "OPPO Reno3",
+   "label": "oplus-pdcm00"
+  },
+  {
+   "id": "oplus-pdem10",
+   "brand": "oplus",
+   "model": "PDEM10",
+   "region": "cn",
+   "display": "OPPO Find X2 全网通",
+   "label": "oplus-pdem10"
+  },
+  {
+   "id": "oplus-pdem30",
+   "brand": "oplus",
+   "model": "PDEM30",
+   "region": "cn",
+   "display": "OPPO Find X2 Pro",
+   "label": "oplus-pdem30"
+  },
+  {
+   "id": "oplus-pdet10",
+   "brand": "oplus",
+   "model": "PDET10",
+   "region": "cn",
+   "display": "OPPO Find X2 移动版",
+   "label": "oplus-pdet10"
+  },
+  {
+   "id": "oplus-pdhm00",
+   "brand": "oplus",
+   "model": "PDHM00",
+   "region": "cn",
+   "display": "OPPO Reno Ace2",
+   "label": "oplus-pdhm00"
+  },
+  {
+   "id": "oplus-pdkm00",
+   "brand": "oplus",
+   "model": "PDKM00",
+   "region": "cn",
+   "display": "OPPO A92 S 5G",
+   "label": "oplus-pdkm00"
+  },
+  {
+   "id": "oplus-pdnm00",
+   "brand": "oplus",
+   "model": "PDNM00",
+   "region": "cn",
+   "display": "OPPO Reno4 Pro 5G 全网通",
+   "label": "oplus-pdnm00"
+  },
+  {
+   "id": "oplus-pdnt00",
+   "brand": "oplus",
+   "model": "PDNT00",
+   "region": "cn",
+   "display": "OPPO Reno4 Pro 5G 移动版",
+   "label": "oplus-pdnt00"
+  },
+  {
+   "id": "oplus-pdpm00",
+   "brand": "oplus",
+   "model": "PDPM00",
+   "region": "cn",
+   "display": "OPPO Reno4 5G 全网通",
+   "label": "oplus-pdpm00"
+  },
+  {
+   "id": "oplus-pdpt00",
+   "brand": "oplus",
+   "model": "PDPT00",
+   "region": "cn",
+   "display": "OPPO Reno4 5G 移动版",
+   "label": "oplus-pdpt00"
+  },
+  {
+   "id": "oplus-pdrm00",
+   "brand": "oplus",
+   "model": "PDRM00",
+   "region": "cn",
+   "display": "OPPO Reno5 Pro+ 5G",
+   "label": "oplus-pdrm00"
+  },
+  {
+   "id": "oplus-pdsm00",
+   "brand": "oplus",
+   "model": "PDSM00",
+   "region": "cn",
+   "display": "OPPO Reno5 Pro 5G",
+   "label": "oplus-pdsm00"
+  },
+  {
+   "id": "oplus-pdvm00",
+   "brand": "oplus",
+   "model": "PDVM00",
+   "region": "cn",
+   "display": "OPPO A32/OPPO A11s",
+   "label": "oplus-pdvm00"
+  },
+  {
+   "id": "oplus-pdym20",
+   "brand": "oplus",
+   "model": "PDYM20",
+   "region": "cn",
+   "display": "OPPO A72 5G",
+   "label": "oplus-pdym20"
+  },
+  {
+   "id": "oplus-peam00",
+   "brand": "oplus",
+   "model": "PEAM00",
+   "region": "cn",
+   "display": "OPPO Reno4 SE 5G",
+   "label": "oplus-peam00"
+  },
+  {
+   "id": "oplus-pecm20",
+   "brand": "oplus",
+   "model": "PECM20",
+   "region": "cn",
+   "display": "PECM20",
+   "label": "oplus-pecm20"
+  },
+  {
+   "id": "oplus-pecm30",
+   "brand": "oplus",
+   "model": "PECM30",
+   "region": "cn",
+   "display": "OPPO A53 5G",
+   "label": "oplus-pecm30"
+  },
+  {
+   "id": "oplus-pedm00",
+   "brand": "oplus",
+   "model": "PEDM00",
+   "region": "cn",
+   "display": "OPPO Find X3",
+   "label": "oplus-pedm00"
+  },
+  {
+   "id": "oplus-peem00",
+   "brand": "oplus",
+   "model": "PEEM00",
+   "region": "cn",
+   "display": "OPPO Find X3 Pro/OPPO Find X3 Pro 摄影师版",
+   "label": "oplus-peem00"
+  },
+  {
+   "id": "oplus-pegm00",
+   "brand": "oplus",
+   "model": "PEGM00",
+   "region": "cn",
+   "display": "OPPO Reno5 5G",
+   "label": "oplus-pegm00"
+  },
+  {
+   "id": "oplus-pegm10",
+   "brand": "oplus",
+   "model": "PEGM10",
+   "region": "cn",
+   "display": "OPPO Reno5 K 5G",
+   "label": "oplus-pegm10"
+  },
+  {
+   "id": "oplus-pehm00",
+   "brand": "oplus",
+   "model": "PEHM00",
+   "region": "cn",
+   "display": "OPPO A93 5G",
+   "label": "oplus-pehm00"
+  },
+  {
+   "id": "oplus-pelm00",
+   "brand": "oplus",
+   "model": "PELM00",
+   "region": "cn",
+   "display": "OPPO A95 5G",
+   "label": "oplus-pelm00"
+  },
+  {
+   "id": "oplus-pemm00",
+   "brand": "oplus",
+   "model": "PEMM00",
+   "region": "cn",
+   "display": "OPPO A55 5G",
+   "label": "oplus-pemm00"
+  },
+  {
+   "id": "oplus-pemm20",
+   "brand": "oplus",
+   "model": "PEMM20",
+   "region": "cn",
+   "display": "PEMM20",
+   "label": "oplus-pemm20"
+  },
+  {
+   "id": "oplus-penm00",
+   "brand": "oplus",
+   "model": "PENM00",
+   "region": "cn",
+   "display": "OPPO Reno6 Pro+ 5G/OPPO Reno6 Pro+ 5G 名侦探柯南限定版",
+   "label": "oplus-penm00"
+  },
+  {
+   "id": "oplus-pepm00",
+   "brand": "oplus",
+   "model": "PEPM00",
+   "region": "cn",
+   "display": "OPPO Reno6 Pro 5G",
+   "label": "oplus-pepm00"
+  },
+  {
+   "id": "oplus-peqm00",
+   "brand": "oplus",
+   "model": "PEQM00",
+   "region": "cn",
+   "display": "OPPO Reno6 5G",
+   "label": "oplus-peqm00"
+  },
+  {
+   "id": "oplus-perm00",
+   "brand": "oplus",
+   "model": "PERM00",
+   "region": "cn",
+   "display": "OPPO K7X",
+   "label": "oplus-perm00"
+  },
+  {
+   "id": "oplus-perm10",
+   "brand": "oplus",
+   "model": "PERM10",
+   "region": "cn",
+   "display": "OPPO K9 S / OPPO K10 活力版",
+   "label": "oplus-perm10"
+  },
+  {
+   "id": "oplus-pesm10",
+   "brand": "oplus",
+   "model": "PESM10",
+   "region": "cn",
+   "display": "OPPO A36",
+   "label": "oplus-pesm10"
+  },
+  {
+   "id": "oplus-peum00",
+   "brand": "oplus",
+   "model": "PEUM00",
+   "region": "cn",
+   "display": "OPPO Find N",
+   "label": "oplus-peum00"
+  },
+  {
+   "id": "oplus-pexm00",
+   "brand": "oplus",
+   "model": "PEXM00",
+   "region": "cn",
+   "display": "OPPO K9",
+   "label": "oplus-pexm00"
+  },
+  {
+   "id": "oplus-peym00",
+   "brand": "oplus",
+   "model": "PEYM00",
+   "region": "cn",
+   "display": "OPPO K9 Pro",
+   "label": "oplus-peym00"
+  },
+  {
+   "id": "oplus-pfcm00",
+   "brand": "oplus",
+   "model": "PFCM00",
+   "region": "cn",
+   "display": "OPPO Reno7 SE 5G",
+   "label": "oplus-pfcm00"
+  },
+  {
+   "id": "oplus-pfdm00",
+   "brand": "oplus",
+   "model": "PFDM00",
+   "region": "cn",
+   "display": "OPPO Reno7 Pro 5G/OPPO Reno7 Pro 英雄联盟手游限定版",
+   "label": "oplus-pfdm00"
+  },
+  {
+   "id": "oplus-pfem10",
+   "brand": "oplus",
+   "model": "PFEM10",
+   "region": "cn",
+   "display": "OPPO Find X5 Pro",
+   "label": "oplus-pfem10"
+  },
+  {
+   "id": "oplus-pffm10",
+   "brand": "oplus",
+   "model": "PFFM10",
+   "region": "cn",
+   "display": "OPPO Find X5",
+   "label": "oplus-pffm10"
+  },
+  {
+   "id": "oplus-pffm20",
+   "brand": "oplus",
+   "model": "PFFM20",
+   "region": "cn",
+   "display": "OPPO Find X5 Pro 天玑版",
+   "label": "oplus-pffm20"
+  },
+  {
+   "id": "oplus-pfgm00",
+   "brand": "oplus",
+   "model": "PFGM00",
+   "region": "cn",
+   "display": "OPPO A93 S 5G",
+   "label": "oplus-pfgm00"
+  },
+  {
+   "id": "oplus-pfjm10",
+   "brand": "oplus",
+   "model": "PFJM10",
+   "region": "cn",
+   "display": "OPPO Reno7 5G",
+   "label": "oplus-pfjm10"
+  },
+  {
+   "id": "oplus-pftm10",
+   "brand": "oplus",
+   "model": "PFTM10",
+   "region": "cn",
+   "display": "OPPO A97",
+   "label": "oplus-pftm10"
+  },
+  {
+   "id": "oplus-pftm20",
+   "brand": "oplus",
+   "model": "PFTM20",
+   "region": "cn",
+   "display": "OPPO A56 S 5G/OPPO A57 5G",
+   "label": "oplus-pftm20"
+  },
+  {
+   "id": "oplus-pfum10",
+   "brand": "oplus",
+   "model": "PFUM10",
+   "region": "cn",
+   "display": "OPPO A96 5G",
+   "label": "oplus-pfum10"
+  },
+  {
+   "id": "oplus-pfvm10",
+   "brand": "oplus",
+   "model": "PFVM10",
+   "region": "cn",
+   "display": "OPPO A56 5G",
+   "label": "oplus-pfvm10"
+  },
+  {
+   "id": "oplus-pfzm10",
+   "brand": "oplus",
+   "model": "PFZM10",
+   "region": "cn",
+   "display": "OPPO Reno8 Pro+ 5G",
+   "label": "oplus-pfzm10"
+  },
+  {
+   "id": "oplus-pgam10",
+   "brand": "oplus",
+   "model": "PGAM10",
+   "region": "cn",
+   "display": "OPPO Reno8 Pro 5G",
+   "label": "oplus-pgam10"
+  },
+  {
+   "id": "oplus-pgbm10",
+   "brand": "oplus",
+   "model": "PGBM10",
+   "region": "cn",
+   "display": "OPPO Reno8 5G",
+   "label": "oplus-pgbm10"
+  },
+  {
+   "id": "oplus-pgcm10",
+   "brand": "oplus",
+   "model": "PGCM10",
+   "region": "cn",
+   "display": "OPPO K9 X",
+   "label": "oplus-pgcm10"
+  },
+  {
+   "id": "oplus-pgem10",
+   "brand": "oplus",
+   "model": "PGEM10",
+   "region": "cn",
+   "display": "OPPO Find X6 Pro",
+   "label": "oplus-pgem10"
+  },
+  {
+   "id": "oplus-pgfm10",
+   "brand": "oplus",
+   "model": "PGFM10",
+   "region": "cn",
+   "display": "OPPO Find X6",
+   "label": "oplus-pgfm10"
+  },
+  {
+   "id": "oplus-pggm10",
+   "brand": "oplus",
+   "model": "PGGM10",
+   "region": "cn",
+   "display": "OPPO K10 X",
+   "label": "oplus-pggm10"
+  },
+  {
+   "id": "oplus-pgim10",
+   "brand": "oplus",
+   "model": "PGIM10",
+   "region": "cn",
+   "display": "OPPO K10 Pro",
+   "label": "oplus-pgim10"
+  },
+  {
+   "id": "oplus-pgjm10",
+   "brand": "oplus",
+   "model": "PGJM10",
+   "region": "cn",
+   "display": "OPPO K10",
+   "label": "oplus-pgjm10"
+  },
+  {
+   "id": "oplus-pgkm10",
+   "brand": "oplus",
+   "model": "PGKM10",
+   "region": "cn",
+   "display": "一加 Ace",
+   "label": "oplus-pgkm10"
+  },
+  {
+   "id": "oplus-pgp110",
+   "brand": "oplus",
+   "model": "PGP110",
+   "region": "cn",
+   "display": "一加 Ace Pro",
+   "label": "oplus-pgp110"
+  },
+  {
+   "id": "oplus-pgt110",
+   "brand": "oplus",
+   "model": "PGT110",
+   "region": "cn",
+   "display": "OPPO Find N2 Flip",
+   "label": "oplus-pgt110"
+  },
+  {
+   "id": "oplus-pgu110",
+   "brand": "oplus",
+   "model": "PGU110",
+   "region": "cn",
+   "display": "OPPO Find N2",
+   "label": "oplus-pgu110"
+  },
+  {
+   "id": "oplus-pgw110",
+   "brand": "oplus",
+   "model": "PGW110",
+   "region": "cn",
+   "display": "OPPO Reno9 Pro+ 5G",
+   "label": "oplus-pgw110"
+  },
+  {
+   "id": "oplus-pgx110",
+   "brand": "oplus",
+   "model": "PGX110",
+   "region": "cn",
+   "display": "OPPO Reno9 Pro 5G",
+   "label": "oplus-pgx110"
+  },
+  {
+   "id": "oplus-pgz110",
+   "brand": "oplus",
+   "model": "PGZ110",
+   "region": "cn",
+   "display": "一加 Ace 竞速版",
+   "label": "oplus-pgz110"
+  },
+  {
+   "id": "oplus-pha120",
+   "brand": "oplus",
+   "model": "PHA120",
+   "region": "cn",
+   "display": "OPPO A96",
+   "label": "oplus-pha120"
+  },
+  {
+   "id": "oplus-phb110",
+   "brand": "oplus",
+   "model": "PHB110",
+   "region": "cn",
+   "display": "一加 11",
+   "label": "oplus-phb110"
+  },
+  {
+   "id": "oplus-phf110",
+   "brand": "oplus",
+   "model": "PHF110",
+   "region": "cn",
+   "display": "OPPO K11 X",
+   "label": "oplus-phf110"
+  },
+  {
+   "id": "oplus-phj110",
+   "brand": "oplus",
+   "model": "PHJ110",
+   "region": "cn",
+   "display": "OPPO A58 / OPPO A58x / OPPO A1x / OPPO A1 活力版",
+   "label": "oplus-phj110"
+  },
+  {
+   "id": "oplus-phk110",
+   "brand": "oplus",
+   "model": "PHK110",
+   "region": "cn",
+   "display": "一加 Ace 2",
+   "label": "oplus-phk110"
+  },
+  {
+   "id": "oplus-phm110",
+   "brand": "oplus",
+   "model": "PHM110",
+   "region": "cn",
+   "display": "OPPO Reno9 5G",
+   "label": "oplus-phm110"
+  },
+  {
+   "id": "oplus-phn110",
+   "brand": "oplus",
+   "model": "PHN110",
+   "region": "cn",
+   "display": "OPPO Find N3/OPPO Find N3 典藏版",
+   "label": "oplus-phn110"
+  },
+  {
+   "id": "oplus-php110",
+   "brand": "oplus",
+   "model": "PHP110",
+   "region": "cn",
+   "display": "一加 Ace 2V",
+   "label": "oplus-php110"
+  },
+  {
+   "id": "oplus-phq110",
+   "brand": "oplus",
+   "model": "PHQ110",
+   "region": "cn",
+   "display": "OPPO A1 Pro 5G",
+   "label": "oplus-phq110"
+  },
+  {
+   "id": "oplus-phs110",
+   "brand": "oplus",
+   "model": "PHS110",
+   "region": "cn",
+   "display": "OPPO A1 5G (2023)",
+   "label": "oplus-phs110"
+  },
+  {
+   "id": "oplus-pht110",
+   "brand": "oplus",
+   "model": "PHT110",
+   "region": "cn",
+   "display": "OPPO Find N3 Flip",
+   "label": "oplus-pht110"
+  },
+  {
+   "id": "oplus-phu110",
+   "brand": "oplus",
+   "model": "PHU110",
+   "region": "cn",
+   "display": "OPPO Reno10 Pro+ 5G",
+   "label": "oplus-phu110"
+  },
+  {
+   "id": "oplus-phv110",
+   "brand": "oplus",
+   "model": "PHV110",
+   "region": "cn",
+   "display": "OPPO Reno10 Pro 5G/OPPO Reno10 Pro 星籁版 5G",
+   "label": "oplus-phv110"
+  },
+  {
+   "id": "oplus-phw110",
+   "brand": "oplus",
+   "model": "PHW110",
+   "region": "cn",
+   "display": "OPPO Reno10 5G",
+   "label": "oplus-phw110"
+  },
+  {
+   "id": "oplus-phy110",
+   "brand": "oplus",
+   "model": "PHY110",
+   "region": "cn",
+   "display": "OPPO Find X7 Ultra",
+   "label": "oplus-phy110"
+  },
+  {
+   "id": "oplus-phy120",
+   "brand": "oplus",
+   "model": "PHY120",
+   "region": "cn",
+   "display": "OPPO Find X7 Ultra 卫星通信版",
+   "label": "oplus-phy120"
+  },
+  {
+   "id": "oplus-phz110",
+   "brand": "oplus",
+   "model": "PHZ110",
+   "region": "cn",
+   "display": "OPPO Find X7",
+   "label": "oplus-phz110"
+  },
+  {
+   "id": "oplus-pja110",
+   "brand": "oplus",
+   "model": "PJA110",
+   "region": "cn",
+   "display": "一加 Ace 2 Pro",
+   "label": "oplus-pja110"
+  },
+  {
+   "id": "oplus-pjb110",
+   "brand": "oplus",
+   "model": "PJB110",
+   "region": "cn",
+   "display": "OPPO A1s / OPPO A2",
+   "label": "oplus-pjb110"
+  },
+  {
+   "id": "oplus-pjc110",
+   "brand": "oplus",
+   "model": "PJC110",
+   "region": "cn",
+   "display": "OPPO K11",
+   "label": "oplus-pjc110"
+  },
+  {
+   "id": "oplus-pjd110",
+   "brand": "oplus",
+   "model": "PJD110",
+   "region": "cn",
+   "display": "一加 12",
+   "label": "oplus-pjd110"
+  },
+  {
+   "id": "oplus-pje110",
+   "brand": "oplus",
+   "model": "PJE110",
+   "region": "cn",
+   "display": "一加 Ace 3",
+   "label": "oplus-pje110"
+  },
+  {
+   "id": "oplus-pjf110",
+   "brand": "oplus",
+   "model": "PJF110",
+   "region": "cn",
+   "display": "一加 Ace 3V",
+   "label": "oplus-pjf110"
+  },
+  {
+   "id": "oplus-pjg110",
+   "brand": "oplus",
+   "model": "PJG110",
+   "region": "cn",
+   "display": "OPPO A2 Pro 5G",
+   "label": "oplus-pjg110"
+  },
+  {
+   "id": "oplus-pjh110",
+   "brand": "oplus",
+   "model": "PJH110",
+   "region": "cn",
+   "display": "OPPO Reno11 5G",
+   "label": "oplus-pjh110"
+  },
+  {
+   "id": "oplus-pjj110",
+   "brand": "oplus",
+   "model": "PJJ110",
+   "region": "cn",
+   "display": "OPPO Reno11 Pro 5G",
+   "label": "oplus-pjj110"
+  },
+  {
+   "id": "oplus-pjr110",
+   "brand": "oplus",
+   "model": "PJR110",
+   "region": "cn",
+   "display": "OPPO K12",
+   "label": "oplus-pjr110"
+  },
+  {
+   "id": "oplus-pjs110",
+   "brand": "oplus",
+   "model": "PJS110",
+   "region": "cn",
+   "display": "OPPO A2 X 5G",
+   "label": "oplus-pjs110"
+  },
+  {
+   "id": "oplus-pjt110",
+   "brand": "oplus",
+   "model": "PJT110",
+   "region": "cn",
+   "display": "OPPO K12 X",
+   "label": "oplus-pjt110"
+  },
+  {
+   "id": "oplus-pju110",
+   "brand": "oplus",
+   "model": "PJU110",
+   "region": "cn",
+   "display": "OPPO A2 M 5G/OPPO A1 i 5G",
+   "label": "oplus-pju110"
+  },
+  {
+   "id": "oplus-pjv110",
+   "brand": "oplus",
+   "model": "PJV110",
+   "region": "cn",
+   "display": "OPPO Reno12",
+   "label": "oplus-pjv110"
+  },
+  {
+   "id": "oplus-pjw110",
+   "brand": "oplus",
+   "model": "PJW110",
+   "region": "cn",
+   "display": "OPPO Reno12 Pro",
+   "label": "oplus-pjw110"
+  },
+  {
+   "id": "oplus-pjx110",
+   "brand": "oplus",
+   "model": "PJX110",
+   "region": "cn",
+   "display": "一加 Ace 3 Pro",
+   "label": "oplus-pjx110"
+  },
+  {
+   "id": "oplus-pjy110",
+   "brand": "oplus",
+   "model": "PJY110",
+   "region": "cn",
+   "display": "OPPO A3 Pro 5G",
+   "label": "oplus-pjy110"
+  },
+  {
+   "id": "oplus-pjz110",
+   "brand": "oplus",
+   "model": "PJZ110",
+   "region": "cn",
+   "display": "一加 13",
+   "label": "oplus-pjz110"
+  },
+  {
+   "id": "oplus-pka110",
+   "brand": "oplus",
+   "model": "PKA110",
+   "region": "cn",
+   "display": "OPPO A3 5G/OPPO A3 i Plus 5G",
+   "label": "oplus-pka110"
+  },
+  {
+   "id": "oplus-pkb110",
+   "brand": "oplus",
+   "model": "PKB110",
+   "region": "cn",
+   "display": "OPPO Find X8",
+   "label": "oplus-pkb110"
+  },
+  {
+   "id": "oplus-pkc110",
+   "brand": "oplus",
+   "model": "PKC110",
+   "region": "cn",
+   "display": "OPPO Find X8 Pro",
+   "label": "oplus-pkc110"
+  },
+  {
+   "id": "oplus-pkc130",
+   "brand": "oplus",
+   "model": "PKC130",
+   "region": "cn",
+   "display": "OPPO Find X8 Pro 卫星通信版",
+   "label": "oplus-pkc130"
+  },
+  {
+   "id": "oplus-pkd110",
+   "brand": "oplus",
+   "model": "PKD110",
+   "region": "cn",
+   "display": "OPPO A3 活力版 5G",
+   "label": "oplus-pkd110"
+  },
+  {
+   "id": "oplus-pkd130",
+   "brand": "oplus",
+   "model": "PKD130",
+   "region": "cn",
+   "display": "OPPO A3 X 5G",
+   "label": "oplus-pkd130"
+  },
+  {
+   "id": "oplus-pkg110",
+   "brand": "oplus",
+   "model": "PKG110",
+   "region": "cn",
+   "display": "一加 Ace 5",
+   "label": "oplus-pkg110"
+  },
+  {
+   "id": "oplus-pkh110",
+   "brand": "oplus",
+   "model": "PKH110",
+   "region": "cn",
+   "display": "OPPO Find N5",
+   "label": "oplus-pkh110"
+  },
+  {
+   "id": "oplus-pkh120",
+   "brand": "oplus",
+   "model": "PKH120",
+   "region": "cn",
+   "display": "OPPO Find N5 卫星通信版",
+   "label": "oplus-pkh120"
+  },
+  {
+   "id": "oplus-pkj110",
+   "brand": "oplus",
+   "model": "PKJ110",
+   "region": "cn",
+   "display": "OPPO Find X8 Ultra",
+   "label": "oplus-pkj110"
+  },
+  {
+   "id": "oplus-pkk110",
+   "brand": "oplus",
+   "model": "PKK110",
+   "region": "cn",
+   "display": "OPPO Reno13 Pro",
+   "label": "oplus-pkk110"
+  },
+  {
+   "id": "oplus-pkl110",
+   "brand": "oplus",
+   "model": "PKL110",
+   "region": "cn",
+   "display": "OPPO A3 i 5G",
+   "label": "oplus-pkl110"
+  },
+  {
+   "id": "oplus-pkm110",
+   "brand": "oplus",
+   "model": "PKM110",
+   "region": "cn",
+   "display": "OPPO Reno13",
+   "label": "oplus-pkm110"
+  },
+  {
+   "id": "oplus-pkp110",
+   "brand": "oplus",
+   "model": "PKP110",
+   "region": "cn",
+   "display": "OPPO A5 Pro 5G",
+   "label": "oplus-pkp110"
+  },
+  {
+   "id": "oplus-pkq110",
+   "brand": "oplus",
+   "model": "PKQ110",
+   "region": "cn",
+   "display": "OPPO A5 5G",
+   "label": "oplus-pkq110"
+  },
+  {
+   "id": "oplus-pkr110",
+   "brand": "oplus",
+   "model": "PKR110",
+   "region": "cn",
+   "display": "一加 Ace 5 Pro",
+   "label": "oplus-pkr110"
+  },
+  {
+   "id": "oplus-pks110",
+   "brand": "oplus",
+   "model": "PKS110",
+   "region": "cn",
+   "display": "OPPO K12 Plus",
+   "label": "oplus-pks110"
+  },
+  {
+   "id": "oplus-pkt110",
+   "brand": "oplus",
+   "model": "PKT110",
+   "region": "cn",
+   "display": "OPPO Find X8S",
+   "label": "oplus-pkt110"
+  },
+  {
+   "id": "oplus-pku110",
+   "brand": "oplus",
+   "model": "PKU110",
+   "region": "cn",
+   "display": "OPPO Find X8 Ultra 卫星通信版",
+   "label": "oplus-pku110"
+  },
+  {
+   "id": "oplus-pkv110",
+   "brand": "oplus",
+   "model": "PKV110",
+   "region": "cn",
+   "display": "OPPO K13 X/OPPO A5活力版",
+   "label": "oplus-pkv110"
+  },
+  {
+   "id": "oplus-pkw110",
+   "brand": "oplus",
+   "model": "PKW110",
+   "region": "cn",
+   "display": "OPPO A5x / OPPO A5m",
+   "label": "oplus-pkw110"
+  },
+  {
+   "id": "oplus-pkw120",
+   "brand": "oplus",
+   "model": "PKW120",
+   "region": "cn",
+   "display": "OPPO A6i",
+   "label": "oplus-pkw120"
+  },
+  {
+   "id": "oplus-pkx110",
+   "brand": "oplus",
+   "model": "PKX110",
+   "region": "cn",
+   "display": "一加 13T",
+   "label": "oplus-pkx110"
+  },
+  {
+   "id": "oplus-pkz110",
+   "brand": "oplus",
+   "model": "PKZ110",
+   "region": "cn",
+   "display": "OPPO Reno14 Pro",
+   "label": "oplus-pkz110"
+  },
+  {
+   "id": "oplus-pla110",
+   "brand": "oplus",
+   "model": "PLA110",
+   "region": "cn",
+   "display": "OPPO Reno14",
+   "label": "oplus-pla110"
+  },
+  {
+   "id": "oplus-plb110",
+   "brand": "oplus",
+   "model": "PLB110",
+   "region": "cn",
+   "display": "OPPO Find X8S+",
+   "label": "oplus-plb110"
+  },
+  {
+   "id": "oplus-plc110",
+   "brand": "oplus",
+   "model": "PLC110",
+   "region": "cn",
+   "display": "一加 Ace 5 至尊版",
+   "label": "oplus-plc110"
+  },
+  {
+   "id": "oplus-pld110",
+   "brand": "oplus",
+   "model": "PLD110",
+   "region": "cn",
+   "display": "OPPO K12 S",
+   "label": "oplus-pld110"
+  },
+  {
+   "id": "oplus-ple110",
+   "brand": "oplus",
+   "model": "PLE110",
+   "region": "cn",
+   "display": "OPPO K13 Turbo Pro",
+   "label": "oplus-ple110"
+  },
+  {
+   "id": "oplus-plf110",
+   "brand": "oplus",
+   "model": "PLF110",
+   "region": "cn",
+   "display": "一加 Ace 5 竞速版",
+   "label": "oplus-plf110"
+  },
+  {
+   "id": "oplus-plg110",
+   "brand": "oplus",
+   "model": "PLG110",
+   "region": "cn",
+   "display": "OPPO Find X9 Pro",
+   "label": "oplus-plg110"
+  },
+  {
+   "id": "oplus-plg120",
+   "brand": "oplus",
+   "model": "PLG120",
+   "region": "cn",
+   "display": "OPPO Find X9 Pro 卫星通信版",
+   "label": "oplus-plg120"
+  },
+  {
+   "id": "oplus-plj110",
+   "brand": "oplus",
+   "model": "PLJ110",
+   "region": "cn",
+   "display": "OPPO Find X9",
+   "label": "oplus-plj110"
+  },
+  {
+   "id": "oplus-plk110",
+   "brand": "oplus",
+   "model": "PLK110",
+   "region": "cn",
+   "display": "一加 15",
+   "label": "oplus-plk110"
+  },
+  {
+   "id": "oplus-pll110",
+   "brand": "oplus",
+   "model": "PLL110",
+   "region": "cn",
+   "display": "OPPO K13 S/OPPO A6 GT/OPPO A6 Max/OPPO A6l",
+   "label": "oplus-pll110"
+  },
+  {
+   "id": "oplus-plm110",
+   "brand": "oplus",
+   "model": "PLM110",
+   "region": "cn",
+   "display": "OPPO K13 Turbo",
+   "label": "oplus-plm110"
+  },
+  {
+   "id": "oplus-pln110",
+   "brand": "oplus",
+   "model": "PLN110",
+   "region": "cn",
+   "display": "OPPO A6 Pro",
+   "label": "oplus-pln110"
+  },
+  {
+   "id": "oplus-plp110",
+   "brand": "oplus",
+   "model": "PLP110",
+   "region": "cn",
+   "display": "OPPO Find N6",
+   "label": "oplus-plp110"
+  },
+  {
+   "id": "oplus-plp120",
+   "brand": "oplus",
+   "model": "PLP120",
+   "region": "cn",
+   "display": "OPPO Find N6 卫星通信版",
+   "label": "oplus-plp120"
+  },
+  {
+   "id": "oplus-plq110",
+   "brand": "oplus",
+   "model": "PLQ110",
+   "region": "cn",
+   "display": "一加 Ace 6",
+   "label": "oplus-plq110"
+  },
+  {
+   "id": "oplus-plr110",
+   "brand": "oplus",
+   "model": "PLR110",
+   "region": "cn",
+   "display": "一加 Ace 6T",
+   "label": "oplus-plr110"
+  },
+  {
+   "id": "oplus-pls120",
+   "brand": "oplus",
+   "model": "PLS120",
+   "region": "cn",
+   "display": "OPPO A6",
+   "label": "oplus-pls120"
+  },
+  {
+   "id": "oplus-plt120",
+   "brand": "oplus",
+   "model": "PLT120",
+   "region": "cn",
+   "display": "OPPO A6s / OPPO A6i+ / OPPO A6k",
+   "label": "oplus-plt120"
+  },
+  {
+   "id": "oplus-plt130",
+   "brand": "oplus",
+   "model": "PLT130",
+   "region": "cn",
+   "display": "OPPO A6v",
+   "label": "oplus-plt130"
+  },
+  {
+   "id": "oplus-plt140",
+   "brand": "oplus",
+   "model": "PLT140",
+   "region": "cn",
+   "display": "OPPO A6x",
+   "label": "oplus-plt140"
+  },
+  {
+   "id": "oplus-plu110",
+   "brand": "oplus",
+   "model": "PLU110",
+   "region": "cn",
+   "display": "一加 Turbo 6",
+   "label": "oplus-plu110"
+  },
+  {
+   "id": "oplus-plv110",
+   "brand": "oplus",
+   "model": "PLV110",
+   "region": "cn",
+   "display": "OPPO Reno15 Pro",
+   "label": "oplus-plv110"
+  },
+  {
+   "id": "oplus-plw110",
+   "brand": "oplus",
+   "model": "PLW110",
+   "region": "cn",
+   "display": "OPPO Reno15",
+   "label": "oplus-plw110"
+  },
+  {
+   "id": "oplus-ply110",
+   "brand": "oplus",
+   "model": "PLY110",
+   "region": "cn",
+   "display": "一加 Turbo 6V",
+   "label": "oplus-ply110"
+  },
+  {
+   "id": "oplus-plz110",
+   "brand": "oplus",
+   "model": "PLZ110",
+   "region": "cn",
+   "display": "一加 15T",
+   "label": "oplus-plz110"
+  },
+  {
+   "id": "oplus-pma110",
+   "brand": "oplus",
+   "model": "PMA110",
+   "region": "cn",
+   "display": "OPPO Find X9 Ultra",
+   "label": "oplus-pma110"
+  },
+  {
+   "id": "oplus-pma120",
+   "brand": "oplus",
+   "model": "PMA120",
+   "region": "cn",
+   "display": "OPPO Find X9 Ultra 卫星通信版",
+   "label": "oplus-pma120"
+  },
+  {
+   "id": "oplus-pmb110",
+   "brand": "oplus",
+   "model": "PMB110",
+   "region": "cn",
+   "display": "一加 Ace 6 至尊版",
+   "label": "oplus-pmb110"
+  },
+  {
+   "id": "oplus-pmc110",
+   "brand": "oplus",
+   "model": "PMC110",
+   "region": "cn",
+   "display": "OPPO A6c",
+   "label": "oplus-pmc110"
+  },
+  {
+   "id": "oplus-pmd110",
+   "brand": "oplus",
+   "model": "PMD110",
+   "region": "cn",
+   "display": "OPPO Reno15c",
+   "label": "oplus-pmd110"
+  },
+  {
+   "id": "oplus-pme110",
+   "brand": "oplus",
+   "model": "PME110",
+   "region": "cn",
+   "display": "OPPO Find X9s Pro",
+   "label": "oplus-pme110"
+  },
+  {
+   "id": "oplus-pmg110",
+   "brand": "oplus",
+   "model": "PMG110",
+   "region": "cn",
+   "display": "OPPO K15 Pro+",
+   "label": "oplus-pmg110"
+  },
+  {
+   "id": "oplus-pmh110",
+   "brand": "oplus",
+   "model": "PMH110",
+   "region": "cn",
+   "display": "OPPO K15 Pro",
+   "label": "oplus-pmh110"
+  },
+  {
+   "id": "oplus-pmk110",
+   "brand": "oplus",
+   "model": "PMK110",
+   "region": "cn",
+   "display": "OPPO Reno16 Pro",
+   "label": "oplus-pmk110"
+  },
+  {
+   "id": "oplus-pmm110",
+   "brand": "oplus",
+   "model": "PMM110",
+   "region": "cn",
+   "display": "OPPO Reno16",
+   "label": "oplus-pmm110"
+  },
+  {
+   "id": "oplus-pmt110",
+   "brand": "oplus",
+   "model": "PMT110",
+   "region": "cn",
+   "display": "OPPO A6s Pro",
+   "label": "oplus-pmt110"
+  },
+  {
+   "id": "oplus-pmw110",
+   "brand": "oplus",
+   "model": "PMW110",
+   "region": "cn",
+   "display": "OPPO Find X10",
+   "label": "oplus-pmw110"
+  },
+  {
+   "id": "oplus-pmx110",
+   "brand": "oplus",
+   "model": "PMX110",
+   "region": "cn",
+   "display": "OPPO Find X10 Pro Max",
+   "label": "oplus-pmx110"
+  },
+  {
+   "id": "oplus-pna110",
+   "brand": "oplus",
+   "model": "PNA110",
+   "region": "cn",
+   "display": "OPPO Find X10 E",
+   "label": "oplus-pna110"
+  },
+  {
+   "id": "oplus-pyb110",
+   "brand": "oplus",
+   "model": "PYB110",
+   "region": "cn",
+   "display": "一加 16",
+   "label": "oplus-pyb110"
+  },
+  {
+   "id": "oplus-pyc110",
+   "brand": "oplus",
+   "model": "PYC110",
+   "region": "cn",
+   "display": "OPPO A7 Pro Max",
+   "label": "oplus-pyc110"
+  },
+  {
+   "id": "oplus-pyr110",
+   "brand": "oplus",
+   "model": "PYR110",
+   "region": "cn",
+   "display": "一加 Turbo 6X Pro",
+   "label": "oplus-pyr110"
+  },
+  {
+   "id": "oplus-pys110",
+   "brand": "oplus",
+   "model": "PYS110",
+   "region": "cn",
+   "display": "一加 Turbo 6X",
+   "label": "oplus-pys110"
+  },
+  {
+   "id": "oplus-rmp2108",
+   "brand": "oplus",
+   "model": "RMP2108",
+   "region": "cn",
+   "display": "Realme 平板 X",
+   "label": "oplus-rmp2108"
+  },
+  {
+   "id": "oplus-rmx1851",
+   "brand": "oplus",
+   "model": "RMX1851",
+   "region": "cn",
+   "display": "Realme X 青春版",
+   "label": "oplus-rmx1851"
+  },
+  {
+   "id": "oplus-rmx1901",
+   "brand": "oplus",
+   "model": "RMX1901",
+   "region": "cn",
+   "display": "Realme X",
+   "label": "oplus-rmx1901"
+  },
+  {
+   "id": "oplus-rmx1931",
+   "brand": "oplus",
+   "model": "RMX1931",
+   "region": "cn",
+   "display": "Realme X2 Pro",
+   "label": "oplus-rmx1931"
+  },
+  {
+   "id": "oplus-rmx1971",
+   "brand": "oplus",
+   "model": "RMX1971",
+   "region": "cn",
+   "display": "Realme Q",
+   "label": "oplus-rmx1971"
+  },
+  {
+   "id": "oplus-rmx1991",
+   "brand": "oplus",
+   "model": "RMX1991",
+   "region": "cn",
+   "display": "Realme X2",
+   "label": "oplus-rmx1991"
+  },
+  {
+   "id": "oplus-rmx2051",
+   "brand": "oplus",
+   "model": "RMX2051",
+   "region": "cn",
+   "display": "Realme X50 5G",
+   "label": "oplus-rmx2051"
+  },
+  {
+   "id": "oplus-rmx2071",
+   "brand": "oplus",
+   "model": "RMX2071",
+   "region": "cn",
+   "display": "Realme X50 Pro 5G",
+   "label": "oplus-rmx2071"
+  },
+  {
+   "id": "oplus-rmx2072",
+   "brand": "oplus",
+   "model": "RMX2072",
+   "region": "cn",
+   "display": "Realme X50 Pro 玩家版",
+   "label": "oplus-rmx2072"
+  },
+  {
+   "id": "oplus-rmx2112",
+   "brand": "oplus",
+   "model": "RMX2112",
+   "region": "cn",
+   "display": "Realme V5 5G 运营商定制版",
+   "label": "oplus-rmx2112"
+  },
+  {
+   "id": "oplus-rmx2117",
+   "brand": "oplus",
+   "model": "RMX2117",
+   "region": "cn",
+   "display": "Realme Q2 5G / Realme V5 5G",
+   "label": "oplus-rmx2117"
+  },
+  {
+   "id": "oplus-rmx2121",
+   "brand": "oplus",
+   "model": "RMX2121",
+   "region": "cn",
+   "display": "Realme X7 Pro 5G",
+   "label": "oplus-rmx2121"
+  },
+  {
+   "id": "oplus-rmx2141",
+   "brand": "oplus",
+   "model": "RMX2141",
+   "region": "cn",
+   "display": "Realme X50M 5G",
+   "label": "oplus-rmx2141"
+  },
+  {
+   "id": "oplus-rmx2202",
+   "brand": "oplus",
+   "model": "RMX2202",
+   "region": "cn",
+   "display": "Realme GT 5G",
+   "label": "oplus-rmx2202"
+  },
+  {
+   "id": "oplus-rmx2205",
+   "brand": "oplus",
+   "model": "RMX2205",
+   "region": "cn",
+   "display": "Realme Q3 Pro 5G",
+   "label": "oplus-rmx2205"
+  },
+  {
+   "id": "oplus-rmx3031",
+   "brand": "oplus",
+   "model": "RMX3031",
+   "region": "cn",
+   "display": "Realme GT Neo 5G",
+   "label": "oplus-rmx3031"
+  },
+  {
+   "id": "oplus-rmx3041",
+   "brand": "oplus",
+   "model": "RMX3041",
+   "region": "cn",
+   "display": "Realme V13 5G 全网通版",
+   "label": "oplus-rmx3041"
+  },
+  {
+   "id": "oplus-rmx3042",
+   "brand": "oplus",
+   "model": "RMX3042",
+   "region": "cn",
+   "display": "Realme Q3i 5G / Realme V13 5G",
+   "label": "oplus-rmx3042"
+  },
+  {
+   "id": "oplus-rmx3043",
+   "brand": "oplus",
+   "model": "RMX3043",
+   "region": "cn",
+   "display": "Realme V13 5G 运营商定制版",
+   "label": "oplus-rmx3043"
+  },
+  {
+   "id": "oplus-rmx3093",
+   "brand": "oplus",
+   "model": "RMX3093",
+   "region": "cn",
+   "display": "Realme V15 5G 运营商定制版",
+   "label": "oplus-rmx3093"
+  },
+  {
+   "id": "oplus-rmx3122",
+   "brand": "oplus",
+   "model": "RMX3122",
+   "region": "cn",
+   "display": "Realme V11 5G 运营商定制版",
+   "label": "oplus-rmx3122"
+  },
+  {
+   "id": "oplus-rmx3161",
+   "brand": "oplus",
+   "model": "RMX3161",
+   "region": "cn",
+   "display": "Realme Q3 5G",
+   "label": "oplus-rmx3161"
+  },
+  {
+   "id": "oplus-rmx3300",
+   "brand": "oplus",
+   "model": "RMX3300",
+   "region": "cn",
+   "display": "Realme GT2 Pro",
+   "label": "oplus-rmx3300"
+  },
+  {
+   "id": "oplus-rmx3310",
+   "brand": "oplus",
+   "model": "RMX3310",
+   "region": "cn",
+   "display": "Realme GT2",
+   "label": "oplus-rmx3310"
+  },
+  {
+   "id": "oplus-rmx3350",
+   "brand": "oplus",
+   "model": "RMX3350",
+   "region": "cn",
+   "display": "Realme GT Neo 闪速版",
+   "label": "oplus-rmx3350"
+  },
+  {
+   "id": "oplus-rmx3357",
+   "brand": "oplus",
+   "model": "RMX3357",
+   "region": "cn",
+   "display": "Realme GT Neo2T",
+   "label": "oplus-rmx3357"
+  },
+  {
+   "id": "oplus-rmx3366",
+   "brand": "oplus",
+   "model": "RMX3366",
+   "region": "cn",
+   "display": "Realme GT 大师探索版",
+   "label": "oplus-rmx3366"
+  },
+  {
+   "id": "oplus-rmx3370",
+   "brand": "oplus",
+   "model": "RMX3370",
+   "region": "cn",
+   "display": "Realme GT Neo2",
+   "label": "oplus-rmx3370"
+  },
+  {
+   "id": "oplus-rmx3372",
+   "brand": "oplus",
+   "model": "RMX3372",
+   "region": "cn",
+   "display": "Realme Q5 Pro",
+   "label": "oplus-rmx3372"
+  },
+  {
+   "id": "oplus-rmx3461",
+   "brand": "oplus",
+   "model": "RMX3461",
+   "region": "cn",
+   "display": "Realme Q3S",
+   "label": "oplus-rmx3461"
+  },
+  {
+   "id": "oplus-rmx3475",
+   "brand": "oplus",
+   "model": "RMX3475",
+   "region": "cn",
+   "display": "Realme V25",
+   "label": "oplus-rmx3475"
+  },
+  {
+   "id": "oplus-rmx3478",
+   "brand": "oplus",
+   "model": "RMX3478",
+   "region": "cn",
+   "display": "Realme Q5",
+   "label": "oplus-rmx3478"
+  },
+  {
+   "id": "oplus-rmx3551",
+   "brand": "oplus",
+   "model": "RMX3551",
+   "region": "cn",
+   "display": "Realme GT2 大师探索版",
+   "label": "oplus-rmx3551"
+  },
+  {
+   "id": "oplus-rmx3560",
+   "brand": "oplus",
+   "model": "RMX3560",
+   "region": "cn",
+   "display": "Realme GT Neo3 80W",
+   "label": "oplus-rmx3560"
+  },
+  {
+   "id": "oplus-rmx3562",
+   "brand": "oplus",
+   "model": "RMX3562",
+   "region": "cn",
+   "display": "Realme GT Neo3 150W",
+   "label": "oplus-rmx3562"
+  },
+  {
+   "id": "oplus-rmx3571",
+   "brand": "oplus",
+   "model": "RMX3571",
+   "region": "cn",
+   "display": "Realme V23",
+   "label": "oplus-rmx3571"
+  },
+  {
+   "id": "oplus-rmx3574",
+   "brand": "oplus",
+   "model": "RMX3574",
+   "region": "cn",
+   "display": "Realme Q5i",
+   "label": "oplus-rmx3574"
+  },
+  {
+   "id": "oplus-rmx3576",
+   "brand": "oplus",
+   "model": "RMX3576",
+   "region": "cn",
+   "display": "Realme V23i",
+   "label": "oplus-rmx3576"
+  },
+  {
+   "id": "oplus-rmx3611",
+   "brand": "oplus",
+   "model": "RMX3611",
+   "region": "cn",
+   "display": "Realme V20",
+   "label": "oplus-rmx3611"
+  },
+  {
+   "id": "oplus-rmx3615",
+   "brand": "oplus",
+   "model": "RMX3615",
+   "region": "cn",
+   "display": "Realme 10",
+   "label": "oplus-rmx3615"
+  },
+  {
+   "id": "oplus-rmx3617",
+   "brand": "oplus",
+   "model": "RMX3617",
+   "region": "cn",
+   "display": "Realme 10S",
+   "label": "oplus-rmx3617"
+  },
+  {
+   "id": "oplus-rmx3618",
+   "brand": "oplus",
+   "model": "RMX3618",
+   "region": "cn",
+   "display": "Realme V30T",
+   "label": "oplus-rmx3618"
+  },
+  {
+   "id": "oplus-rmx3663",
+   "brand": "oplus",
+   "model": "RMX3663",
+   "region": "cn",
+   "display": "Realme 10 Pro",
+   "label": "oplus-rmx3663"
+  },
+  {
+   "id": "oplus-rmx3687",
+   "brand": "oplus",
+   "model": "RMX3687",
+   "region": "cn",
+   "display": "Realme 10 Pro+",
+   "label": "oplus-rmx3687"
+  },
+  {
+   "id": "oplus-rmx3700",
+   "brand": "oplus",
+   "model": "RMX3700",
+   "region": "cn",
+   "display": "Realme GT Neo5 SE",
+   "label": "oplus-rmx3700"
+  },
+  {
+   "id": "oplus-rmx3706",
+   "brand": "oplus",
+   "model": "RMX3706",
+   "region": "cn",
+   "display": "Realme GT Neo5 150W",
+   "label": "oplus-rmx3706"
+  },
+  {
+   "id": "oplus-rmx3708",
+   "brand": "oplus",
+   "model": "RMX3708",
+   "region": "cn",
+   "display": "Realme GT Neo5 240W",
+   "label": "oplus-rmx3708"
+  },
+  {
+   "id": "oplus-rmx3740",
+   "brand": "oplus",
+   "model": "RMX3740",
+   "region": "cn",
+   "display": "Realme 11 Pro+",
+   "label": "oplus-rmx3740"
+  },
+  {
+   "id": "oplus-rmx3751",
+   "brand": "oplus",
+   "model": "RMX3751",
+   "region": "cn",
+   "display": "Realme 11",
+   "label": "oplus-rmx3751"
+  },
+  {
+   "id": "oplus-rmx3770",
+   "brand": "oplus",
+   "model": "RMX3770",
+   "region": "cn",
+   "display": "Realme 11 Pro",
+   "label": "oplus-rmx3770"
+  },
+  {
+   "id": "oplus-rmx3781",
+   "brand": "oplus",
+   "model": "RMX3781",
+   "region": "cn",
+   "display": "Realme V50S",
+   "label": "oplus-rmx3781"
+  },
+  {
+   "id": "oplus-rmx3783",
+   "brand": "oplus",
+   "model": "RMX3783",
+   "region": "cn",
+   "display": "Realme V50",
+   "label": "oplus-rmx3783"
+  },
+  {
+   "id": "oplus-rmx3800",
+   "brand": "oplus",
+   "model": "RMX3800",
+   "region": "cn",
+   "display": "Realme GT6",
+   "label": "oplus-rmx3800"
+  },
+  {
+   "id": "oplus-rmx3820",
+   "brand": "oplus",
+   "model": "RMX3820",
+   "region": "cn",
+   "display": "Realme GT5 150W",
+   "label": "oplus-rmx3820"
+  },
+  {
+   "id": "oplus-rmx3823",
+   "brand": "oplus",
+   "model": "RMX3823",
+   "region": "cn",
+   "display": "Realme GT5 240W",
+   "label": "oplus-rmx3823"
+  },
+  {
+   "id": "oplus-rmx3841",
+   "brand": "oplus",
+   "model": "RMX3841",
+   "region": "cn",
+   "display": "Realme 12 Pro+",
+   "label": "oplus-rmx3841"
+  },
+  {
+   "id": "oplus-rmx3843",
+   "brand": "oplus",
+   "model": "RMX3843",
+   "region": "cn",
+   "display": "Realme 12 Pro/Pro 至尊版",
+   "label": "oplus-rmx3843"
+  },
+  {
+   "id": "oplus-rmx3850",
+   "brand": "oplus",
+   "model": "RMX3850",
+   "region": "cn",
+   "display": "Realme GT Neo6 SE",
+   "label": "oplus-rmx3850"
+  },
+  {
+   "id": "oplus-rmx3852",
+   "brand": "oplus",
+   "model": "RMX3852",
+   "region": "cn",
+   "display": "Realme GT Neo6",
+   "label": "oplus-rmx3852"
+  },
+  {
+   "id": "oplus-rmx3888",
+   "brand": "oplus",
+   "model": "RMX3888",
+   "region": "cn",
+   "display": "Realme GT5 Pro",
+   "label": "oplus-rmx3888"
+  },
+  {
+   "id": "oplus-rmx3920",
+   "brand": "oplus",
+   "model": "RMX3920",
+   "region": "cn",
+   "display": "Realme 13 Pro+",
+   "label": "oplus-rmx3920"
+  },
+  {
+   "id": "oplus-rmx3946",
+   "brand": "oplus",
+   "model": "RMX3946",
+   "region": "cn",
+   "display": "Realme V70",
+   "label": "oplus-rmx3946"
+  },
+  {
+   "id": "oplus-rmx3948",
+   "brand": "oplus",
+   "model": "RMX3948",
+   "region": "cn",
+   "display": "Realme V70S",
+   "label": "oplus-rmx3948"
+  },
+  {
+   "id": "oplus-rmx3952",
+   "brand": "oplus",
+   "model": "RMX3952",
+   "region": "cn",
+   "display": "Realme 13",
+   "label": "oplus-rmx3952"
+  },
+  {
+   "id": "oplus-rmx3953",
+   "brand": "oplus",
+   "model": "RMX3953",
+   "region": "cn",
+   "display": "Realme V60 Pro",
+   "label": "oplus-rmx3953"
+  },
+  {
+   "id": "oplus-rmx3989",
+   "brand": "oplus",
+   "model": "RMX3989",
+   "region": "cn",
+   "display": "Realme 13 Pro 至尊版",
+   "label": "oplus-rmx3989"
+  },
+  {
+   "id": "oplus-rmx3992",
+   "brand": "oplus",
+   "model": "RMX3992",
+   "region": "cn",
+   "display": "Realme 12",
+   "label": "oplus-rmx3992"
+  },
+  {
+   "id": "oplus-rmx3993",
+   "brand": "oplus",
+   "model": "RMX3993",
+   "region": "cn",
+   "display": "Realme 12x",
+   "label": "oplus-rmx3993"
+  },
+  {
+   "id": "oplus-rmx3995",
+   "brand": "oplus",
+   "model": "RMX3995",
+   "region": "cn",
+   "display": "Realme 12x 运营商定制版 / Realme V60",
+   "label": "oplus-rmx3995"
+  },
+  {
+   "id": "oplus-rmx3996",
+   "brand": "oplus",
+   "model": "RMX3996",
+   "region": "cn",
+   "display": "Realme V60S",
+   "label": "oplus-rmx3996"
+  },
+  {
+   "id": "oplus-rmx5002",
+   "brand": "oplus",
+   "model": "RMX5002",
+   "region": "cn",
+   "display": "Realme 13 Pro",
+   "label": "oplus-rmx5002"
+  },
+  {
+   "id": "oplus-rmx5010",
+   "brand": "oplus",
+   "model": "RMX5010",
+   "region": "cn",
+   "display": "Realme GT7 Pro",
+   "label": "oplus-rmx5010"
+  },
+  {
+   "id": "oplus-rmx5050",
+   "brand": "oplus",
+   "model": "RMX5050",
+   "region": "cn",
+   "display": "Realme 14 Pro+",
+   "label": "oplus-rmx5050"
+  },
+  {
+   "id": "oplus-rmx5055",
+   "brand": "oplus",
+   "model": "RMX5055",
+   "region": "cn",
+   "display": "Realme 14 Pro",
+   "label": "oplus-rmx5055"
+  },
+  {
+   "id": "oplus-rmx5060",
+   "brand": "oplus",
+   "model": "RMX5060",
+   "region": "cn",
+   "display": "Realme Neo7",
+   "label": "oplus-rmx5060"
+  },
+  {
+   "id": "oplus-rmx5062",
+   "brand": "oplus",
+   "model": "RMX5062",
+   "region": "cn",
+   "display": "Realme Neo7 Turbo",
+   "label": "oplus-rmx5062"
+  },
+  {
+   "id": "oplus-rmx5071",
+   "brand": "oplus",
+   "model": "RMX5071",
+   "region": "cn",
+   "display": "Realme Neo7x",
+   "label": "oplus-rmx5071"
+  },
+  {
+   "id": "oplus-rmx5075",
+   "brand": "oplus",
+   "model": "RMX5075",
+   "region": "cn",
+   "display": "Realme 14",
+   "label": "oplus-rmx5075"
+  },
+  {
+   "id": "oplus-rmx5080",
+   "brand": "oplus",
+   "model": "RMX5080",
+   "region": "cn",
+   "display": "Realme Neo7 SE",
+   "label": "oplus-rmx5080"
+  },
+  {
+   "id": "oplus-rmx5090",
+   "brand": "oplus",
+   "model": "RMX5090",
+   "region": "cn",
+   "display": "Realme GT7 Pro 竞速版",
+   "label": "oplus-rmx5090"
+  },
+  {
+   "id": "oplus-rmx5100",
+   "brand": "oplus",
+   "model": "RMX5100",
+   "region": "cn",
+   "display": "Realme 15 Pro",
+   "label": "oplus-rmx5100"
+  },
+  {
+   "id": "oplus-rmx5105",
+   "brand": "oplus",
+   "model": "RMX5105",
+   "region": "cn",
+   "display": "Realme 15",
+   "label": "oplus-rmx5105"
+  },
+  {
+   "id": "oplus-rmx5112",
+   "brand": "oplus",
+   "model": "RMX5112",
+   "region": "cn",
+   "display": "Realme 15T",
+   "label": "oplus-rmx5112"
+  },
+  {
+   "id": "oplus-rmx5200",
+   "brand": "oplus",
+   "model": "RMX5200",
+   "region": "cn",
+   "display": "Realme GT8 Pro",
+   "label": "oplus-rmx5200"
+  },
+  {
+   "id": "oplus-rmx6688",
+   "brand": "oplus",
+   "model": "RMX6688",
+   "region": "cn",
+   "display": "Realme GT7",
+   "label": "oplus-rmx6688"
+  },
+  {
+   "id": "oplus-rmx6699",
+   "brand": "oplus",
+   "model": "RMX6699",
+   "region": "cn",
+   "display": "Realme GT8",
+   "label": "oplus-rmx6699"
+  },
+  {
+   "id": "oplus-rmx8899",
+   "brand": "oplus",
+   "model": "RMX8899",
+   "region": "cn",
+   "display": "Realme Neo8",
+   "label": "oplus-rmx8899"
+  },
+  {
+   "id": "meizu-171",
+   "brand": "meizu",
+   "model": "171",
+   "display": "15"
+  },
+  {
+   "id": "meizu-172",
+   "brand": "meizu",
+   "model": "172",
+   "display": "15 Plus"
+  },
+  {
+   "id": "meizu-176",
+   "brand": "meizu",
+   "model": "176",
+   "display": "16 X"
+  },
+  {
+   "id": "meizu-185",
+   "brand": "meizu",
+   "model": "185",
+   "display": "16T"
+  },
+  {
+   "id": "meizu-183",
+   "brand": "meizu",
+   "model": "183",
+   "display": "16Xs"
+  },
+  {
+   "id": "meizu-182",
+   "brand": "meizu",
+   "model": "182",
+   "display": "16s"
+  },
+  {
+   "id": "meizu-184",
+   "brand": "meizu",
+   "model": "184",
+   "display": "16s Pro"
+  },
+  {
+   "id": "meizu-174",
+   "brand": "meizu",
+   "model": "174",
+   "display": "16th"
+  },
+  {
+   "id": "meizu-175",
+   "brand": "meizu",
+   "model": "175",
+   "display": "16th Plus"
+  },
+  {
+   "id": "meizu-170",
+   "brand": "meizu",
+   "model": "170",
+   "display": "M15"
+  },
+  {
+   "id": "meizu-1",
+   "brand": "meizu",
+   "model": "1",
+   "display": "M8"
+  },
+  {
+   "id": "meizu-2",
+   "brand": "meizu",
+   "model": "2",
+   "display": "M9"
+  },
+  {
+   "id": "meizu-3",
+   "brand": "meizu",
+   "model": "3",
+   "display": "MX"
+  },
+  {
+   "id": "meizu-4",
+   "brand": "meizu",
+   "model": "4",
+   "display": "MX2"
+  },
+  {
+   "id": "meizu-5",
+   "brand": "meizu",
+   "model": "5",
+   "display": "MX3"
+  },
+  {
+   "id": "meizu-6",
+   "brand": "meizu",
+   "model": "6",
+   "display": "MX4"
+  },
+  {
+   "id": "meizu-7",
+   "brand": "meizu",
+   "model": "7",
+   "display": "MX4 Pro"
+  },
+  {
+   "id": "meizu-18",
+   "brand": "meizu",
+   "model": "18",
+   "display": "MX5"
+  },
+  {
+   "id": "meizu-66",
+   "brand": "meizu",
+   "model": "66",
+   "display": "MX6"
+  },
+  {
+   "id": "meizu-180",
+   "brand": "meizu",
+   "model": "180",
+   "display": "Note8"
+  },
+  {
+   "id": "meizu-181",
+   "brand": "meizu",
+   "model": "181",
+   "display": "Note9"
+  },
+  {
+   "id": "meizu-23",
+   "brand": "meizu",
+   "model": "23",
+   "display": "PRO 5"
+  },
+  {
+   "id": "meizu-26",
+   "brand": "meizu",
+   "model": "26",
+   "display": "PRO 6"
+  },
+  {
+   "id": "meizu-101",
+   "brand": "meizu",
+   "model": "101",
+   "display": "PRO 6 Plus"
+  },
+  {
+   "id": "meizu-94",
+   "brand": "meizu",
+   "model": "94",
+   "display": "PRO 6s"
+  },
+  {
+   "id": "meizu-140",
+   "brand": "meizu",
+   "model": "140",
+   "display": "PRO 7 Plus"
+  },
+  {
+   "id": "meizu-138",
+   "brand": "meizu",
+   "model": "138",
+   "display": "PRO 7 标准版"
+  },
+  {
+   "id": "meizu-139",
+   "brand": "meizu",
+   "model": "139",
+   "display": "PRO 7 高配版"
+  },
+  {
+   "id": "meizu-177",
+   "brand": "meizu",
+   "model": "177",
+   "display": "V8 标配版"
+  },
+  {
+   "id": "meizu-178",
+   "brand": "meizu",
+   "model": "178",
+   "display": "V8 高配版"
+  },
+  {
+   "id": "meizu-179",
+   "brand": "meizu",
+   "model": "179",
+   "display": "X8"
+  },
+  {
+   "id": "meizu-186",
+   "brand": "meizu",
+   "model": "186",
+   "display": "魅族 17"
+  },
+  {
+   "id": "meizu-187",
+   "brand": "meizu",
+   "model": "187",
+   "display": "魅族 17 Pro"
+  },
+  {
+   "id": "meizu-188",
+   "brand": "meizu",
+   "model": "188",
+   "display": "魅族 18"
+  },
+  {
+   "id": "meizu-189",
+   "brand": "meizu",
+   "model": "189",
+   "display": "魅族 18 Pro"
+  },
+  {
+   "id": "meizu-190",
+   "brand": "meizu",
+   "model": "190",
+   "display": "魅族 18X"
+  },
+  {
+   "id": "meizu-191",
+   "brand": "meizu",
+   "model": "191",
+   "display": "魅族 18s"
+  },
+  {
+   "id": "meizu-192",
+   "brand": "meizu",
+   "model": "192",
+   "display": "魅族 18s Pro"
+  },
+  {
+   "id": "meizu-195",
+   "brand": "meizu",
+   "model": "195",
+   "display": "魅族 20"
+  },
+  {
+   "id": "meizu-197",
+   "brand": "meizu",
+   "model": "197",
+   "display": "魅族 20 INFINITY无界版"
+  },
+  {
+   "id": "meizu-196",
+   "brand": "meizu",
+   "model": "196",
+   "display": "魅族 20 PRO"
+  },
+  {
+   "id": "meizu-198",
+   "brand": "meizu",
+   "model": "198",
+   "display": "魅族 21"
+  },
+  {
+   "id": "meizu-200",
+   "brand": "meizu",
+   "model": "200",
+   "display": "魅族 21 Note"
+  },
+  {
+   "id": "meizu-199",
+   "brand": "meizu",
+   "model": "199",
+   "display": "魅族 21 PRO"
+  },
+  {
+   "id": "meizu-205",
+   "brand": "meizu",
+   "model": "205",
+   "display": "魅族 21 PRO Flyme 钛好用版"
+  },
+  {
+   "id": "meizu-207",
+   "brand": "meizu",
+   "model": "207",
+   "display": "魅族 22"
+  },
+  {
+   "id": "meizu-202",
+   "brand": "meizu",
+   "model": "202",
+   "display": "魅族 Lucky 08"
+  },
+  {
+   "id": "meizu-203",
+   "brand": "meizu",
+   "model": "203",
+   "display": "魅族 Note 16"
+  },
+  {
+   "id": "meizu-204",
+   "brand": "meizu",
+   "model": "204",
+   "display": "魅族 Note 16 Pro"
+  },
+  {
+   "id": "meizu-9",
+   "brand": "meizu",
+   "model": "9",
+   "display": "魅蓝"
+  },
+  {
+   "id": "meizu-193",
+   "brand": "meizu",
+   "model": "193",
+   "display": "魅蓝 10"
+  },
+  {
+   "id": "meizu-194",
+   "brand": "meizu",
+   "model": "194",
+   "display": "魅蓝 10s"
+  },
+  {
+   "id": "meizu-19",
+   "brand": "meizu",
+   "model": "19",
+   "display": "魅蓝 2"
+  },
+  {
+   "id": "meizu-201",
+   "brand": "meizu",
+   "model": "201",
+   "display": "魅蓝 20"
+  },
+  {
+   "id": "meizu-206",
+   "brand": "meizu",
+   "model": "206",
+   "display": "魅蓝 20C"
+  },
+  {
+   "id": "meizu-27",
+   "brand": "meizu",
+   "model": "27",
+   "display": "魅蓝 3"
+  },
+  {
+   "id": "meizu-58",
+   "brand": "meizu",
+   "model": "58",
+   "display": "魅蓝 3s"
+  },
+  {
+   "id": "meizu-96",
+   "brand": "meizu",
+   "model": "96",
+   "display": "魅蓝 5"
+  },
+  {
+   "id": "meizu-103",
+   "brand": "meizu",
+   "model": "103",
+   "display": "魅蓝 5s"
+  },
+  {
+   "id": "meizu-145",
+   "brand": "meizu",
+   "model": "145",
+   "display": "魅蓝 6"
+  },
+  {
+   "id": "meizu-173",
+   "brand": "meizu",
+   "model": "173",
+   "display": "魅蓝 6T"
+  },
+  {
+   "id": "meizu-130",
+   "brand": "meizu",
+   "model": "130",
+   "display": "魅蓝 A5"
+  },
+  {
+   "id": "meizu-79",
+   "brand": "meizu",
+   "model": "79",
+   "display": "魅蓝 E"
+  },
+  {
+   "id": "meizu-106",
+   "brand": "meizu",
+   "model": "106",
+   "display": "魅蓝 E2"
+  },
+  {
+   "id": "meizu-169",
+   "brand": "meizu",
+   "model": "169",
+   "display": "魅蓝 E3"
+  },
+  {
+   "id": "meizu-89",
+   "brand": "meizu",
+   "model": "89",
+   "display": "魅蓝 Max"
+  },
+  {
+   "id": "meizu-25",
+   "brand": "meizu",
+   "model": "25",
+   "display": "魅蓝 Note3"
+  },
+  {
+   "id": "meizu-99",
+   "brand": "meizu",
+   "model": "99",
+   "display": "魅蓝 Note5"
+  },
+  {
+   "id": "meizu-143",
+   "brand": "meizu",
+   "model": "143",
+   "display": "魅蓝 Note6"
+  },
+  {
+   "id": "meizu-156",
+   "brand": "meizu",
+   "model": "156",
+   "display": "魅蓝 S6"
+  },
+  {
+   "id": "meizu-85",
+   "brand": "meizu",
+   "model": "85",
+   "display": "魅蓝 U10"
+  },
+  {
+   "id": "meizu-84",
+   "brand": "meizu",
+   "model": "84",
+   "display": "魅蓝 U20"
+  },
+  {
+   "id": "meizu-98",
+   "brand": "meizu",
+   "model": "98",
+   "display": "魅蓝 X"
+  },
+  {
+   "id": "meizu-24",
+   "brand": "meizu",
+   "model": "24",
+   "display": "魅蓝 metal "
+  },
+  {
+   "id": "meizu-8",
+   "brand": "meizu",
+   "model": "8",
+   "display": "魅蓝 note"
+  },
+  {
+   "id": "meizu-10",
+   "brand": "meizu",
+   "model": "10",
+   "display": "魅蓝 note2"
+  },
+  {
+   "id": "pixel-8",
+   "brand": "google",
+   "model": "shiba",
+   "adapter_args": {
+    "kind": "factory"
+   }
+  },
+  {
+   "id": "pixel-8-pro",
+   "brand": "google",
+   "model": "husky",
+   "adapter_args": {
+    "kind": "factory"
+   }
+  },
+  {
+   "id": "pixel-8a",
+   "brand": "google",
+   "model": "akita",
+   "adapter_args": {
+    "kind": "factory"
+   }
+  },
+  {
+   "id": "samsung-s23-cn",
+   "brand": "samsung",
+   "model": "SM-S9110",
+   "region": "CHC"
+  },
+  {
+   "id": "moto-edge50-cn",
+   "brand": "lolinet",
+   "model": "XT2401",
+   "adapter_args": {
+    "root": "https://mirrors.lolinet.com/firmware/lenomola/2025/",
+    "max_depth": 2,
+    "match": "XT2401"
+   }
+  },
+  {
+   "id": "manual-queue",
+   "brand": "manual",
+   "model": "links.txt"
+  }
+ ]
 }
