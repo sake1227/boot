@@ -73,6 +73,7 @@ push 上去以后有两条路验证，都不需要配 123 的 secret：
 | `samsung` | `SM-S9110`，`region` 填 CSC 如 `CHC` | 最新版本号（免费） | 包体走 FUS 认证，标记为 `resolve` 不派发；要真下载得接 samloader |
 | `lolinet` | `XT2401` 之类，配合 `root`/`match` | 该机型所有镜像 | h5ai 目录索引，永久直链，适合铺存量 |
 | `oplus` | OTA 代号 `PJD110` / `RMX3301`，`region` 填 `cn` 等 | 最新全量包（灰度/预览可开） | 动态链接，**在下载 job 里现场解析**，不写去重表 |
+| `meizu` | flyme 的 phone_id（如 `207` = 魅族22） | 该机型各渠道线的最新版 | 官方 `?key=` 页 302 到带 `auth_key` 的直链，会过期，同样在下载 job 里现场解析 |
 | `manual` | `links.txt` | 你人肉找的链接 | 过渡用，一样走完整流水线 |
 | `cmd` | 任意 shell 命令 | stdout 里的 URL | **逃生口**：OPPO/一加/realme 用这个包社区工具 |
 
@@ -185,20 +186,35 @@ curl -s https://roms.lian86.top/brand/OnePlus/model/PJZ110 \
 
 拿到 `16.0.5.702(CN01)` 这种版本号后，可以反向确认 `tomboy_pro.py --components` 该查哪个增量包。
 
+## 定时任务跑的是什么
+
+| 触发 | 时间（北京） | 做什么 |
+|---|---|---|
+| `cron: 0 18 * * *` | 每天 02:00 | **增量**：每个机型取 1 个新版本（`max_new_per_device` 可调） |
+| `cron: 0 20 */3 * *` | 每 3 天 04:00 | **对账**：扫全部版本，`rclone lsf` 列出网盘已有文件，只补缺的（每机型最多 20 个） |
+
+对账模式不看去重表（`--all-versions`），所以即使某次运行失败、版本被误标成已处理，
+3 天内也会自动补回来。手动补漏也可以直接勾 `reset_seen` 重跑。
+
 ## 网盘目录结构
 
-上传路径是 **`分类 / 机型中文名 / 版本.zip`**，不传 json：
+上传路径是 **`品牌 / 分类 / 机型中文名 / 版本.zip`**，不传 json：
 
 ```
 123:zanfang/
-├── 数字系列/小米15/OS3.0.307.0.WOCCNXM.zip
-├── 数字系列/小米14/OS3.0.307.0.WNCCNXM.zip
-├── 数字系列/小米9/V12.5.1.0.QFACNXM.zip
-├── Note 系列/红米Note14/OS2.0.5.0.VOGCNXM.zip
-├── Ace 系列/一加 Ace 3 Pro/PJX110_16.0.5.1001(CN01).zip
-├── Reno 系列/OPPO Reno14/PLA110_16.0.10.600(CN01).zip
-└── GT 系列/Realme GT5 150W/RMX3820_14.0.0.211(CN01).zip
+├── 小米/数字系列/小米15/OS3.0.307.0.WOCCNXM.zip
+├── 小米/数字系列/小米9/V12.5.1.0.QFACNXM.zip
+├── 红米/Note 系列/红米Note14/OS2.0.5.0.VOGCNXM.zip
+├── 红米/K 系列/红米K80/OS3.0.309.0.WOKCNXM.zip
+├── 一加/数字系列/一加 13/PJZ110_17.0.0.103(CN01).zip
+├── 一加/Ace 系列/一加 Ace 3 Pro/PJX110_16.0.5.1001(CN01).zip
+├── OPPO/Reno 系列/OPPO Reno14/PLA110_16.0.10.600(CN01).zip
+├── 真我/GT 系列/Realme GT5 150W/RMX3820_14.0.0.211(CN01).zip
+└── 魅族/数字系列/魅族 22/Flyme_12.6.0.0A.zip
 ```
+
+品牌层是自动判的：小米/红米/POCO 同属 `xiaomi` adapter，靠 miuier 机型目录里的品牌归位；
+一加/OPPO/真我靠机型名前缀；魅族固定。判不出来时用 `brand_cn()` 兜底。
 
 - **文件名 = 版本号**。小米取包名里的 `OS3.0.307.0.WOCCNXM`；欧加用解析出来的
   `PJZ110_17.0.0.103(CN01)`；拿不到版本的退回原始文件名。
