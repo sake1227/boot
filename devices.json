@@ -52,6 +52,10 @@
       }
     },
 
+    { "id": "meizu-22", "brand": "meizu", "model": "207", "display": "魅族 22" },
+    { "id": "meizu-21-pro", "brand": "meizu", "model": "205", "display": "魅族 21 PRO" },
+    { "id": "meizu-note16-pro", "brand": "meizu", "model": "204", "display": "魅族 Note 16 Pro" },
+    { "id": "meizu-lucky08", "brand": "meizu", "model": "202", "display": "魅族 Lucky 08" },
     { "id": "manual-queue", "brand": "manual", "model": "links.txt" },
 
     { "id": "oneplus-13", "brand": "oplus", "model": "PJZ110", "region": "cn", "label": "oneplus-13", "display": "一加 13" },
