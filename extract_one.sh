@@ -23,6 +23,8 @@ if [ -z "$ROM_URL" ] && [ -z "$RESOLVE_CMD" ]; then
 fi
 BRAND="${BRAND:-unknown}"
 MODEL="${MODEL:-unknown}"
+CAT="${CAT:-其他}"                 # 分类，如「数字系列」「Note 系列」
+DEVNAME="${DEVNAME:-$MODEL}"       # 机型中文名，如「小米15」
 VERSION="${VERSION:-}"
 PARTITIONS="${PARTITIONS:-boot,init_boot,vbmeta}"
 DEST="${RCLONE_DEST:-123:zanfang}"   # 与你仓库里原有的 123:zanfang 保持一致
@@ -35,7 +37,7 @@ log() { printf '\n==> %s\n' "$*"; }
 
 mkdir -p "$WORK/raw" "$WORK/out" "$WORK/ext"
 cd "$WORK"
-TARGET="$DEST/$BRAND/$MODEL"
+TARGET="$DEST/$CAT/$DEVNAME"
 
 # --------------------------------------------------------------------------- #
 # A. 动态链接现场解析（OPPO / 一加 / realme）
@@ -73,10 +75,22 @@ if [ -n "$RESOLVE_CMD" ]; then
     echo "      它依赖 tools/oplus/tomboy_pro.py（由 batch.yml 里「准备欧加解析工具」步骤 clone）" >&2
     exit 9
   fi
-  # 产物名用解析出来的真实文件名（里面有版本号），比占位名有用
-  ROM_NAME=$(basename "${ROM_URL%%\?*}")
-  ROM_NAME=$(printf '%s' "$ROM_NAME" | sed -E 's/\.(zip|ozip)$//I; s/[^A-Za-z0-9._-]+/_/g')
-  log "已解析: $ROM_NAME"
+  # 产物名保持 matrix 给过来的版本号（如 PJZ110_17.0.0.103(CN01)），
+  # 解析出来的 CDN 文件名是哈希，没有意义
+  log "已解析: $(basename "${ROM_URL%%\?*}")"
+
+  # 欧加的版本号只有解析后才知道：从 tomboy 输出的「• Version:」里取最后一条
+  # （最后一个分支最新，与我们优先取最后一条签名链是对齐的）
+  VLINE=$(printf '%s' "$OUT" \
+    | grep -iE 'Version:' | grep -viE 'Ota[[:space:]]*Version' | tail -1 || true)
+  if [ -n "${VLINE:-}" ]; then
+    NEWNAME=$(printf '%s' "$VLINE" | sed -E 's/^[^:]*:[[:space:]]*//; s/[[:space:]]+$//')
+    NEWNAME=$(printf '%s' "$NEWNAME" | sed -E 's#[/\\:*?"<>|]+#_#g; s/[[:space:]]+/_/g')
+    if [ -n "$NEWNAME" ]; then
+      ROM_NAME="$NEWNAME"
+      log "版本号作为文件名: ${ROM_NAME}.zip"
+    fi
+  fi
 fi
 
 # --------------------------------------------------------------------------- #
@@ -272,29 +286,9 @@ fi
 ls -lh "$ZIP_NAME"
 
 # --------------------------------------------------------------------------- #
-# 6. 上传 123 + 元数据（站点可以直接拿 json 当索引）
+# 6. 上传 123（只传 zip，不再写 json 元数据）
 # --------------------------------------------------------------------------- #
-TARGET="$DEST/$BRAND/$MODEL"
 log "上传 $TARGET/"
 rclone copy "$ZIP_NAME" "$TARGET/" --retries 3 --low-level-retries 5 --stats-one-line
 
-python3 - "$ZIP_NAME" "$ROM_URL" "$WORK/out" "$BRAND" "$MODEL" "$VERSION" "$ROM_NAME" \
-  > "${ROM_NAME}.json" <<'PY'
-import json, os, sys, time
-zip_name, src, outdir, brand, model, version, name = sys.argv[1:8]
-print(json.dumps({
-    "brand": brand,
-    "model": model,
-    "version": version,
-    "name": name,
-    "zip": zip_name,
-    "zip_bytes": os.path.getsize(os.path.join(outdir, zip_name)),
-    "images": sorted(f for f in os.listdir(outdir) if f.endswith(".img")),
-    "source_url": src,
-    "created": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-}, ensure_ascii=False, indent=1))
-PY
-
-rclone copy "${ROM_NAME}.json" "$TARGET/" --retries 3 --stats-one-line
-
-log "完成 $ROM_NAME"
+log "完成 $TARGET/$ZIP_NAME"
