@@ -24,6 +24,7 @@ fi
 BRAND="${BRAND:-unknown}"
 MODEL="${MODEL:-unknown}"
 BRANDCN="${BRANDCN:-其他}"         # 品牌中文名，如「小米」「一加」「魅族」
+REFERER="${REFERER:-}"             # 下载需要的 Referer（魅族 CDN 强制校验）
 CAT="${CAT:-其他}"                 # 分类，如「数字系列」「Note 系列」
 DEVNAME="${DEVNAME:-$MODEL}"       # 机型中文名，如「小米15」
 VERSION="${VERSION:-}"
@@ -106,7 +107,7 @@ fi
 # C. 体积预检：OPPO 有些分支只放 80~200M 的增量/组件包，下了也提不出 boot
 # --------------------------------------------------------------------------- #
 probe_total() {
-  curl -s -o /dev/null -D - -r 0-0 "$1" 2>/dev/null | tr -d '\r' \
+  curl -s -o /dev/null -D - -r 0-0 -A "Mozilla/5.0 Chrome/122.0" ${REFERER:+-e "$REFERER"} "$1" 2>/dev/null | tr -d '\r' \
     | awk 'tolower($1)=="content-range:"{split($2,a,"/");print a[2];exit}'
 }
 TOTAL=$(probe_total "$ROM_URL" || true)
@@ -135,8 +136,15 @@ fi
 # 1. 下载
 # --------------------------------------------------------------------------- #
 log "下载 $ROM_URL"
+dl_args=()
+if [ -n "$REFERER" ]; then
+  dl_args+=(--referer="$REFERER")
+  log "带上 Referer: $REFERER"
+fi
 aria2c -x16 -s16 -k1M --retry-wait=3 --max-tries=5 --console-log-level=warn \
   --file-allocation=none --auto-file-renaming=false \
+  --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0 Safari/537.36" \
+  "${dl_args[@]}" \
   -d "$WORK/raw" -o "rom.bin" "$ROM_URL"
 
 ROM="$WORK/raw/rom.bin"
