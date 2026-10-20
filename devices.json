@@ -33,6 +33,8 @@
     { "id": "redmi-note12-turbo","brand": "xiaomi", "model": "marble",   "region": "cn" },
     { "id": "redmi-note13-pro",  "brand": "xiaomi", "model": "garnet",   "region": "cn" },
 
+    { "id": "mi-9", "brand": "xiaomi", "model": "cepheus", "region": "cn" },
+    { "id": "mi-8", "brand": "xiaomi", "model": "dipper", "region": "cn" },
     { "id": "pixel-8",     "brand": "google", "model": "shiba",  "adapter_args": { "kind": "factory" } },
     { "id": "pixel-8-pro", "brand": "google", "model": "husky",  "adapter_args": { "kind": "factory" } },
     { "id": "pixel-8a",    "brand": "google", "model": "akita",  "adapter_args": { "kind": "factory" } },
@@ -52,18 +54,18 @@
 
     { "id": "manual-queue", "brand": "manual", "model": "links.txt" },
 
-    { "id": "oneplus-13", "brand": "oplus", "model": "PJZ110", "region": "cn", "label": "oneplus-13" },
-    { "id": "oneplus-ace3-pro", "brand": "oplus", "model": "PJX110", "region": "cn", "label": "oneplus-ace3-pro" },
-    { "id": "oneplus-12", "brand": "oplus", "model": "PJD110", "region": "cn", "label": "oneplus-12" },
-    { "id": "oneplus-ace3", "brand": "oplus", "model": "PJE110", "region": "cn", "label": "oneplus-ace3" },
-    { "id": "oneplus-ace2-pro", "brand": "oplus", "model": "PJA110", "region": "cn", "label": "oneplus-ace2-pro" },
-    { "id": "oneplus-11", "brand": "oplus", "model": "PHB110", "region": "cn", "label": "oneplus-11" },
-    { "id": "oneplus-10-pro", "brand": "oplus", "model": "NE2210", "region": "cn", "label": "oneplus-10-pro" },
-    { "id": "oppo-reno14", "brand": "oplus", "model": "PLA110", "region": "cn", "label": "oppo-reno14" },
-    { "id": "oppo-find-x7", "brand": "oplus", "model": "PHZ110", "region": "cn", "label": "oppo-find-x7" },
-    { "id": "oppo-find-x8", "brand": "oplus", "model": "PJT110", "region": "cn", "label": "oppo-find-x8" },
-    { "id": "realme-gt5", "brand": "oplus", "model": "RMX3820", "region": "cn", "label": "realme-gt5" },
-    { "id": "realme-gt-neo5", "brand": "oplus", "model": "RMX3706", "region": "cn", "label": "realme-gt-neo5" },
-    { "id": "realme-rmx5200", "brand": "oplus", "model": "RMX5200", "region": "cn", "label": "realme-rmx5200" }
+    { "id": "oneplus-13", "brand": "oplus", "model": "PJZ110", "region": "cn", "label": "oneplus-13", "display": "一加 13" },
+    { "id": "oneplus-ace3-pro", "brand": "oplus", "model": "PJX110", "region": "cn", "label": "oneplus-ace3-pro", "display": "一加 Ace 3 Pro" },
+    { "id": "oneplus-12", "brand": "oplus", "model": "PJD110", "region": "cn", "label": "oneplus-12", "display": "一加 12" },
+    { "id": "oneplus-ace3", "brand": "oplus", "model": "PJE110", "region": "cn", "label": "oneplus-ace3", "display": "一加 Ace 3" },
+    { "id": "oneplus-ace2-pro", "brand": "oplus", "model": "PJA110", "region": "cn", "label": "oneplus-ace2-pro", "display": "一加 Ace 2 Pro" },
+    { "id": "oneplus-11", "brand": "oplus", "model": "PHB110", "region": "cn", "label": "oneplus-11", "display": "一加 11" },
+    { "id": "oneplus-10-pro", "brand": "oplus", "model": "NE2210", "region": "cn", "label": "oneplus-10-pro", "display": "一加 10 Pro" },
+    { "id": "oppo-reno14", "brand": "oplus", "model": "PLA110", "region": "cn", "label": "oppo-reno14", "display": "OPPO Reno14" },
+    { "id": "oppo-find-x7", "brand": "oplus", "model": "PHZ110", "region": "cn", "label": "oppo-find-x7", "display": "OPPO Find X7" },
+    { "id": "oppo-find-x8", "brand": "oplus", "model": "PJT110", "region": "cn", "label": "oppo-find-x8", "display": "OPPO Find X8" },
+    { "id": "realme-gt5", "brand": "oplus", "model": "RMX3820", "region": "cn", "label": "realme-gt5", "display": "Realme GT5 150W" },
+    { "id": "realme-gt-neo5", "brand": "oplus", "model": "RMX3706", "region": "cn", "label": "realme-gt-neo5", "display": "Realme GT Neo5" },
+    { "id": "realme-rmx5200", "brand": "oplus", "model": "RMX5200", "region": "cn", "label": "realme-rmx5200", "display": "Realme RMX5200" }
   ]
 }
