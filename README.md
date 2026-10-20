@@ -9,7 +9,7 @@
 devices.json ──► discover.py ──► matrix ──► extract_one.sh (×N 并发) ──► 123 网盘
  (机型表)        (各版本直链)      (待办)      (下载/提取/打包/上传)         │
                                                                           ▼
-                                                            make_index.py → data/index.json
+
 ```
 
 ## 目录
@@ -19,9 +19,8 @@ devices.json ──► discover.py ──► matrix ──► extract_one.sh (×
 | `devices.json` | **机型表，你真正要维护的东西**。加一行 = 多一个自动抓取目标 |
 | `discover.py` | 多源发现器，零依赖。找机型全部版本 → 出新版本的直链 |
 | `extract_one.sh` | 单包：下载 → 提 boot → 7z 加密 → rclone 上传 123 |
-| `make_index.py` | 扫 123 目录，生成 `index.json` 给站点前端用 |
 | `gen_devices.py` | 从站点地图批量生成机型表骨架（几百个机型一次到位） |
-| `selftest.py` | 离线自检，33 项，不联网 |
+| `selftest.py` | 离线自检，36 项，不联网 |
 | `links.txt` | 手工链接队列（人肉找到的链接也能走同一条流水线） |
 | `.github/workflows/batch.yml` | 主 workflow：发现 → 并发提取 → 重建索引 |
 | `.github/workflows/selftest.yml` | 自检 workflow：push 自动跑离线自检，手动可实时探测源站 |
@@ -43,7 +42,7 @@ push 上去以后有两条路验证，都不需要配 123 的 secret：
 1. 新建仓库（或直接用 `sake1227/boot`），把下面这些放到**仓库根目录**：
 
    ```
-   devices.json  discover.py  extract_one.sh  make_index.py  gen_devices.py
+   devices.json  discover.py  extract_one.sh  gen_devices.py
    selftest.py   links.txt    获取解压密码.txt
    .github/workflows/batch.yml
    ```
@@ -116,7 +115,7 @@ farm:      bash -c "<那条命令>" → 抓 .zip/.ozip → 重试 3 次 → 立�
 }
 ```
 
-- `label` 只影响 123 网盘的目录名（`123:zhanfang/oplus/realme-GT/`）。
+- `label` 只影响 123 网盘的目录名（`123:zanfang/oplus/realme-GT/`）。
 - `extra_flags` 是透传给 `tomboy_pro.py` 的查询开关，灰度/预览版改这里。
 - 工具不打包进仓库，workflow 每次 `git clone --depth 1` 上游最新版到 `tools/oplus`。
 - 因为链接会过期，**动态源不写去重表**；重复运行靠 farm 端「上传前查同目录有没有同名
@@ -143,22 +142,6 @@ farm:      bash -c "<那条命令>" → 抓 .zip/.ozip → 重试 3 次 → 立�
 | Google factory/OTA、lolinet `.zip` | 展开后找 `boot.img` |
 | `*.img.lz4` | 自动 `lz4 -d` |
 | `.ozip` | 不支持，需先解密，脚本会明确报错退出 |
-
-## 索引给站点用
-
-`index` job 会把 `data/index.json` 提交回仓库：
-
-```json
-{ "devices": { "xiaomi": { "dada": [
-  { "name": "dada-ota_full-OS3.0.307.0.WOCCNXM-user-16.0-6703365c83",
-    "zip": "xiaomi/dada/xxx.zip", "bytes": 6500000000, "size": "6.1 GB",
-    "mtime": "2026-09-01 10:00:00",
-    "images": ["boot.img","init_boot.img","vbmeta.img"],
-    "version": "3.0.307", "source_url": "https://bkt-...aliyuncs.com/..." } ] } } }
-```
-
-`zip` 是 123 网盘里的相对路径，配合你的分享前缀就是下载地址。国内访问
-`raw.githubusercontent.com` 不稳的话，用 jsDelivr 拉这个 json。
 
 ## 额度与并发（务必看一眼）
 
@@ -201,6 +184,30 @@ curl -s https://roms.lian86.top/brand/OnePlus/model/PJZ110 \
 ```
 
 拿到 `16.0.5.702(CN01)` 这种版本号后，可以反向确认 `tomboy_pro.py --components` 该查哪个增量包。
+
+## 网盘目录结构
+
+上传路径是 **`分类 / 机型中文名 / 版本.zip`**，不传 json：
+
+```
+123:zanfang/
+├── 数字系列/小米15/OS3.0.307.0.WOCCNXM.zip
+├── 数字系列/小米14/OS3.0.307.0.WNCCNXM.zip
+├── 数字系列/小米9/V12.5.1.0.QFACNXM.zip
+├── Note 系列/红米Note14/OS2.0.5.0.VOGCNXM.zip
+├── Ace 系列/一加 Ace 3 Pro/PJX110_16.0.5.1001(CN01).zip
+├── Reno 系列/OPPO Reno14/PLA110_16.0.10.600(CN01).zip
+└── GT 系列/Realme GT5 150W/RMX3820_14.0.0.211(CN01).zip
+```
+
+- **文件名 = 版本号**。小米取包名里的 `OS3.0.307.0.WOCCNXM`；欧加用解析出来的
+  `PJZ110_17.0.0.103(CN01)`；拿不到版本的退回原始文件名。
+- **分类 + 机型中文名**从哪来：
+  - 小米：`roms.miuier.com` 的机型目录（290 个机型 / 20 个系列，一次请求、缓存 7 天）。
+    抓不到时退回从 miuiver 索引页 H1 里抠机型名。
+  - 欧加：`devices.json` 里的 `display` 字段（来自 `devices.oplus.json` 的 298 个机型表）。
+  - 其它机型：按名字规则猜（`category_of()`），可给某机型加 `"category": "xxx"` 覆盖。
+- 分类规则的顺序在 `discover.py` 的 `CATEGORY_RULES` 里，想加「折叠屏系列」之类直接改那一处。
 
 ## 验证状态
 
@@ -264,5 +271,4 @@ miuiver 是第三方索引站，脚本已做礼貌化处理：每天一轮、请
 python selftest.py                                     # 33 项离线自检
 python gen_devices.py -o devices.generated.json        # 生成机型表骨架
 python discover.py --devices devices.json --only xiaomi-15 --print   # 只扫一个机型
-python make_index.py listing.txt -o index.json         # 试跑索引
 ```
