@@ -33,6 +33,9 @@ on:
       max_parallel:
         description: '并发数（免费账号上限 20）'
         default: '10'
+      max_total:
+        description: '本次最多派发多少个包（留空用默认 12；全量重提填 200）'
+        default: ''
   schedule:
     # 每天 UTC 18:00 = 北京 02:00 —— 增量：每个机型推 1 个新版本
     - cron: '0 18 * * *'
@@ -110,7 +113,7 @@ jobs:
           RESET_SEEN: ${{ inputs.reset_seen }}
           RECONCILE: ${{ inputs.reconcile || github.event.schedule == '0 20 */3 * *' }}
           RECONCILE_MAX: ${{ vars.RECONCILE_MAX || '12' }}
-          MAX_TOTAL: ${{ vars.MAX_TOTAL || '12' }}
+          MAX_TOTAL: ${{ inputs.max_total || vars.MAX_TOTAL || '12' }}
         run: |
           set -euo pipefail
           mkdir -p out state
@@ -123,7 +126,7 @@ jobs:
                 --print)
           if [ "${RECONCILE:-false}" = "true" ]; then
             echo "== 对账模式：扫全部版本，只补网盘上缺的 =="
-            ARGS+=(--all-versions --existing out/remote.txt --max-new-per-device 20 --max-total "${RECONCILE_MAX:-12}")
+            ARGS+=(--all-versions --existing out/remote.txt --max-new-per-device 20 --max-total "${MAX_TOTAL:-12}")
           else
             ARGS+=(--new-only --max-new-per-device "${MAXNEW:-1}" --max-total "${MAX_TOTAL:-12}")
           fi
