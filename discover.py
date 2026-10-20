@@ -843,13 +843,13 @@ def load_existing(path: Path) -> set:
     return out
 
 
-def build_matrix(all_c: list[dict]) -> dict:
+def build_matrix(all_c: list[dict], max_total: int = MAX_MATRIX) -> dict:
     """只收能真正派发的：有直链，或有 resolve 命令（在下载 job 里现场解析）。"""
     picked = [c for c in all_c if dispatchable(c)]
-    if len(picked) > MAX_MATRIX:
-        print(f"[warn] matrix 超上限，截断到 {MAX_MATRIX}（其余下次运行）",
-              file=sys.stderr)
-        picked = picked[:MAX_MATRIX]
+    cap = min(max_total, MAX_MATRIX)
+    if len(picked) > cap:
+        print(f"[warn] matrix 超上限，截断到 {cap}（其余下次运行）", file=sys.stderr)
+        picked = picked[:cap]
     return {
         "include": [
             {
@@ -886,6 +886,8 @@ def main() -> int:
     ap.add_argument("--new-only", action="store_true")
     ap.add_argument("--all-versions", action="store_true",
                     help="对账模式：不看去重表，把所有版本都扫出来（配合 --existing 补漏）")
+    ap.add_argument("--max-total", type=int, default=MAX_MATRIX,
+                    help="本次最多派发多少个 job（对账模式务必调小，否则一次几百个 8G 包）")
     ap.add_argument("--existing", default="",
                     help="网盘现有文件清单（rclone lsf 的输出），已存在的不再派发")
     ap.add_argument("--sleep", type=float, default=1.0,
@@ -947,7 +949,7 @@ def main() -> int:
               file=sys.stderr)
 
     # --- matrix ---
-    matrix = build_matrix(all_c)
+    matrix = build_matrix(all_c, args.max_total)
     ready = [c for c in all_c if c["status"] == "ready" and c["url"]]
     if args.matrix_out:
         mp = Path(args.matrix_out)
