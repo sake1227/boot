@@ -22,6 +22,10 @@ on:
         description: '只发现链接、不下载提取'
         type: boolean
         default: false
+      reset_seen:
+        description: '清空去重表（失败的运行会误标记已处理，卡住进度时勾这个）'
+        type: boolean
+        default: false
   schedule:
     # 每天 UTC 18:00 = 北京 02:00
     - cron: '0 18 * * *'
@@ -65,9 +69,14 @@ jobs:
           ONLY: ${{ inputs.only }}
           BRAND: ${{ inputs.brand }}
           MAXNEW: ${{ inputs.max_new_per_device }}
+          RESET_SEEN: ${{ inputs.reset_seen }}
         run: |
           set -euo pipefail
           mkdir -p out state
+          if [ "${RESET_SEEN:-false}" = "true" ]; then
+            echo "清空去重表 state/seen.json"
+            rm -f state/seen.json
+          fi
           ARGS=(--devices devices.json --state state/seen.json
                 --out out/candidates.json --matrix-out out/matrix.json
                 --new-only --print)
