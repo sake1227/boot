@@ -26,6 +26,10 @@ on:
         description: '清空去重表（失败的运行会误标记已处理，卡住进度时勾这个）'
         type: boolean
         default: false
+      reconcile:
+        description: '对账模式：扫全部版本，只补网盘上缺的（每 3 天自动跑一次这个）'
+        type: boolean
+        default: false
   schedule:
     # 每天 UTC 18:00 = 北京 02:00 —— 增量：每个机型推 1 个新版本
     - cron: '0 18 * * *'
@@ -101,7 +105,8 @@ jobs:
           BRAND: ${{ inputs.brand }}
           MAXNEW: ${{ inputs.max_new_per_device }}
           RESET_SEEN: ${{ inputs.reset_seen }}
-          RECONCILE: ${{ github.event.schedule == '0 20 */3 * *' }}
+          RECONCILE: ${{ inputs.reconcile || github.event.schedule == '0 20 */3 * *' }}
+          RECONCILE_MAX: ${{ vars.RECONCILE_MAX || '12' }}
         run: |
           set -euo pipefail
           mkdir -p out state
@@ -114,7 +119,7 @@ jobs:
                 --print)
           if [ "${RECONCILE:-false}" = "true" ]; then
             echo "== 对账模式：扫全部版本，只补网盘上缺的 =="
-            ARGS+=(--all-versions --existing out/remote.txt --max-new-per-device 20)
+            ARGS+=(--all-versions --existing out/remote.txt --max-new-per-device 20 --max-total "${RECONCILE_MAX:-12}")
           else
             ARGS+=(--new-only --max-new-per-device "${MAXNEW:-1}")
           fi
