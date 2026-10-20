@@ -27,8 +27,10 @@ on:
         type: boolean
         default: false
   schedule:
-    # 每天 UTC 18:00 = 北京 02:00
+    # 每天 UTC 18:00 = 北京 02:00 —— 增量：每个机型推 1 个新版本
     - cron: '0 18 * * *'
+    # 每 3 天 UTC 20:00 = 北京 04:00 —— 对账：扫全部版本，只补网盘上没有的
+    - cron: '0 20 */3 * *'
 
 concurrency:
   group: batch-boot
@@ -63,6 +65,35 @@ jobs:
           key: state-${{ github.run_id }}
           restore-keys: state-
 
+      - name: 安装 rclone（对账模式要列网盘清单）
+        if: ${{ github.event.schedule == '0 20 */3 * *' }}
+        run: curl -fsSL https://rclone.org/install.sh | sudo bash
+
+      - name: 配置 rclone（对账模式）
+        if: ${{ github.event.schedule == '0 20 */3 * *' }}
+        env:
+          RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.config/rclone
+          if [ -n "${RCLONE_CONF:-}" ]; then
+            printf '%s\n' "$RCLONE_CONF" > ~/.config/rclone/rclone.conf
+          elif [ -f rclone.zip ]; then
+            unzip -o -q rclone.zip -d ~/.config/rclone/
+          else
+            echo "缺少 rclone 配置"; exit 1
+          fi
+
+      - name: 拉网盘现有清单（对账模式）
+        if: ${{ github.event.schedule == '0 20 */3 * *' }}
+        env:
+          RCLONE_DEST: ${{ vars.RCLONE_DEST || '123:zanfang' }}
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          rclone lsf "$RCLONE_DEST" -R --files-only --format pst > out/remote.txt || true
+          echo "网盘现有文件数: $(wc -l < out/remote.txt)"
+
       - name: 发现直链
         id: find
         env:
@@ -70,6 +101,7 @@ jobs:
           BRAND: ${{ inputs.brand }}
           MAXNEW: ${{ inputs.max_new_per_device }}
           RESET_SEEN: ${{ inputs.reset_seen }}
+          RECONCILE: ${{ github.event.schedule == '0 20 */3 * *' }}
         run: |
           set -euo pipefail
           mkdir -p out state
@@ -79,10 +111,15 @@ jobs:
           fi
           ARGS=(--devices devices.json --state state/seen.json
                 --out out/candidates.json --matrix-out out/matrix.json
-                --new-only --print)
+                --print)
+          if [ "${RECONCILE:-false}" = "true" ]; then
+            echo "== 对账模式：扫全部版本，只补网盘上缺的 =="
+            ARGS+=(--all-versions --existing out/remote.txt --max-new-per-device 20)
+          else
+            ARGS+=(--new-only --max-new-per-device "${MAXNEW:-1}")
+          fi
           if [ -n "${ONLY:-}" ];  then ARGS+=(--only "$ONLY");  fi
           if [ -n "${BRAND:-}" ]; then ARGS+=(--brand "$BRAND"); fi
-          ARGS+=(--max-new-per-device "${MAXNEW:-1}")
 
           python discover.py "${ARGS[@]}"
 
@@ -199,6 +236,7 @@ jobs:
           RESOLVE_CMD: ${{ matrix.resolve }}
           BRAND: ${{ matrix.brand }}
           MODEL: ${{ matrix.model }}
+          BRANDCN: ${{ matrix.brandcn }}
           CAT: ${{ matrix.cat }}
           DEVNAME: ${{ matrix.devname }}
           VERSION: ${{ matrix.version }}
