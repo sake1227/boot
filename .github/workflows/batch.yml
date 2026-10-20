@@ -1,9 +1,9 @@
 name: batch-boot
 
-# 机型表 → 发现各版本直链 → matrix 并发 → 提取 boot → 上传 123 → 生成 index.json
+# 机型表 → 发现各版本直链 → matrix 并发 → 提取 boot → 按「分类/机型中文名/版本.zip」上传 123
 #
 # 部署：把本文件放 .github/workflows/batch.yml，
-#       devices.json / discover.py / extract_one.sh / make_index.py 放仓库根。
+#       devices.json / discover.py / extract_one.sh 放仓库根。
 # 需要的 secret：RCLONE_CONF、UNZIP_PASSWORD
 
 on:
@@ -190,6 +190,8 @@ jobs:
           RESOLVE_CMD: ${{ matrix.resolve }}
           BRAND: ${{ matrix.brand }}
           MODEL: ${{ matrix.model }}
+          CAT: ${{ matrix.cat }}
+          DEVNAME: ${{ matrix.devname }}
           VERSION: ${{ matrix.version }}
           UNZIP_PASSWORD: ${{ secrets.UNZIP_PASSWORD }}
           PASSFILE: ${{ github.workspace }}/获取解压密码.txt
@@ -209,64 +211,3 @@ jobs:
             echo "- 重跑: Actions → batch-boot → Run workflow，only=\`${{ matrix.id }}\`"
           } >> "$GITHUB_STEP_SUMMARY"
 
-  # ---------------------------------------------------------------------------
-  # 3. 索引：重建 index.json 给 xxrom.cn 用
-  # ---------------------------------------------------------------------------
-  index:
-    needs: [discover, farm]
-    if: ${{ always() && !inputs.dry_run && needs.discover.outputs.count != '0' }}
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v7
-
-      - uses: actions/setup-python@v7
-        with:
-          python-version: '3.12'
-
-      - name: 装 rclone
-        run: curl -fsSL https://rclone.org/install.sh | sudo bash
-
-      - name: 配置 rclone
-        env:
-          RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
-        run: |
-          set -euo pipefail
-          mkdir -p ~/.config/rclone
-          if [ -n "${RCLONE_CONF:-}" ]; then
-            printf '%s\n' "$RCLONE_CONF" > ~/.config/rclone/rclone.conf
-          elif [ -f rclone.zip ]; then
-            unzip -o -q rclone.zip -d ~/.config/rclone/
-          else
-            echo "缺少 rclone 配置"; exit 1
-          fi
-
-      - name: 生成 index.json
-        env:
-          RCLONE_DEST: ${{ vars.RCLONE_DEST || '123:zanfang' }}
-        run: |
-          set -euo pipefail
-          mkdir -p data/meta
-          # 目录不存在/为空时不要让整个 job 红掉
-          rclone lsf "$RCLONE_DEST" -R --files-only --format pst > listing.txt || true
-          echo "清单行数: $(wc -l < listing.txt)"
-          rclone copy "$RCLONE_DEST" data/meta -R --include "*.json" --transfers 16 || true
-          python make_index.py listing.txt -o data/index.json --meta-dir data/meta
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: index
-          path: data/index.json
-          retention-days: 30
-
-      - name: 提交 index.json
-        run: |
-          set -euo pipefail
-          git add data/index.json
-          if git diff --cached --quiet; then
-            echo "index.json 无变化"; exit 0
-          fi
-          git config user.name  "boot-farm-bot"
-          git config user.email "boot-farm-bot@users.noreply.github.com"
-          git commit -m "chore: update index.json [skip ci]"
-          git push
