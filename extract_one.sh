@@ -23,6 +23,7 @@ if [ -z "$ROM_URL" ] && [ -z "$RESOLVE_CMD" ]; then
 fi
 BRAND="${BRAND:-unknown}"
 MODEL="${MODEL:-unknown}"
+BRANDCN="${BRANDCN:-其他}"         # 品牌中文名，如「小米」「一加」「魅族」
 CAT="${CAT:-其他}"                 # 分类，如「数字系列」「Note 系列」
 DEVNAME="${DEVNAME:-$MODEL}"       # 机型中文名，如「小米15」
 VERSION="${VERSION:-}"
@@ -37,7 +38,7 @@ log() { printf '\n==> %s\n' "$*"; }
 
 mkdir -p "$WORK/raw" "$WORK/out" "$WORK/ext"
 cd "$WORK"
-TARGET="$DEST/$CAT/$DEVNAME"
+TARGET="$DEST/$BRANDCN/$CAT/$DEVNAME"
 
 # --------------------------------------------------------------------------- #
 # A. 动态链接现场解析（OPPO / 一加 / realme）
