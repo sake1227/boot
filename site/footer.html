@@ -1,0 +1,147 @@
+<!-- ============================================================
+  xxrom.cn 底部页脚 —— 粘到 OpenList 后台：设置 → 站点 → 自定义内容（customize_body）
+  纯 HTML + 内联 CSS，不依赖任何外部资源，深色/浅色主题都适配。
+  ============================================================ -->
+<style>
+  .xxf-wrap {
+    --xxf-bg: rgba(127, 127, 127, .07);
+    --xxf-line: rgba(127, 127, 127, .22);
+    --xxf-text: inherit;
+    --xxf-accent: #fe7300;
+    margin: 32px auto 16px;
+    max-width: 1040px;
+    padding: 0 16px 24px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--xxf-text);
+  }
+
+  .xxf-card {
+    border: 1px solid var(--xxf-line);
+    border-radius: 14px;
+    background: var(--xxf-bg);
+    padding: 20px 22px;
+  }
+
+  .xxf-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+
+  .xxf-title::before {
+    content: "";
+    width: 4px;
+    height: 18px;
+    border-radius: 2px;
+    background: var(--xxf-accent);
+  }
+
+  .xxf-sub {
+    opacity: .72;
+    margin: 0 0 16px;
+    font-size: 13px;
+  }
+
+  .xxf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 10px 14px;
+  }
+
+  .xxf-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--xxf-line);
+    border-radius: 10px;
+    background: rgba(127, 127, 127, .05);
+    text-decoration: none;
+    color: inherit;
+    transition: transform .12s ease, border-color .12s ease, background .12s ease;
+  }
+
+  .xxf-item:hover {
+    transform: translateY(-1px);
+    border-color: var(--xxf-accent);
+    background: rgba(254, 115, 0, .08);
+  }
+
+  .xxf-k {
+    font-size: 12px;
+    opacity: .62;
+    min-width: 42px;
+  }
+
+  .xxf-v {
+    font-weight: 600;
+    letter-spacing: .2px;
+    user-select: all;
+  }
+
+  .xxf-biz {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--xxf-line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .xxf-tag {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--xxf-line);
+    background: rgba(127, 127, 127, .06);
+    white-space: nowrap;
+  }
+
+  .xxf-foot {
+    margin-top: 14px;
+    font-size: 12px;
+    opacity: .55;
+    text-align: center;
+  }
+
+  @media (max-width: 520px) {
+    .xxf-card { padding: 16px 14px; }
+    .xxf-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="xxf-wrap">
+  <div class="xxf-card">
+    <p class="xxf-title">Android玩机社 · 联系与业务</p>
+    <p class="xxf-sub">ROM 资源、刷机答疑、救砖服务，欢迎随时找我们。</p>
+
+    <div class="xxf-grid">
+      <a class="xxf-item" href="https://wpa.qq.com/msgrd?v=3&uin=8027653&site=qq&menu=yes" target="_blank" rel="noopener">
+        <span class="xxf-k">QQ</span><span class="xxf-v">8027653</span>
+      </a>
+      <div class="xxf-item" title="复制微信号">
+        <span class="xxf-k">微信</span><span class="xxf-v">QY50006</span>
+      </div>
+      <div class="xxf-item" title="QQ群">
+        <span class="xxf-k">QQ群</span><span class="xxf-v">959377767</span>
+      </div>
+      <a class="xxf-item" href="https://qm.qq.com/cgi-bin/qm/qr?k=&jump_from=webapi&authKey=&q=959377767" target="_blank" rel="noopener">
+        <span class="xxf-k">加群</span><span class="xxf-v">点此加入 QQ 群</span>
+      </a>
+    </div>
+
+    <div class="xxf-biz">
+      <span class="xxf-tag">承接手机 Root</span>
+      <span class="xxf-tag">刷机救砖</span>
+      <span class="xxf-tag">刷机工具授权</span>
+      <span class="xxf-tag">账号开通</span>
+      <span class="xxf-tag">公众号 · 闲鱼店铺：Android玩机社</span>
+    </div>
+  </div>
+
+  <p class="xxf-foot">本站 ROM 均来自官方公开渠道，仅供个人学习与救砖使用 · Android玩机社</p>
+</div>
