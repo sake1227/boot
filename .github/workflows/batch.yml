@@ -107,6 +107,7 @@ jobs:
           RESET_SEEN: ${{ inputs.reset_seen }}
           RECONCILE: ${{ inputs.reconcile || github.event.schedule == '0 20 */3 * *' }}
           RECONCILE_MAX: ${{ vars.RECONCILE_MAX || '12' }}
+          MAX_TOTAL: ${{ vars.MAX_TOTAL || '12' }}
         run: |
           set -euo pipefail
           mkdir -p out state
@@ -121,7 +122,7 @@ jobs:
             echo "== 对账模式：扫全部版本，只补网盘上缺的 =="
             ARGS+=(--all-versions --existing out/remote.txt --max-new-per-device 20 --max-total "${RECONCILE_MAX:-12}")
           else
-            ARGS+=(--new-only --max-new-per-device "${MAXNEW:-1}")
+            ARGS+=(--new-only --max-new-per-device "${MAXNEW:-1}" --max-total "${MAX_TOTAL:-12}")
           fi
           if [ -n "${ONLY:-}" ];  then ARGS+=(--only "$ONLY");  fi
           if [ -n "${BRAND:-}" ]; then ARGS+=(--brand "$BRAND"); fi
