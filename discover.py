@@ -215,7 +215,26 @@ CATEGORY_RULES = (
 )
 
 
+def normalize_series(series: str) -> str:
+    """把「小米数字系列」「Redmi Note 系列」统一成「数字系列」「Note 系列」。
+    这是修复「小米13 Ultra 落在小米数字系列、小米15 落在数字系列」两个目录的根因。"""
+    s = (series or "").strip()
+    if not s:
+        return ""
+    for p in ("小米", "红米", "Redmi", "POCO", "一加", "OPPO", "真我", "Realme", "魅族"):
+        if s.startswith(p):
+            s = s[len(p):].strip()
+            break
+    s = s.replace("设备", "").strip()
+    if s.startswith("其他"):
+        return "其他"
+    if s == "平板":
+        return "平板系列"
+    return s
+
+
 def category_of(name: str, series: str = "") -> str:
+    series = normalize_series(series)
     if series:
         return series
     for key, cat in CATEGORY_RULES:
@@ -365,15 +384,15 @@ def ad_xiaomi(dev: dict, ctx: dict) -> list[dict]:
     # 机型中文名 / 系列：优先用 miuier 机型目录，其次从索引页 H1 抠，最后用代号
     catalog = ctx.setdefault("catalog", load_device_catalog(ctx))
     info = catalog.get(codename) or {}
-    devname = (info.get("name") or "").strip()
+    devname = (dev.get("display") or "").strip() or (info.get("name") or "").strip()
     if not devname:
         m = re.search(r"<h1[^>]*>(.*?)</h1>", html, re.S | re.I)
         if m:
             devname = re.sub(r"<[^>]+>", "", m.group(1)).strip()
             devname = re.split(r"(?:正式版|开发版|刷机包|下载合集|合集)", devname)[0].strip()
     devname = devname or codename
-    cat = category_of(devname, info.get("series") or "")
-    bcn = info.get("brand") or brand_cn("xiaomi", devname)
+    cat = category_of(devname, dev.get("series") or info.get("series") or "")
+    bcn = dev.get("brandcn") or info.get("brand") or brand_cn("xiaomi", devname)
 
     # 用 URL 语法取版本：/dada-v2-0-216/ -> (2, 0, 216)
     found: dict[str, tuple[int, ...]] = {}
@@ -880,7 +899,9 @@ def main() -> int:
     ap.add_argument("--state", default="state/seen.json")
     ap.add_argument("--cache-dir", default="state/cache")
     ap.add_argument("--only", default="", help="逗号分隔的 device id 白名单")
-    ap.add_argument("--brand", default="", help="逗号分隔的 brand 白名单")
+    ap.add_argument("--brand", default="", help="逗号分隔的 brand 白名单（adapter 名）")
+    ap.add_argument("--brandcn", default="",
+                    help="品牌中文名过滤：小米/红米/POCO/一加/OPPO/真我/魅族/全部")
     ap.add_argument("--max-new-per-device", type=int, default=3,
                     help="每个机型本次最多入队几个新版本（控制 Actions 额度）")
     ap.add_argument("--new-only", action="store_true")
@@ -912,9 +933,25 @@ def main() -> int:
     only = {s.strip() for s in args.only.split(",") if s.strip()}
     brands = {s.strip() for s in args.brand.split(",") if s.strip()}
     if only:
-        devices = [d for d in devices if d["id"] in only]
+        # 支持 id / 代号 / 中文名 模糊匹配：输入「一加15」也能命中「一加 15」
+        def _norm(s):
+            return re.sub(r"\s+", "", str(s)).lower()
+
+        def _hit(d, keys):
+            hay = _norm("".join(str(d.get(k, "")) for k in
+                               ("id", "model", "display", "label")))
+            return any(_norm(k) in hay for k in keys)
+        devices = [d for d in devices if _hit(d, only)]
     if brands:
         devices = [d for d in devices if d.get("brand") in brands]
+    if args.brandcn:
+        want = {s.strip() for s in args.brandcn.split(",") if s.strip()} - {"全部"}
+        if want:
+            devices = [
+                d for d in devices
+                if (d.get("brandcn")
+                    or brand_cn(d.get("brand", ""), d.get("display", ""))) in want
+            ]
     if not devices:
         print("[warn] 机型表筛选后为空", file=sys.stderr)
 
