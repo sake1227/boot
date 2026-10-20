@@ -10,11 +10,23 @@ on:
   workflow_dispatch:
     inputs:
       only:
-        description: 'device id 白名单（逗号分隔，留空=全部）'
+        description: '机型：填中文名或代号，可逗号分隔（如「一加15」「小米18」「dada」），留空=全部'
         default: ''
       brand:
-        description: '品牌白名单：xiaomi,google,samsung,lolinet,manual,cmd'
-        default: ''
+        description: '品牌（下拉选；选「全部」= 不限品牌）'
+        type: choice
+        default: 全部
+        options:
+          - 全部
+          - 小米
+          - 红米
+          - 一加
+          - OPPO
+          - 真我
+          - 魅族
+          - Google
+          - 三星
+          - 摩托罗拉
       max_new_per_device:
         description: '每个机型本次最多入队几个新版本'
         default: '1'
@@ -75,12 +87,10 @@ jobs:
           key: state-${{ github.run_id }}
           restore-keys: state-
 
-      - name: 安装 rclone（对账模式要列网盘清单）
-        if: ${{ inputs.reconcile || github.event.schedule == '0 20 */3 * *' }}
+      - name: 安装 rclone（要列网盘清单，判断哪些已上传）
         run: curl -fsSL https://rclone.org/install.sh | sudo bash
 
-      - name: 配置 rclone（对账模式）
-        if: ${{ inputs.reconcile || github.event.schedule == '0 20 */3 * *' }}
+      - name: 配置 rclone
         env:
           RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
         run: |
@@ -94,8 +104,7 @@ jobs:
             echo "缺少 rclone 配置"; exit 1
           fi
 
-      - name: 拉网盘现有清单（对账模式）
-        if: ${{ inputs.reconcile || github.event.schedule == '0 20 */3 * *' }}
+      - name: 拉网盘现有清单
         env:
           RCLONE_DEST: ${{ vars.RCLONE_DEST || '123:zanfang' }}
         run: |
@@ -109,6 +118,7 @@ jobs:
         env:
           ONLY: ${{ inputs.only }}
           BRAND: ${{ inputs.brand }}
+          BRANDCN: ${{ inputs.brand }}
           MAXNEW: ${{ inputs.max_new_per_device }}
           RESET_SEEN: ${{ inputs.reset_seen }}
           RECONCILE: ${{ inputs.reconcile || github.event.schedule == '0 20 */3 * *' }}
@@ -126,12 +136,12 @@ jobs:
                 --print)
           if [ "${RECONCILE:-false}" = "true" ]; then
             echo "== 对账模式：扫全部版本，只补网盘上缺的 =="
-            ARGS+=(--all-versions --existing out/remote.txt --max-new-per-device 20 --max-total "${MAX_TOTAL:-12}")
+            ARGS+=(--all-versions --existing out/remote.txt --max-new-per-device 50 --max-total "${MAX_TOTAL:-12}")
           else
-            ARGS+=(--new-only --max-new-per-device "${MAXNEW:-1}" --max-total "${MAX_TOTAL:-12}")
+            ARGS+=(--new-only --existing out/remote.txt --max-new-per-device "${MAXNEW:-1}" --max-total "${MAX_TOTAL:-12}")
           fi
           if [ -n "${ONLY:-}" ];  then ARGS+=(--only "$ONLY");  fi
-          if [ -n "${BRAND:-}" ]; then ARGS+=(--brand "$BRAND"); fi
+          if [ -n "${BRAND:-}" ]; then ARGS+=(--brandcn "$BRAND"); fi
 
           python discover.py "${ARGS[@]}"
 
