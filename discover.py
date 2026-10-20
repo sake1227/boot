@@ -102,6 +102,7 @@ def candidate(dev: dict, **kw) -> dict:
         "filename": "",
         "devname": "",     # 机型中文名，用作网盘目录
         "cat": "",         # 分类，如「数字系列」「Note 系列」
+        "brandcn": "",     # 品牌中文名，网盘第一层：小米/红米/一加/真我/OPPO/魅族…
         "url": "",
         "size": 0,
         "md5": "",
@@ -222,6 +223,43 @@ def category_of(name: str, series: str = "") -> str:
     return "数字系列"
 
 
+# 品牌中文名：网盘第一层目录
+BRAND_CN = {
+    "google": "Google",
+    "samsung": "三星",
+    "lolinet": "摩托罗拉",
+    "meizu": "魅族",
+    "xiaomi": "小米",
+    "oplus": "OPPO",
+}
+
+
+def brand_cn(brand: str, devname: str = "") -> str:
+    """按机型名优先判品牌（小米/红米/POCO 同属 xiaomi adapter），判不出来再用 brand 兜底。"""
+    n = devname or ""
+    if n.startswith("一加"):
+        return "一加"
+    if n.startswith("OPPO"):
+        return "OPPO"
+    if n.lower().startswith("realme") or n.startswith("真我"):
+        return "真我"
+    if n.startswith("魅族") or n.startswith("魅蓝"):
+        return "魅族"
+    if n.startswith("红米") or n.startswith("Redmi"):
+        return "红米"
+    if n.startswith("POCO"):
+        return "POCO"
+    if n.startswith("小米"):
+        return "小米"
+    if n.startswith("联想"):
+        return "联想"
+    if n.upper().startswith("IQOO"):
+        return "iQOO"
+    if n.lower().startswith("vivo"):
+        return "vivo"
+    return BRAND_CN.get(brand, brand or "其他")
+
+
 def _hydrate_payload(data: list):
     """解码 Nuxt 的 devalue 序列化：整数是索引引用，解一次后若是数字即字面量。"""
 
@@ -281,13 +319,15 @@ def load_device_catalog(ctx: dict) -> dict:
         root = _hydrate_payload(payload)(payload[0])
         holder = _find_key(root, "brands") or {}
         for brand in holder.get("brands") or []:
+            bname = (brand.get("zh-cn") or "").replace("设备", "").replace(" 手机", "").strip()
             for series in brand.get("series") or []:
                 sname = series.get("zh-cn") or ""
                 for dev in series.get("devices") or []:
                     code = dev.get("code")
                     if not code:
                         continue
-                    out[code] = {"name": dev.get("zh-cn") or code, "series": sname}
+                    out[code] = {"name": dev.get("zh-cn") or code,
+                                 "series": sname, "brand": bname}
         print(f"  [catalog] {len(out)} 个机型", file=sys.stderr)
     except Exception as e:  # noqa: BLE001
         print(f"  [catalog] 拉取失败，改用兜底规则: {e}", file=sys.stderr)
@@ -332,6 +372,7 @@ def ad_xiaomi(dev: dict, ctx: dict) -> list[dict]:
             devname = re.split(r"(?:正式版|开发版|刷机包|下载合集|合集)", devname)[0].strip()
     devname = devname or codename
     cat = category_of(devname, info.get("series") or "")
+    bcn = info.get("brand") or brand_cn("xiaomi", devname)
 
     # 用 URL 语法取版本：/dada-v2-0-216/ -> (2, 0, 216)
     found: dict[str, tuple[int, ...]] = {}
@@ -382,6 +423,7 @@ def ad_xiaomi(dev: dict, ctx: dict) -> list[dict]:
                     version=vname,
                     devname=devname,
                     cat=cat,
+                    brandcn=bcn,
                     stable=True,  # 官方 CDN 永久直链
                     source=detail_url,
                     key=f"{key}|{vname}",
@@ -598,6 +640,7 @@ def ad_oplus(dev: dict, ctx: dict) -> list[dict]:
     out: list[dict] = []
     display = (dev.get("display") or "").strip() or dev.get("label") or prefix
     cat = category_of(display, dev.get("category") or "")
+    bcn = brand_cn("oplus", display)
     for target in targets:
         cmd = f"python3 {tool} {target} {region} {extra} --original_link 1"
         out.append(
@@ -609,6 +652,7 @@ def ad_oplus(dev: dict, ctx: dict) -> list[dict]:
                 model=dev.get("label") or dev["model"],
                 devname=display,
                 cat=cat,
+                brandcn=bcn,
                 stable=False,
                 status="resolve",
                 requires="OPlus-Tracker",
@@ -620,15 +664,145 @@ def ad_oplus(dev: dict, ctx: dict) -> list[dict]:
     return out
 
 
+# --------------------------------------------------------------------------- #
+# Adapter: 魅族（www.flyme.com/firmware.html）
+#
+# 三级结构：
+#   1. firmware.html 里 var firmware=[...]，detail_data 是「机型 + phone_id」
+#   2. firmwarelist-<phone_id>.html 里 var data={...}，每个变体给 版本/md5/大小/发布时间
+#      和 download 字段（/zh/download?key=xxx）
+#   3. 那个 key 页会 302 到 firmware-res.flyme.com/..../update.zip?auth_key=...
+#      auth_key 会过期，所以同样的「下载 job 里现场解析」
+# --------------------------------------------------------------------------- #
+FLYME_INDEX = "https://www.flyme.com/firmware.html"
+FLYME_LIST = "https://www.flyme.com/firmwarelist-{pid}.html"
+
+
+def _js_bracket(text: str, start: int) -> str:
+    """从 start 处的 [ 或 { 开始做括号配对，返回完整字面量文本。"""
+    depth = 0
+    for j in range(start, len(text)):
+        ch = text[j]
+        if ch in "[{":
+            depth += 1
+        elif ch in "]}":
+            depth -= 1
+            if depth == 0:
+                return text[start:j + 1]
+    return ""
+
+
+def _loose_json(raw: str):
+    """JS 对象字面量 -> JSON：单引号转双引号、裸 key 加引号、去尾逗号。"""
+    s = raw.replace("'", '"')
+    s = re.sub(r"([{,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:", r'\1"\2":', s)
+    s = re.sub(r",\s*([}\]])", r"\1", s)
+    return json.loads(s)
+
+
+def load_flyme_phones(ctx: dict) -> dict:
+    """phone_id -> 机型中文名。缓存 7 天。"""
+    cache = Path(ctx["cache_dir"]) / "flyme-phones.json"
+    if cache.exists() and time.time() - cache.stat().st_mtime < 7 * 86400:
+        try:
+            return json.loads(cache.read_text("utf-8"))
+        except json.JSONDecodeError:
+            pass
+
+    out: dict = {}
+    try:
+        html = fetch(FLYME_INDEX)
+        m = re.search(r"var\s+firmware\s*=\s*", html)
+        data = json.loads(_js_bracket(html, html.index("[", m.end())))
+        for brand in data:
+            phones = brand.get("detail_data")
+            phones = _loose_json(phones) if isinstance(phones, str) else phones
+            for p in phones or []:
+                pid = p.get("phone_id")
+                if pid:
+                    out[str(pid)] = p.get("phone_name") or f"魅族{pid}"
+        print(f"  [flyme] {len(out)} 个机型", file=sys.stderr)
+    except Exception as e:  # noqa: BLE001
+        print(f"  [flyme] 机型列表拉取失败: {e}", file=sys.stderr)
+    try:
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(json.dumps(out, ensure_ascii=False), "utf-8")
+    except OSError:
+        pass
+    return out
+
+
+def ad_meizu(dev: dict, ctx: dict) -> list[dict]:
+    args = dev.get("adapter_args") or {}
+    pid = str(dev["model"])
+    phones = ctx.setdefault("flyme", load_flyme_phones(ctx))
+    devname = (dev.get("display") or "").strip() or phones.get(pid) or f"魅族{pid}"
+
+    cat = "数字系列"
+    for k, c in (("Note", "Note 系列"), ("魅蓝", "魅蓝系列"), ("Lucky", "Lucky 系列")):
+        if k in devname:
+            cat = c
+            break
+
+    html = fetch(FLYME_LIST.format(pid=pid))
+    m = re.search(r"var\s+data\s*=\s*", html)
+    if not m:
+        print(f"  [warn] {dev['id']}: 机型页没有 var data", file=sys.stderr)
+        return []
+    variants = list(json.loads(_js_bracket(html, html.index("{", m.end()))).values())
+    multi = len(variants) > 1
+    maxn = int(args.get("max_new_per_device", ctx["max_new_per_device"]))
+
+    out: list[dict] = []
+    for v in variants:
+        if len(out) >= maxn:
+            break
+        name = (v.get("name") or "").strip()
+        dl = (v.get("download") or "").strip()
+        if not name or not dl:
+            continue
+        vstr = re.sub(r"[^\w.\-]+", "_", name.replace(" ", "_")).strip("_")
+        if multi:
+            net = re.sub(r"[^0-9A-Za-z]+", "", v.get("net_name") or "")
+            if net and not vstr.upper().endswith(net.upper()):
+                vstr = f"{vstr}_{net}"
+
+        key = f"{dev['id']}|{vstr}"
+        if any(k.startswith(key + "|") for k in ctx["seen"]):
+            continue
+
+        page = dl if dl.startswith("http") else "https://www.flyme.com" + dl
+        # 302 到带 auth_key 的直链，必须下载前现场解析
+        cmd = f"curl -sIL -o /dev/null -w '%{{url_effective}}\\n' '{page}'"
+        out.append(
+            candidate(
+                dev,
+                filename=f"{vstr}.zip",
+                version=name,
+                devname=devname,
+                cat=cat,
+                brandcn="魅族",
+                stable=False,
+                status="resolve",
+                requires="flyme auth_key",
+                resolve=cmd,
+                source=page,
+                key=f"{key}|{vstr}",
+            )
+        )
+    return out
+
+
 ADAPTERS = {
     "xiaomi": ad_xiaomi,
     "google": ad_google,
     "samsung": ad_samsung,
     "lolinet": ad_lolinet,
     "oplus": ad_oplus,
+    "meizu": ad_meizu,
     "manual": ad_manual,
     "cmd": ad_cmd,
-    # vivo/iQOO 同理：用 cmd 或照 oplus 的样子加一个 adapter
+    # vivo/iQOO/联想：官方没有可直接抓的固件入口，用 cmd 适配器接第三方
 }
 
 
@@ -642,6 +816,29 @@ def load_seen(path: Path) -> set[str]:
         except json.JSONDecodeError:
             pass
     return set()
+
+
+def dest_rel(c: dict) -> str:
+    """候选在网盘里的相对路径，必须和 extract_one.sh 的落地路径一致。"""
+    b = c["brandcn"] or brand_cn(c["brand"], c["devname"])
+    cat = c["cat"] or category_of(c["devname"] or c["model"])
+    dev = c["devname"] or c["model"]
+    name = re.sub(r"[^\w.\-()]+", "_", stem_of(c["filename"]))
+    return f"{b}/{cat}/{dev}/{name}.zip"
+
+
+def load_existing(path: Path) -> set:
+    out = set()
+    if not path.exists():
+        return out
+    for line in path.read_text("utf-8-sig", "replace").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        p = line.split(";")[0].strip().lstrip("/")
+        if p:
+            out.add(p)
+    return out
 
 
 def build_matrix(all_c: list[dict]) -> dict:
@@ -662,6 +859,7 @@ def build_matrix(all_c: list[dict]) -> dict:
                 "name": re.sub(r"[^\w.\-()]+", "_", stem_of(c["filename"])),
                 "cat": c["cat"] or category_of(c["devname"] or c["model"]),
                 "devname": c["devname"] or c["model"],
+                "brandcn": c["brandcn"] or brand_cn(c["brand"], c["devname"]),
                 "url": c["url"],
                 "resolve": c["resolve"],
                 "stable": "1" if c["stable"] else "0",
@@ -683,6 +881,10 @@ def main() -> int:
     ap.add_argument("--max-new-per-device", type=int, default=3,
                     help="每个机型本次最多入队几个新版本（控制 Actions 额度）")
     ap.add_argument("--new-only", action="store_true")
+    ap.add_argument("--all-versions", action="store_true",
+                    help="对账模式：不看去重表，把所有版本都扫出来（配合 --existing 补漏）")
+    ap.add_argument("--existing", default="",
+                    help="网盘现有文件清单（rclone lsf 的输出），已存在的不再派发")
     ap.add_argument("--sleep", type=float, default=1.0,
                     help="请求间隔秒，别把对方站点打疼")
     ap.add_argument("--print", dest="do_print", action="store_true")
@@ -726,9 +928,20 @@ def main() -> int:
             print(f"  [fail] {dev['id']}: {e}", file=sys.stderr)
             continue
 
-        fresh = [c for c in got if not args.new_only or dedupe_key(c) not in seen]
+        if args.all_versions:
+            fresh = got
+        else:
+            fresh = [c for c in got if not args.new_only or dedupe_key(c) not in seen]
         print(f"  -> {len(got)} found, {len(fresh)} new", file=sys.stderr)
         all_c.extend(fresh)
+
+    # --- 对账：网盘上已有的不再派发 ---
+    if args.existing:
+        have = load_existing(Path(args.existing))
+        before = len(all_c)
+        all_c = [c for c in all_c if dest_rel(c) not in have]
+        print(f"[reconcile] 网盘已有 {before - len(all_c)} 个，待补 {len(all_c)} 个",
+              file=sys.stderr)
 
     # --- matrix ---
     matrix = build_matrix(all_c)
@@ -761,9 +974,10 @@ def main() -> int:
 
     # 只有「拿到直链」的才记入 seen。
     # 动态链接（resolve）不记：它每天都要重新查，靠 farm 端的同目录查重避免重复上传。
-    for c in all_c:
-        if c["status"] == "ready" and c["url"]:
-            seen.add(dedupe_key(c))
+    if not args.all_versions:
+        for c in all_c:
+            if c["status"] == "ready" and c["url"]:
+                seen.add(dedupe_key(c))
     state_path = Path(args.state)
     state_path.parent.mkdir(parents=True, exist_ok=True)
     state_path.write_text(
