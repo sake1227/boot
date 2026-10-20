@@ -40,19 +40,24 @@ TAG_B = """
 </ul></body></html>
 """
 
-DETAIL_A = """
+def detail_recovery(ver: str) -> str:
+    """卡刷包详情页：同一版本里同时挂完整包和增量包（增量包必须被过滤）。"""
+    return f"""
 <html><body><h2>下载地址</h2>
-<blockquote><p><a href="https://bkt-sgp-miui-ota-update-alisgp.oss-ap-southeast-1.aliyuncs.com/OS3.0.307.0.WOCCNXM/dada-ota_full-OS3.0.307.0.WOCCNXM-user-16.0-6703365c83.zip">卡刷包下载</a></p></blockquote>
-<blockquote><p><a href="https://bkt-sgp-miui-ota-update-alisgp.oss-ap-southeast-1.aliyuncs.com/OS3.0.307.0.WOCCNXM/dada-ota_incremental-OS3.0.306.0.WOCCNXM-OS3.0.307.0.WOCCNXM-user-16.0-aaa111.zip">增量包下载</a></p></blockquote>
+<blockquote><p><a href="https://bkt-sgp-miui-ota-update-alisgp.oss-ap-southeast-1.aliyuncs.com/{ver}/dada-ota_full-{ver}-user-16.0-6703365c83.zip">卡刷包下载</a></p></blockquote>
+<blockquote><p><a href="https://bkt-sgp-miui-ota-update-alisgp.oss-ap-southeast-1.aliyuncs.com/{ver}/dada-ota_incremental-{ver}-{ver}-user-16.0-aaa111.zip">增量包下载</a></p></blockquote>
 <p><a href="https://miuiver.com/faq/">常见问题</a>
    <img src="https://miuiver.com/wp-content/logo.png"></p>
 </body></html>
 """
 
-DETAIL_B = """
+
+def detail_fastboot(ver: str) -> str:
+    """线刷包详情页：结构完全不同的标记（div + 单引号）。"""
+    return f"""
 <html><body><div class="links">
-<div><a rel="nofollow" href="https://bigota.d.miui.com/OS3.0.307.0.WOCCNXM/dada2_images_OS3.0.307.0.WOCCNXM_20260101.0000.00_16.0_cn_abc123.tgz">线刷包</a></div>
-<a href="https://miuiver.com/login/">登录</a>
+<div><a rel='nofollow' href='https://bigota.d.miui.com/{ver}/dada2_images_{ver}_20260101.0000.00_16.0_cn_abc123.tgz'>线刷包</a></div>
+<a href='https://miuiver.com/login/'>登录</a>
 </div></body></html>
 """
 
@@ -99,15 +104,14 @@ LOLINET_OTHER = """
 </table></body></html>
 """
 
+# 每个版本页给的包文件名都不同，跟真实站点一致
+VER_A = {"1-0-1": "OS1.0.1.0.UNCCNXM",
+         "2-0-216": "OS2.0.216.0.VOCCNXM",
+         "3-0-307": "OS3.0.307.0.WOCCNXM"}
+
 FIXTURES = {
     "https://miuiver.com/tag/dada-stable-rom/": TAG_A,
-    "https://miuiver.com/dada-v1-0-1/": DETAIL_A,
-    "https://miuiver.com/dada-v2-0-216/": DETAIL_A,
-    "https://miuiver.com/dada-v3-0-307/": DETAIL_A,
     "https://miuiver.com/tag/dada2-stable-rom/": TAG_B,
-    "https://miuiver.com/dada2-v1-0-1/": DETAIL_B,
-    "https://miuiver.com/dada2-v2-0-216/": DETAIL_B,
-    "https://miuiver.com/dada2-v3-0-307/": DETAIL_B,
     d.GOOGLE_IMAGES: GOOGLE,
     "https://fota-cloud-dn.ospserver.net/firmware/CHC/SM-S9110/version.xml": SAMSUNG,
     "https://mirrors.lolinet.com/firmware/lenomola/": LOLINET_ROOT,
@@ -115,6 +119,9 @@ FIXTURES = {
     "https://mirrors.lolinet.com/firmware/lenomola/2025/XT2401-1/": LOLINET_DEV,
     "https://mirrors.lolinet.com/firmware/lenomola/2025/XT2301-2/": LOLINET_OTHER,
 }
+for _slug, _ver in VER_A.items():
+    FIXTURES[f"https://miuiver.com/dada-v{_slug}/"] = detail_recovery(_ver)
+    FIXTURES[f"https://miuiver.com/dada2-v{_slug}/"] = detail_fastboot(_ver)
 
 CALLS: list[str] = []
 
@@ -134,6 +141,11 @@ def ctx(seen=None, maxn=2):
 def main() -> int:
     d.fetch = fake_fetch
     d.fetch_cached = lambda url, c: fake_fetch(url)
+    # 机型目录（中文名/系列）线上取自 roms.miuier.com，离线这里给固定表
+    d.load_device_catalog = lambda ctx: {
+        "dada": {"name": "小米15", "series": "小米数字系列"},
+        "dada2": {"name": "小米15", "series": "小米数字系列"},
+    }
     failures = []
 
     def check(name, cond, extra=""):
@@ -145,15 +157,17 @@ def main() -> int:
     CALLS.clear()
     a = d.ad_xiaomi({"id": "xiaomi-15", "brand": "xiaomi", "model": "dada"}, ctx())
     check("小米V1 抓到 2 个版本(受 maxn 限制)", len(a) == 2, str(len(a)))
-    check("小米V1 新版本优先", [c["version"] for c in a] == ["3.0.307", "2.0.216"],
+    check("小米V1 新版本优先",
+          [c["version"] for c in a] == ["OS3.0.307.0.WOCCNXM", "OS2.0.216.0.VOCCNXM"],
           str([c["version"] for c in a]))
     check("小米V1 直链来自官方 CDN", all("aliyuncs.com" in c["url"] for c in a))
     check("小米V1 标为永久直链", all(c["stable"] for c in a))
-    check("小米V1 只要 .zip 不要图片/页内链接",
-          all(c["filename"].endswith(".zip") for c in a))
+    check("小米V1 产物名是版本号", a[0]["filename"] == "OS3.0.307.0.WOCCNXM.zip",
+          a[0]["filename"])
+    check("小米V1 机型中文名来自目录", a[0]["devname"] == "小米15", a[0]["devname"])
+    check("小米V1 分类来自目录", a[0]["cat"] == "小米数字系列", a[0]["cat"])
     check("小米V1 增量包被过滤（差分包解不出 boot）",
-          all("incremental" not in c["filename"] for c in a),
-          str([c["filename"][:30] for c in a]))
+          all("incremental" not in c["url"] for c in a))
     check("小米V1 只抓了索引页+2个详情页", len(CALLS) == 3, str(len(CALLS)))
 
     # --- 小米：变体 2（不同标记，同数据）---
@@ -162,9 +176,9 @@ def main() -> int:
                      "adapter_args": {"kinds": ["images"]}}, ctx())
     check("小米V2 换一套标记也能解析", len(b) == 2, str(len(b)))
     check("小米V2 版本顺序一致",
-          [c["version"] for c in b] == ["3.0.307", "2.0.216"])
+          [c["version"] for c in b] == ["OS3.0.307.0.WOCCNXM", "OS2.0.216.0.VOCCNXM"])
     check("小米V2 kinds=images 才拿 .tgz 线刷包",
-          all(c["filename"].endswith(".tgz") for c in b))
+          all(c["url"].endswith(".tgz") for c in b))
     check("小米V2 tag 页只出现一次", sum(1 for u in CALLS if "/tag/" in u) == 1)
 
     # --- 小米：默认只要卡刷包，一版一个 ---
@@ -178,7 +192,8 @@ def main() -> int:
     seen = {"xiaomi-15|v3.0.307|dada-ota_full-OS3.0.307.0.WOCCNXM-user-16.0-6703365c83.zip"}
     c = d.ad_xiaomi({"id": "xiaomi-15", "brand": "xiaomi", "model": "dada"},
                     ctx(seen=seen))
-    check("已知版本被跳过", [x["version"] for x in c] == ["2.0.216", "1.0.1"],
+    check("已知版本被跳过",
+          [x["version"] for x in c] == ["OS2.0.216.0.VOCCNXM", "OS1.0.1.0.UNCCNXM"],
           str([x["version"] for x in c]))
     check("跳过的版本不发详情页请求",
           "https://miuiver.com/dada-v3-0-307/" not in CALLS)
