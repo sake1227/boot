@@ -70,11 +70,11 @@ jobs:
           restore-keys: state-
 
       - name: 安装 rclone（对账模式要列网盘清单）
-        if: ${{ github.event.schedule == '0 20 */3 * *' }}
+        if: ${{ inputs.reconcile || github.event.schedule == '0 20 */3 * *' }}
         run: curl -fsSL https://rclone.org/install.sh | sudo bash
 
       - name: 配置 rclone（对账模式）
-        if: ${{ github.event.schedule == '0 20 */3 * *' }}
+        if: ${{ inputs.reconcile || github.event.schedule == '0 20 */3 * *' }}
         env:
           RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
         run: |
@@ -89,7 +89,7 @@ jobs:
           fi
 
       - name: 拉网盘现有清单（对账模式）
-        if: ${{ github.event.schedule == '0 20 */3 * *' }}
+        if: ${{ inputs.reconcile || github.event.schedule == '0 20 */3 * *' }}
         env:
           RCLONE_DEST: ${{ vars.RCLONE_DEST || '123:zanfang' }}
         run: |
