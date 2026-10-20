@@ -108,6 +108,77 @@ def run_romcloud(args) -> int:
     return 0
 
 
+MIUIVER_INDEX = "https://miuiver.com/"
+
+# 小米系列判定（顺序即优先级）
+X_SERIES = (
+    ("平板", "平板系列"),
+    ("MIX", "MIX 系列"),
+    ("Note", "Note 系列"),
+    ("K", "K 系列"),
+    ("Ace", "Ace 系列"),
+    ("Turbo", "Turbo 系列"),
+    ("Civi", "Civi 系列"),
+    ("CIVI", "Civi 系列"),
+)
+
+
+def xiaomi_series(name: str) -> str:
+    for key, cat in X_SERIES:
+        if key in name:
+            return cat
+    return "数字系列"
+
+
+def run_miuiver(args) -> int:
+    """从 miuiver 首页索引生成小米/红米/POCO 机型表（代号 + 中文名 + 系列）。"""
+    print(f"拉取 {MIUIVER_INDEX}", file=sys.stderr)
+    html = fetch(MIUIVER_INDEX)
+    rows = re.findall(r"<tr>(.*?)</tr>", html, re.S)
+    print(f"  索引行数 {len(rows)}", file=sys.stderr)
+
+    devices: dict[str, dict] = {}
+    for row in rows:
+        cells = re.findall(r"<td[^>]*>(.*?)</td>", row, re.S)
+        if len(cells) < 2:
+            continue
+        name = re.sub(r"<[^>]+>", "", cells[0]).strip()
+        name = re.sub(r"\s+", " ", name)
+        if not name:
+            continue
+        tags = re.findall(r"/tag/([a-z0-9_\-]+)/", cells[1])
+        code = ""
+        for tg in tags:  # 只要国内稳定版 {code}-stable-rom
+            m = re.fullmatch(r"([a-z0-9_]+)-stable-rom", tg)
+            if m:
+                code = m.group(1)
+                break
+        if not code:
+            continue
+
+        rid = f"xiaomi-{code}"
+        devices[rid] = {
+            "id": rid,
+            "brand": "xiaomi",
+            "model": code,
+            "region": "cn",
+            "display": name,
+            "series": xiaomi_series(name),
+        }
+
+    if not devices:
+        print("没解析出机型，页面结构可能变了", file=sys.stderr)
+        return 1
+    out = {
+        "_comment": "由 gen_devices.py --source miuiver 生成；display/series 决定网盘目录名",
+        "devices": sorted(devices.values(), key=lambda d: d["display"]),
+    }
+    with open(args.out, "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, indent=1)
+    print(f"写入 {args.out}: {len(devices)} 个机型", file=sys.stderr)
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("-o", "--out", default="devices.generated.json")
@@ -119,6 +190,8 @@ def main() -> int:
 
     if args.source == "romcloud":
         return run_romcloud(args)
+    if args.source == "miuiver":
+        return run_miuiver(args)
 
     print(f"拉取 {SITEMAP}", file=sys.stderr)
     xml = fetch(SITEMAP)
