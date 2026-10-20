@@ -103,6 +103,7 @@ def candidate(dev: dict, **kw) -> dict:
         "devname": "",     # 机型中文名，用作网盘目录
         "cat": "",         # 分类，如「数字系列」「Note 系列」
         "brandcn": "",     # 品牌中文名，网盘第一层：小米/红米/一加/真我/OPPO/魅族…
+        "referer": "",     # 下载时需要的 Referer（魅族 CDN 强制）
         "url": "",
         "size": 0,
         "md5": "",
@@ -782,6 +783,7 @@ def ad_meizu(dev: dict, ctx: dict) -> list[dict]:
                 devname=devname,
                 cat=cat,
                 brandcn="魅族",
+                referer="https://www.flyme.com/",
                 stable=False,
                 status="resolve",
                 requires="flyme auth_key",
@@ -860,6 +862,7 @@ def build_matrix(all_c: list[dict]) -> dict:
                 "cat": c["cat"] or category_of(c["devname"] or c["model"]),
                 "devname": c["devname"] or c["model"],
                 "brandcn": c["brandcn"] or brand_cn(c["brand"], c["devname"]),
+                "referer": c["referer"],
                 "url": c["url"],
                 "resolve": c["resolve"],
                 "stable": "1" if c["stable"] else "0",
