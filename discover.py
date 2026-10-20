@@ -100,6 +100,8 @@ def candidate(dev: dict, **kw) -> dict:
         "region": dev.get("region", ""),
         "version": "",
         "filename": "",
+        "devname": "",     # 机型中文名，用作网盘目录
+        "cat": "",         # 分类，如「数字系列」「Note 系列」
         "url": "",
         "size": 0,
         "md5": "",
@@ -193,6 +195,117 @@ def xiaomi_kind(name: str) -> str:
     return "other"
 
 
+# 机型目录（代号 -> 中文名 + 系列），roms.miuier.com 一个请求拿全部机型
+MIUIER_PAYLOAD = "https://roms.miuier.com/zh-cn/devices/_payload.json"
+
+# 分类兜底规则：目录里查不到时（欧加、Pixel、摩托…）按名字猜
+CATEGORY_RULES = (
+    ("平板", "平板系列"), ("Pad", "平板系列"),
+    ("Note", "Note 系列"),
+    ("Ace", "Ace 系列"),
+    ("Turbo", "Turbo 系列"),
+    ("Reno", "Reno 系列"),
+    ("Find", "Find 系列"),
+    ("GT", "GT 系列"),
+    ("POCO", "POCO 系列"),
+    ("MIX", "MIX 系列"),
+    ("K", "K 系列"),
+)
+
+
+def category_of(name: str, series: str = "") -> str:
+    if series:
+        return series
+    for key, cat in CATEGORY_RULES:
+        if key in (name or ""):
+            return cat
+    return "数字系列"
+
+
+def _hydrate_payload(data: list):
+    """解码 Nuxt 的 devalue 序列化：整数是索引引用，解一次后若是数字即字面量。"""
+
+    def h(node, depth=0):
+        if depth > 100:
+            return None
+        if isinstance(node, bool):
+            return node
+        if isinstance(node, int):
+            if node < 0 or node >= len(data):
+                return node
+            tgt = data[node]
+            if isinstance(tgt, bool) or isinstance(tgt, int):
+                return tgt
+            return h(tgt, depth + 1)
+        if isinstance(node, str):
+            return node
+        if isinstance(node, list):
+            return [h(x, depth + 1) for x in node]
+        if isinstance(node, dict):
+            return {k: h(v, depth + 1) for k, v in node.items()}
+        return node
+
+    return h
+
+
+def _find_key(node, key: str, depth: int = 0):
+    if depth > 40:
+        return None
+    if isinstance(node, dict):
+        if key in node:
+            return node
+        for v in node.values():
+            got = _find_key(v, key, depth + 1)
+            if got:
+                return got
+    elif isinstance(node, list):
+        for v in node[:2000]:
+            got = _find_key(v, key, depth + 1)
+            if got:
+                return got
+    return None
+
+
+def load_device_catalog(ctx: dict) -> dict:
+    """代号 -> {name, series}。缓存 7 天；拿不到就返回空表，不影响主流程。"""
+    cache = Path(ctx["cache_dir"]) / "miuier-devices.json"
+    if cache.exists() and time.time() - cache.stat().st_mtime < 7 * 86400:
+        try:
+            return json.loads(cache.read_text("utf-8"))
+        except json.JSONDecodeError:
+            pass
+
+    out: dict = {}
+    try:
+        payload = json.loads(fetch(MIUIER_PAYLOAD))
+        root = _hydrate_payload(payload)(payload[0])
+        holder = _find_key(root, "brands") or {}
+        for brand in holder.get("brands") or []:
+            for series in brand.get("series") or []:
+                sname = series.get("zh-cn") or ""
+                for dev in series.get("devices") or []:
+                    code = dev.get("code")
+                    if not code:
+                        continue
+                    out[code] = {"name": dev.get("zh-cn") or code, "series": sname}
+        print(f"  [catalog] {len(out)} 个机型", file=sys.stderr)
+    except Exception as e:  # noqa: BLE001
+        print(f"  [catalog] 拉取失败，改用兜底规则: {e}", file=sys.stderr)
+
+    try:
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(json.dumps(out, ensure_ascii=False), "utf-8")
+    except OSError:
+        pass
+    return out
+
+
+def ver_from_filename(name: str) -> str:
+    """从原始文件名抠版本号：dada-ota_full-OS3.0.307.0.WOCCNXM-...zip -> OS3.0.307.0.WOCCNXM"""
+    m = re.search(r"((?:OS|V)\d[\d.]*[A-Z]{2,})", name or "")
+    return m.group(1) if m else ""
+
+
 def ad_xiaomi(dev: dict, ctx: dict) -> list[dict]:
     args = dev.get("adapter_args") or {}
     codename = dev["model"]
@@ -207,6 +320,18 @@ def ad_xiaomi(dev: dict, ctx: dict) -> list[dict]:
 
     tag_url = f"https://miuiver.com/tag/{tag}/"
     html = fetch(tag_url)
+
+    # 机型中文名 / 系列：优先用 miuier 机型目录，其次从索引页 H1 抠，最后用代号
+    catalog = ctx.setdefault("catalog", load_device_catalog(ctx))
+    info = catalog.get(codename) or {}
+    devname = (info.get("name") or "").strip()
+    if not devname:
+        m = re.search(r"<h1[^>]*>(.*?)</h1>", html, re.S | re.I)
+        if m:
+            devname = re.sub(r"<[^>]+>", "", m.group(1)).strip()
+            devname = re.split(r"(?:正式版|开发版|刷机包|下载合集|合集)", devname)[0].strip()
+    devname = devname or codename
+    cat = category_of(devname, info.get("series") or "")
 
     # 用 URL 语法取版本：/dada-v2-0-216/ -> (2, 0, 216)
     found: dict[str, tuple[int, ...]] = {}
@@ -247,15 +372,19 @@ def ad_xiaomi(dev: dict, ctx: dict) -> list[dict]:
             kind = xiaomi_kind(name)
             if kind not in wanted:
                 continue
+            # 产物名用版本号：OS3.0.307.0.WOCCNXM.zip（比原始长文件名干净，且去重稳定）
+            vname = ver_from_filename(name) or vstr
             out.append(
                 candidate(
                     dev,
-                    filename=name,
+                    filename=f"{vname}.zip",
                     url=url,
-                    version=vstr,
+                    version=vname,
+                    devname=devname,
+                    cat=cat,
                     stable=True,  # 官方 CDN 永久直链
                     source=detail_url,
-                    key=f"{key}|{name}",
+                    key=f"{key}|{vname}",
                 )
             )
             got += 1
@@ -467,14 +596,19 @@ def ad_oplus(dev: dict, ctx: dict) -> list[dict]:
 
     targets = versions or [prefix]
     out: list[dict] = []
+    display = (dev.get("display") or "").strip() or dev.get("label") or prefix
+    cat = category_of(display, dev.get("category") or "")
     for target in targets:
         cmd = f"python3 {tool} {target} {region} {extra} --original_link 1"
         out.append(
             candidate(
                 dev,
-                filename=f"{dev['id']}_{str(target).replace('/', '_')}.zip",
+                # 产物名 = 版本号本身，例如 PJZ110_17.0.0.103(CN01).zip
+                filename=f"{str(target)}.zip",
                 version=str(target),
                 model=dev.get("label") or dev["model"],
+                devname=display,
+                cat=cat,
                 stable=False,
                 status="resolve",
                 requires="OPlus-Tracker",
@@ -525,7 +659,9 @@ def build_matrix(all_c: list[dict]) -> dict:
                 "model": c["model"],
                 "version": c["version"],
                 # 去掉原始扩展名，workflow 里统一补成 .zip，避免 a.zip.zip
-                "name": re.sub(r"[^\w.\-]+", "_", stem_of(c["filename"])),
+                "name": re.sub(r"[^\w.\-()]+", "_", stem_of(c["filename"])),
+                "cat": c["cat"] or category_of(c["devname"] or c["model"]),
+                "devname": c["devname"] or c["model"],
                 "url": c["url"],
                 "resolve": c["resolve"],
                 "stable": "1" if c["stable"] else "0",
