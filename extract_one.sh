@@ -36,6 +36,8 @@ DEST="${RCLONE_DEST:-123:zanfang}"
 PASS="${UNZIP_PASSWORD:-}"
 PASSFILE="${PASSFILE:-}"
 NO_REMOTE="${NO_REMOTE:-0}"
+TARGETS="${TARGETS:-}"             # 多目标：品牌|分类|机型;品牌|分类|机型（通用机型用）
+OPTIONAL="${OPTIONAL:-0}"          # 解析不到就静默跳过（欧加分支探测）
 WORK="$(pwd)/work"
 REPO_ROOT="$(pwd)"
 
@@ -73,6 +75,10 @@ if [ -n "$RESOLVE_CMD" ]; then
     printf '%s\n' "$OUT" | tail -40 >&2
     echo "" >&2
     echo "排查：解析命令是 —— $RESOLVE_CMD" >&2
+    if [ "$OPTIONAL" = "1" ]; then
+      log "该分支没有可用包（optional），跳过"
+      exit 0
+    fi
     exit 9
   fi
   log "已解析: $(basename "${ROM_URL%%\?*}")"
@@ -90,12 +96,29 @@ if [ -n "$RESOLVE_CMD" ]; then
 fi
 
 # --------------------------------------------------------------------------- #
-# B. 同目录查重
+# B. 多目标查重：通用机型要传到多个目录，只传缺的那些
 # --------------------------------------------------------------------------- #
-if rclone lsf "$TARGET/" --files-only 2>/dev/null | grep -qxF "${ROM_NAME}.zip"; then
-  log "已存在 ${ROM_NAME}.zip，跳过"
+if [ -z "$TARGETS" ]; then
+  TARGETS="$BRANDCN|$CAT|$DEVNAME"
+fi
+UPLOAD_TARGETS=()
+IFS=';' read -ra _tg <<< "$TARGETS"
+for _one in "${_tg[@]}"; do
+  [ -n "$_one" ] || continue
+  IFS='|' read -r _b _c _d <<< "$_one"
+  [ -n "${_d:-}" ] || continue
+  _path="$DEST/$_b/$_c/$_d"
+  if rclone lsf "$_path/" --files-only 2>/dev/null | grep -qxF "${ROM_NAME}.zip"; then
+    log "已有 $_path/${ROM_NAME}.zip，跳过这个目录"
+  else
+    UPLOAD_TARGETS+=("$_path")
+  fi
+done
+if [ "${#UPLOAD_TARGETS[@]}" -eq 0 ]; then
+  log "所有目标目录都已有 ${ROM_NAME}.zip，跳过"
   exit 0
 fi
+log "将上传到 ${#UPLOAD_TARGETS[@]} 个目录：${UPLOAD_TARGETS[*]}"
 
 # --------------------------------------------------------------------------- #
 # C. 体积预检：小于 1G 的多半是增量/组件包，直接跳过
@@ -152,9 +175,12 @@ package_and_upload() {
     7z a -tzip "$ZIP_NAME" "$PASSFILE" >/dev/null
   fi
   ls -lh "$ZIP_NAME"
-  log "上传 $TARGET/"
-  rclone copy "$ZIP_NAME" "$TARGET/" --retries 3 --low-level-retries 5 --stats-one-line
-  log "完成 $TARGET/$ZIP_NAME"
+  for _path in "${UPLOAD_TARGETS[@]}"; do
+    log "上传 $_path/"
+    rclone copy "$ZIP_NAME" "$_path/" --retries 3 --low-level-retries 5 \
+      --transfers 4 --checkers 16 --buffer-size 64M --stats-one-line
+  done
+  log "完成 ${ROM_NAME}.zip -> ${#UPLOAD_TARGETS[@]} 个目录"
 }
 
 # --------------------------------------------------------------------------- #
