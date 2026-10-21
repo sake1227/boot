@@ -136,7 +136,7 @@ def main() -> int:
             if args.quiet:
                 print(final)
             else:
-                print(f"OK   {final[:140]}")
+                print(f"OK   {final}")
                 if exp:
                     print(f"     过期: {exp}（约 30 分钟，立刻下载）")
             rows.append((u, final, exp, ""))
