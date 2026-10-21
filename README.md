@@ -124,7 +124,7 @@ farm:      bash -c "<那条命令>" → 抓 .zip/.ozip → 重试 3 次 → 立�
 
 社区实现（这些是 `oplus` adapter 背后的工具，公开仓库）：
 
-- OPPO / 一加 / realme：[SunsetMkt/OPlus-Tracker](https://github.com/SunsetMkt/OPlus-Tracker)
+- OPPO / 一加 / realme：[JerryTse-OSS/OPlus-Tracker](https://github.com/JerryTse-OSS/OPlus-Tracker)
 - 小米官方 OTA 接口（想绕开索引站时用）：[YuKongA/Updater](https://github.com/YuKongA/Updater)
 - 三星 FUS：[samloader-fus](https://docs.rs/samloader-fus)
 
