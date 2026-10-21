@@ -908,7 +908,7 @@ def ad_oplusrom(dev: dict, ctx: dict) -> list[dict]:
             out.append(candidate(
                 dev, url="", status="resolve", stable=False,
                 requires="C16", key=f"{key}|{ver}",
-                resolve=f"python3 tools/c16_resolve.py '{url}'", **base))
+                resolve=f"python3 tools/c16_resolve.py --quiet '{url}'", **base))
         else:
             out.append(candidate(
                 dev, url=url, status="ready", stable=True,
