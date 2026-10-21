@@ -265,6 +265,8 @@ jobs:
           CAT: ${{ matrix.cat }}
           DEVNAME: ${{ matrix.devname }}
           REFERER: ${{ matrix.referer }}
+          TARGETS: ${{ matrix.targets }}
+          OPTIONAL: ${{ matrix.optional }}
           VERSION: ${{ matrix.version }}
           UNZIP_PASSWORD: ${{ secrets.UNZIP_PASSWORD }}
           PASSFILE: ${{ github.workspace }}/获取解压密码.txt
