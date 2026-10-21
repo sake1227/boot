@@ -4845,6 +4845,447 @@
    "id": "manual-queue",
    "brand": "manual",
    "model": "links.txt"
+  },
+  {
+   "id": "oplusrom-oppofindx7ultra",
+   "brand": "oplusrom",
+   "model": "OPPOFINDX7Ultra",
+   "display": "OPPOFINDX7Ultra",
+   "brandcn": "OPPO",
+   "series": "数字系列",
+   "_note": "12 个历史版本"
+  },
+  {
+   "id": "oplusrom-oppofindn3",
+   "brand": "oplusrom",
+   "model": "OPPOFindN3",
+   "display": "OPPOFindN3",
+   "brandcn": "OPPO",
+   "series": "Find 系列",
+   "_note": "9 个历史版本"
+  },
+  {
+   "id": "oplusrom-oppofindx6pro",
+   "brand": "oplusrom",
+   "model": "OPPOFindX6Pro",
+   "display": "OPPOFindX6Pro",
+   "brandcn": "OPPO",
+   "series": "Find 系列",
+   "_note": "10 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-13-glo",
+   "brand": "oplusrom",
+   "model": "OnePlus 13 (GLO)",
+   "display": "OnePlus 13 (GLO)",
+   "brandcn": "OPPO",
+   "series": "数字系列",
+   "_note": "13 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-13-in",
+   "brand": "oplusrom",
+   "model": "OnePlus 13 (IN)",
+   "display": "OnePlus 13 (IN)",
+   "brandcn": "OPPO",
+   "series": "数字系列",
+   "_note": "13 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-13r-glo",
+   "brand": "oplusrom",
+   "model": "OnePlus 13R (GLO)",
+   "display": "OnePlus 13R (GLO)",
+   "brandcn": "OPPO",
+   "series": "数字系列",
+   "_note": "9 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-13r-in",
+   "brand": "oplusrom",
+   "model": "OnePlus 13R (IN)",
+   "display": "OnePlus 13R (IN)",
+   "brandcn": "OPPO",
+   "series": "数字系列",
+   "_note": "9 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-15-eu",
+   "brand": "oplusrom",
+   "model": "OnePlus 15 (EU)",
+   "display": "OnePlus 15 (EU)",
+   "brandcn": "OPPO",
+   "series": "数字系列",
+   "_note": "7 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-15-glo",
+   "brand": "oplusrom",
+   "model": "OnePlus 15 (GLO)",
+   "display": "OnePlus 15 (GLO)",
+   "brandcn": "OPPO",
+   "series": "数字系列",
+   "_note": "8 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-15-in",
+   "brand": "oplusrom",
+   "model": "OnePlus 15 (IN)",
+   "display": "OnePlus 15 (IN)",
+   "brandcn": "OPPO",
+   "series": "数字系列",
+   "_note": "8 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-15r-eu",
+   "brand": "oplusrom",
+   "model": "OnePlus 15R (EU)",
+   "display": "OnePlus 15R (EU)",
+   "brandcn": "OPPO",
+   "series": "数字系列",
+   "_note": "8 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-15r-glo",
+   "brand": "oplusrom",
+   "model": "OnePlus 15R (GLO)",
+   "display": "OnePlus 15R (GLO)",
+   "brandcn": "OPPO",
+   "series": "数字系列",
+   "_note": "8 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-15r-in",
+   "brand": "oplusrom",
+   "model": "OnePlus 15R (IN)",
+   "display": "OnePlus 15R (IN)",
+   "brandcn": "OPPO",
+   "series": "数字系列",
+   "_note": "8 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-pad-go-2-5g-eu",
+   "brand": "oplusrom",
+   "model": "OnePlus Pad Go 2 5G (EU)",
+   "display": "OnePlus Pad Go 2 5G (EU)",
+   "brandcn": "OPPO",
+   "series": "平板系列",
+   "_note": "4 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-pad-go-2-5g-glo",
+   "brand": "oplusrom",
+   "model": "OnePlus Pad Go 2 5G(GLO)",
+   "display": "OnePlus Pad Go 2 5G(GLO)",
+   "brandcn": "OPPO",
+   "series": "平板系列",
+   "_note": "5 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-pad-go-2-5g-in",
+   "brand": "oplusrom",
+   "model": "OnePlus Pad Go 2 5G(IN)",
+   "display": "OnePlus Pad Go 2 5G(IN)",
+   "brandcn": "OPPO",
+   "series": "平板系列",
+   "_note": "6 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-pad-go-2-wifi-eu",
+   "brand": "oplusrom",
+   "model": "OnePlus Pad Go 2 WiFi (EU)",
+   "display": "OnePlus Pad Go 2 WiFi (EU)",
+   "brandcn": "OPPO",
+   "series": "平板系列",
+   "_note": "4 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-pad-go-2-wifi-glo",
+   "brand": "oplusrom",
+   "model": "OnePlus Pad Go 2 WiFi (GLO)",
+   "display": "OnePlus Pad Go 2 WiFi (GLO)",
+   "brandcn": "OPPO",
+   "series": "平板系列",
+   "_note": "5 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-pad-lite-eu",
+   "brand": "oplusrom",
+   "model": "OnePlus Pad Lite (EU)",
+   "display": "OnePlus Pad Lite (EU)",
+   "brandcn": "OPPO",
+   "series": "平板系列",
+   "_note": "7 个历史版本"
+  },
+  {
+   "id": "oplusrom-oneplus-pad-lite-glo",
+   "brand": "oplusrom",
+   "model": "OnePlus Pad Lite (GLO)",
+   "display": "OnePlus Pad Lite (GLO)",
+   "brandcn": "OPPO",
+   "series": "平板系列",
+   "_note": "7 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加10pro",
+   "brand": "oplusrom",
+   "model": "一加10Pro",
+   "display": "一加10Pro",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "12 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加11",
+   "brand": "oplusrom",
+   "model": "一加11",
+   "display": "一加11",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "10 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加12",
+   "brand": "oplusrom",
+   "model": "一加12",
+   "display": "一加12",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "12 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加13",
+   "brand": "oplusrom",
+   "model": "一加13",
+   "display": "一加13",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "14 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加13t",
+   "brand": "oplusrom",
+   "model": "一加13T",
+   "display": "一加13T",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "13 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加15",
+   "brand": "oplusrom",
+   "model": "一加15",
+   "display": "一加15",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "15 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加9rt",
+   "brand": "oplusrom",
+   "model": "一加9RT",
+   "display": "一加9RT",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "1 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace",
+   "brand": "oplusrom",
+   "model": "一加ACE",
+   "display": "一加ACE",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "5 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace3",
+   "brand": "oplusrom",
+   "model": "一加ACE3",
+   "display": "一加ACE3",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "8 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace3pro",
+   "brand": "oplusrom",
+   "model": "一加ACE3PRO",
+   "display": "一加ACE3PRO",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "9 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace5",
+   "brand": "oplusrom",
+   "model": "一加ACE5",
+   "display": "一加ACE5",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "11 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace5pro",
+   "brand": "oplusrom",
+   "model": "一加ACE5Pro",
+   "display": "一加ACE5Pro",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "12 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace5竞速版",
+   "brand": "oplusrom",
+   "model": "一加ACE5竞速版",
+   "display": "一加ACE5竞速版",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "11 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace5至尊版",
+   "brand": "oplusrom",
+   "model": "一加ACE5至尊版",
+   "display": "一加ACE5至尊版",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "11 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace竞速版",
+   "brand": "oplusrom",
+   "model": "一加ACE竞速版",
+   "display": "一加ACE竞速版",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "5 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace2",
+   "brand": "oplusrom",
+   "model": "一加Ace2",
+   "display": "一加Ace2",
+   "brandcn": "一加",
+   "series": "Ace 系列",
+   "_note": "10 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace2pro",
+   "brand": "oplusrom",
+   "model": "一加Ace2Pro",
+   "display": "一加Ace2Pro",
+   "brandcn": "一加",
+   "series": "Ace 系列",
+   "_note": "10 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace2v",
+   "brand": "oplusrom",
+   "model": "一加Ace2V",
+   "display": "一加Ace2V",
+   "brandcn": "一加",
+   "series": "Ace 系列",
+   "_note": "10 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace6",
+   "brand": "oplusrom",
+   "model": "一加Ace6",
+   "display": "一加Ace6",
+   "brandcn": "一加",
+   "series": "Ace 系列",
+   "_note": "13 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace6t",
+   "brand": "oplusrom",
+   "model": "一加Ace6T",
+   "display": "一加Ace6T",
+   "brandcn": "一加",
+   "series": "Ace 系列",
+   "_note": "13 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加acepro",
+   "brand": "oplusrom",
+   "model": "一加AcePro",
+   "display": "一加AcePro",
+   "brandcn": "一加",
+   "series": "Ace 系列",
+   "_note": "8 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加pad2",
+   "brand": "oplusrom",
+   "model": "一加Pad2",
+   "display": "一加Pad2",
+   "brandcn": "一加",
+   "series": "平板系列",
+   "_note": "8 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加turbo6",
+   "brand": "oplusrom",
+   "model": "一加Turbo6",
+   "display": "一加Turbo6",
+   "brandcn": "一加",
+   "series": "Turbo 系列",
+   "_note": "9 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加turbo6v",
+   "brand": "oplusrom",
+   "model": "一加Turbo6v",
+   "display": "一加Turbo6v",
+   "brandcn": "一加",
+   "series": "Turbo 系列",
+   "_note": "8 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加ace3v",
+   "brand": "oplusrom",
+   "model": "一加ace3v",
+   "display": "一加ace3v",
+   "brandcn": "一加",
+   "series": "数字系列",
+   "_note": "7 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加平板",
+   "brand": "oplusrom",
+   "model": "一加平板",
+   "display": "一加平板",
+   "brandcn": "一加",
+   "series": "平板系列",
+   "_note": "7 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加平板2pro",
+   "brand": "oplusrom",
+   "model": "一加平板2Pro",
+   "display": "一加平板2Pro",
+   "brandcn": "一加",
+   "series": "平板系列",
+   "_note": "10 个历史版本"
+  },
+  {
+   "id": "oplusrom-一加平板pro",
+   "brand": "oplusrom",
+   "model": "一加平板PRO",
+   "display": "一加平板PRO",
+   "brandcn": "一加",
+   "series": "平板系列",
+   "_note": "9 个历史版本"
+  },
+  {
+   "id": "oplusrom-真我gt8pro",
+   "brand": "oplusrom",
+   "model": "真我GT8Pro",
+   "display": "真我GT8Pro",
+   "brandcn": "真我",
+   "series": "GT 系列",
+   "_note": "10 个历史版本"
   }
  ]
 }
