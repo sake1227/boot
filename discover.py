@@ -25,6 +25,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import hashlib
 import json
 import os
@@ -783,8 +784,25 @@ def ad_meizu(dev: dict, ctx: dict) -> list[dict]:
     multi = len(variants) > 1
     maxn = int(args.get("max_new_per_device", ctx["max_new_per_device"]))
 
-    out: list[dict] = []
+    # 每个变体的「当前版本」+ history 里的历史版本（都带 download key），
+    # 这样魅族能拿到该渠道线的全部历史包
+    entries: list[tuple[dict, dict]] = []
     for v in variants:
+        entries.append((v, v))
+        h = v.get("history")
+        if isinstance(h, str):
+            try:
+                h = _loose_json(h) if h.strip().startswith("[") else ast.literal_eval(h)
+            except (ValueError, SyntaxError):
+                h = None
+        if isinstance(h, dict):
+            entries.extend((v, e) for e in h.values() if isinstance(e, dict))
+        elif isinstance(h, list):
+            entries.extend((v, e) for e in h if isinstance(e, dict))
+
+    out: list[dict] = []
+    seen_dl: set[str] = set()
+    for parent, v in entries:
         if len(out) >= maxn:
             break
         name = (v.get("name") or "").strip()
@@ -792,8 +810,11 @@ def ad_meizu(dev: dict, ctx: dict) -> list[dict]:
         if not name or not dl:
             continue
         vstr = re.sub(r"[^\w.\-]+", "_", name.replace(" ", "_")).strip("_")
+        if dl in seen_dl:
+            continue
+        seen_dl.add(dl)
         if multi:
-            net = re.sub(r"[^0-9A-Za-z]+", "", v.get("net_name") or "")
+            net = re.sub(r"[^0-9A-Za-z]+", "", (parent.get("net_name") or ""))
             if net and not vstr.upper().endswith(net.upper()):
                 vstr = f"{vstr}_{net}"
 
