@@ -845,12 +845,84 @@ def ad_meizu(dev: dict, ctx: dict) -> list[dict]:
     return out
 
 
+# --------------------------------------------------------------------------- #
+# Adapter: oplusrom —— chlink2025/oplusrom 社区维护的 OPPO/一加/真我 历史版本链接库
+#
+#   links/<机型目录>/<版本号>.txt   一行一个链接
+#     · 海外版（GLO/EU/IN）：gauss-componentotamanual.allawnofs.com/...zip
+#       —— 永久直链，实测 HTTP 206 / 6.46GB 可下
+#     · 国行（中文目录）：多为 component-ota-cn.allawntech.com/downloadCheck?...
+#       —— 动态链，交给 tools/c16_resolve.py 现场解析（解析不到就跳过）
+#
+# 用法：devices.json 里 model 填 links/ 下的目录名，例如 "一加13" 或 "OnePlus 13 (GLO)"
+# 数据获取：首次运行 git clone --depth 1 到 state/cache/oplusrom（约 24MB，之后复用）
+# --------------------------------------------------------------------------- #
+OPLUSROM_REPO = "https://github.com/chlink2025/oplusrom"
+
+
+def _oplusrom_root(ctx: dict) -> Path:
+    d = Path(ctx["cache_dir"]) / "oplusrom"
+    if (d / "links").is_dir():
+        return d
+    d.parent.mkdir(parents=True, exist_ok=True)
+    print(f"  [oplusrom] 克隆 {OPLUSROM_REPO}", file=sys.stderr)
+    subprocess.run(["git", "clone", "--depth", "1", OPLUSROM_REPO, str(d)],
+                   check=True, timeout=900)
+    return d
+
+
+def ad_oplusrom(dev: dict, ctx: dict) -> list[dict]:
+    args = dev.get("adapter_args") or {}
+    model = str(dev["model"])
+    root = ctx.setdefault("oplusrom_root", _oplusrom_root(ctx))
+    folder = root / "links" / model
+    if not folder.is_dir():
+        print(f"  [warn] {dev['id']}: 目录不存在 links/{model}", file=sys.stderr)
+        return []
+
+    display = (dev.get("display") or model).strip()
+    devname = sanitize_dirname(split_names(display)[0])
+    cat = dev.get("series") or category_of(devname)
+    bcn = dev.get("brandcn") or brand_cn("oplus", devname)
+    maxn = int(args.get("max_new_per_device", ctx["max_new_per_device"]))
+
+    out: list[dict] = []
+    for f in sorted(folder.glob("*.txt"), reverse=True):
+        if len(out) >= maxn:
+            break
+        try:
+            url = f.read_text("utf-8", errors="replace").strip().splitlines()[0].strip()
+        except (OSError, IndexError):
+            continue
+        if not url.startswith("http"):
+            continue
+        ver = f.stem
+        key = f"{dev['id']}|{ver}"
+        if any(k.startswith(key + "|") for k in ctx["seen"]):
+            continue
+
+        # 同一版本可能在多个区域目录里出现，产物名统一用版本号，靠 farm 端查重
+        base = dict(devname=devname, cat=cat, brandcn=bcn, version=ver,
+                    filename=f"{ver}.zip", source=str(f.relative_to(root)))
+        if "downloadCheck" in url or "allawntech.com/download" in url:
+            out.append(candidate(
+                dev, url="", status="resolve", stable=False,
+                requires="C16", key=f"{key}|{ver}",
+                resolve=f"python3 tools/c16_resolve.py '{url}'", **base))
+        else:
+            out.append(candidate(
+                dev, url=url, status="ready", stable=True,
+                requires="", key=f"{key}|{ver}", **base))
+    return out
+
+
 ADAPTERS = {
     "xiaomi": ad_xiaomi,
     "google": ad_google,
     "samsung": ad_samsung,
     "lolinet": ad_lolinet,
     "oplus": ad_oplus,
+    "oplusrom": ad_oplusrom,
     "meizu": ad_meizu,
     "manual": ad_manual,
     "cmd": ad_cmd,
