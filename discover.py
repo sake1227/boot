@@ -104,6 +104,8 @@ def candidate(dev: dict, **kw) -> dict:
         "cat": "",         # 分类，如「数字系列」「Note 系列」
         "brandcn": "",     # 品牌中文名，网盘第一层：小米/红米/一加/真我/OPPO/魅族…
         "referer": "",     # 下载时需要的 Referer（魅族 CDN 强制）
+        "targets": [],     # 显式指定的上传目标目录（通用机型）
+        "optional": False, # 解析不到就静默跳过（欧加分支探测）
         "url": "",
         "size": 0,
         "md5": "",
@@ -656,7 +658,14 @@ def ad_oplus(dev: dict, ctx: dict) -> list[dict]:
     tool = args.get("tool", OPLUS_TOOL)
     versions = args.get("versions") or []
 
-    targets = versions or [prefix]
+    # 没显式给 versions 时，逐个分支查（A/C/F/H/J），每分支取该分支最新完整包，
+    # 这样一次运行能拿到同一机型最多 5 个版本，而不是只有 1 个
+    BRANCHES = ("A", "C", "F", "H", "J")
+    if versions:
+        targets = list(versions)
+    else:
+        targets = [f"{prefix}_11.{b}" for b in BRANCHES]
+
     out: list[dict] = []
     display = (dev.get("display") or "").strip() or dev.get("label") or prefix
     cat = category_of(display, dev.get("category") or "")
@@ -676,6 +685,7 @@ def ad_oplus(dev: dict, ctx: dict) -> list[dict]:
                 stable=False,
                 status="resolve",
                 requires="OPlus-Tracker",
+                optional=True,
                 resolve=cmd,
                 source=f"oplus:{target}",
                 key=f"{dev['id']}|{target}",
@@ -839,11 +849,56 @@ def load_seen(path: Path) -> set[str]:
     return set()
 
 
+BAD_DIR_CHARS = str.maketrans({"/": "、", "\\": "、", ":": "：", "*": "＊",
+                              "?": "？", '"': "＂", "<": "＜", ">": "＞",
+                              "|": "｜", ";": "，"})
+
+def sanitize_dirname(name: str) -> str:
+    """机型名里的 / \\ : * ? " < > | ; 都不能进目录名（否则会被当路径分隔符）。"""
+    return (name or "").strip().translate(BAD_DIR_CHARS).strip()
+
+
+def split_names(display: str) -> list[str]:
+    """通用机型：「OPPO A58 / OPPO A58x / OPPO A1x」-> 三个机型名。"""
+    parts = re.split(r"\s*/\s*", display or "")
+    out, seen = [], set()
+    for p in parts:
+        p = p.strip()
+        if not p or p in seen:
+            continue
+        seen.add(p)
+        out.append(p)
+    return out
+
+
+def build_targets(c: dict) -> list[dict]:
+    """候选要落到哪些「品牌/分类/机型」目录。通用机型会拆成多个目录。"""
+    if c.get("targets"):
+        return c["targets"]
+    devname = c["devname"] or c["model"]
+    names = split_names(devname)
+    if len(names) > 1:
+        return [
+            {"brandcn": brand_cn(c["brand"], n),
+             "cat": category_of(n),
+             "devname": sanitize_dirname(n)}
+            for n in names
+        ]
+    return [{
+        "brandcn": c["brandcn"] or brand_cn(c["brand"], devname),
+        "cat": c["cat"] or category_of(devname),
+        "devname": sanitize_dirname(devname),
+    }]
+
+
+def targets_str(c: dict) -> str:
+    return ";".join(f"{t['brandcn']}|{t['cat']}|{t['devname']}" for t in build_targets(c))
+
+
 def dest_rel(c: dict) -> str:
-    """候选在网盘里的相对路径，必须和 extract_one.sh 的落地路径一致。"""
-    b = c["brandcn"] or brand_cn(c["brand"], c["devname"])
-    cat = c["cat"] or category_of(c["devname"] or c["model"])
-    dev = c["devname"] or c["model"]
+    """候选在网盘里的相对路径（取第一个目标），必须和 extract_one.sh 落地路径一致。"""
+    t = build_targets(c)[0]
+    b, cat, dev = t["brandcn"], t["cat"], t["devname"]
     name = re.sub(r"[^\w.\-()]+", "_", stem_of(c["filename"]))
     return f"{b}/{cat}/{dev}/{name}.zip"
 
@@ -881,6 +936,8 @@ def build_matrix(all_c: list[dict], max_total: int = MAX_MATRIX) -> dict:
                 "cat": c["cat"] or category_of(c["devname"] or c["model"]),
                 "devname": c["devname"] or c["model"],
                 "brandcn": c["brandcn"] or brand_cn(c["brand"], c["devname"]),
+                "targets": targets_str(c),
+                "optional": "1" if c["optional"] else "0",
                 "referer": c["referer"],
                 "url": c["url"],
                 "resolve": c["resolve"],
