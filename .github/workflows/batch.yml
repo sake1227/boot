@@ -247,7 +247,7 @@ jobs:
           python3 -c "import requests, cryptography; print('deps ok')"
 
           rm -rf tools/oplus
-          git clone --depth 1 https://github.com/SunsetMkt/OPlus-Tracker tools/oplus
+          git clone --depth 1 https://github.com/JerryTse-OSS/OPlus-Tracker tools/oplus
 
           # 显式校验：文件在、且能 import 自己的 config（别让 --help 静默失败）
           test -f tools/oplus/tomboy_pro.py || { echo "tomboy_pro.py 没 clone 下来"; exit 1; }
